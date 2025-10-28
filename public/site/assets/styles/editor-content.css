@@ -1,0 +1,270 @@
+
+/* Reset nhẹ trong vùng nội dung từ CKEditor */
+.editor-content, .editor-content * {
+    /*font-family: unset !important;*/
+    font-style: unset !important;
+    font-weight: unset !important;
+    color: unset !important;
+    text-decoration: unset !important;
+    margin: unset !important;
+    /*padding: unset !important;*/
+    border: unset !important;
+    outline: unset !important;
+    vertical-align: unset !important;
+}
+
+.editor-content {
+    text-align: left; /* Reset mặc định */
+    line-height: 1.6
+}
+
+.editor-content * {
+    text-align: inherit;
+}
+
+/* Văn bản cơ bản */
+.editor-content em, .editor-content i {
+    font-style: italic !important;
+}
+
+.editor-content strong, .editor-content b {
+    font-weight: bold !important;
+}
+
+.editor-content u {
+    text-decoration: underline !important;
+}
+
+.editor-content s, .editor-content strike {
+    text-decoration: line-through !important;
+}
+
+.editor-content sub {
+    vertical-align: sub !important;
+    font-size: smaller !important;
+}
+
+.editor-content sup {
+    vertical-align: super !important;
+    font-size: smaller !important;
+}
+
+/* Tiêu đề */
+.editor-content h1,
+.editor-content h2,
+.editor-content h3,
+.editor-content h4,
+.editor-content h5,
+.editor-content h6 {
+    font-weight: bold !important;
+    margin: 0.5em 0 !important;
+}
+
+/* Đoạn văn */
+.editor-content p {
+    margin: 0.5em 0 !important;
+}
+
+/* Danh sách */
+.editor-content ul,
+.editor-content ol {
+    padding-left: 2em !important;
+    margin: 0.5em 0 !important;
+}
+
+.editor-content li {
+    margin-bottom: 0.3em !important;
+}
+
+/* Trích dẫn */
+.editor-content blockquote {
+    border-left: 4px solid #ccc;
+    padding-left: 1em;
+    color: #666;
+    margin: 1em 0;
+    font-style: italic;
+}
+
+/* Liên kết */
+.editor-content a {
+    color: #007bff;
+    text-decoration: underline;
+}
+
+/* Hình ảnh */
+.editor-content img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Bảng biểu */
+.editor-content table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1em 0;
+}
+
+.editor-content table th,
+.editor-content table td {
+    border: 1px solid #ccc;
+    padding: 0.5em;
+    text-align: left;
+}
+
+/* Dòng kẻ ngang */
+.editor-content hr {
+    border: none;
+    border-top: 1px solid #ccc;
+    margin: 1em 0;
+}
+
+/* Định dạng mã */
+.editor-content code {
+    font-family: monospace;
+    background-color: #f4f4f4;
+    padding: 2px 4px;
+    border-radius: 4px;
+}
+
+.editor-content pre {
+    background: #f4f4f4;
+    padding: 1em;
+    overflow-x: auto;
+    font-family: monospace;
+}
+
+/* Ký hiệu đặc biệt */
+.editor-content abbr {
+    border-bottom: 1px dotted;
+    cursor: help;
+}
+
+.editor-content mark {
+    background: yellow;
+    color: black;
+}
+
+/* Bảo vệ nội dung tránh bị ảnh hưởng bởi CSS toàn cục */
+.editor-content {
+    isolation: isolate;
+}
+
+
+
+/* ===== CKEditor output inside .editor-content ===== */
+
+/* Khoảng cách & line-height cơ bản cho list */
+.editor-content ul,
+.editor-content ol {
+    padding-left: 1.25em;
+    margin: 0 0 1em 0;
+}
+.editor-content li {
+    line-height: 1.7;
+}
+
+/* 1) Icon/emoji trong <li>: luôn hiển thị inline, cao theo cỡ chữ */
+.editor-content li img[role="img"],
+.editor-content li img[src*="/emoji/"],
+.editor-content li img[src*="s.w.org/images/core/emoji"],
+.editor-content li strong img[role="img"] {
+    display: inline-block !important;
+    width: auto !important;
+    height: 1em !important;          /* = chiều cao chữ hiện tại */
+    max-height: 1.2em !important;    /* trần an toàn */
+    vertical-align: -0.15em;         /* căn baseline mượt hơn */
+    margin: 0 .25em;
+    object-fit: contain;
+}
+
+/* 2) Nếu từng có rule global ép img = 100%/block, hủy trong <li> để tránh phóng to */
+.editor-content li img {
+    max-width: none !important;
+    height: auto;
+    display: inline-block;
+}
+
+/* 3) Tinh chỉnh riêng icon mũi tên (nếu có) */
+.editor-content li img[alt="➡"] {
+    height: 1em !important;
+}
+
+/* 4) Ảnh nội dung lớn (trong figure) vẫn fill chiều ngang như thường */
+.editor-content figure {
+    margin: 16px auto;
+    max-width: 100%;
+    text-align: center;
+}
+.editor-content figure img {
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    max-width: 100% !important;
+    margin: 0 auto;
+}
+
+/* 5) Ảnh chèn trực tiếp không nằm trong <li> (ví dụ trong đoạn văn) – giữ nguyên rule responsive */
+.editor-content > p > img,
+.editor-content .rte-img,
+.editor-content .c-figure > img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* 6) Tránh ảnh trong tiêu đề bị phóng to */
+.editor-content h1 img,
+.editor-content h2 img,
+.editor-content h3 img,
+.editor-content h4 img,
+.editor-content h5 img,
+.editor-content h6 img {
+    height: 1em !important;
+    width: auto !important;
+    vertical-align: -0.15em;
+}
+
+
+
+
+
+     /* Vùng nội dung đổ từ CKEditor */
+ .editor-content {
+     /* tuỳ ý: text của đoạn văn có thể căn trái */
+     text-align: left;
+ }
+
+/* Căn giữa riêng phần tử table */
+.editor-content table {
+    margin-left: auto !important;
+    margin-right: auto !important;
+    float: none !important;         /* phòng khi có CSS khác set float */
+    display: table;                 /* đảm bảo là table chuẩn */
+    border-collapse: collapse;      /* gọn gàng đường viền */
+    /* giúp responsive khi CKEditor set width cố định như 905px */
+    width: auto !important;
+    max-width: 100%;
+}
+
+/* Viền bảng & ô cho dễ nhìn (nếu cần) */
+.editor-content table,
+.editor-content td,
+.editor-content th {
+    border: 1px solid #ddd !important;
+}
+
+.editor-content td,
+.editor-content th {
+    padding: 8px 10px;
+}
+
+/* Cuộn ngang trên màn nhỏ nếu bảng vẫn rộng */
+@media (max-width: 768px) {
+    .editor-content {
+        overflow-x: auto;
+    }
+    .editor-content table {
+        table-layout: auto;  /* tránh vỡ bố cục khi thu hẹp */
+    }
+}
+
+

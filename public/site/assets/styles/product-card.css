@@ -1,0 +1,267 @@
+
+    /* ------- Card ------- */
+.product-card{
+    --tw-bg-opacity: 1;               /* chỉnh 0→1 để đổi độ mờ */
+    background: #fff;                 /* fallback phòng khi browser cũ */
+    background: rgb(14 16 18 / var(--tw-bg-opacity));
+    /*border:1px solid #eef0f4; border-radius:12px; overflow:hidden;*/
+    /*box-shadow:0 6px 16px rgba(0,0,0,.05);*/
+    display:flex; flex-direction:column; height:100%;
+    transition:transform .15s ease, box-shadow .15s ease;
+}
+/*.product-card:hover{*/
+/*    transform:translateY(-2px);*/
+/*    box-shadow:0 10px 24px rgba(0,0,0,.08);*/
+/*}*/
+    .pc-thumb img{
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transform: scale(1) translateZ(0);     /* translateZ để bật GPU */
+        opacity: 1;
+        transition: transform 600ms cubic-bezier(.2,.6,.2,1),
+        opacity   600ms cubic-bezier(.2,.6,.2,1);
+        will-change: transform, opacity;
+        backface-visibility: hidden;
+    }
+
+    @media (hover:hover) and (pointer:fine){
+        .product-card:hover .pc-thumb img,
+        .pc-thumb:hover img{
+            transform: scale(1.08);
+            opacity: .92;   /* “mượt mờ” */
+        }
+    }
+
+    /* Bỏ hiệu ứng hover cũ (nhấc card + bóng) */
+    .product-card:hover{
+        transform: none !important;
+        box-shadow: none !important;
+    }
+
+    @media (prefers-reduced-motion: reduce){
+        .pc-thumb img{ transition: none; }
+    }
+
+.pc-thumb{ position:relative; display:block; aspect-ratio: 1 / 1 }
+.pc-thumb img{
+    position:absolute; inset:0; width:100%; height:100%; object-fit:contain;
+}
+.pc-ribbon{
+    position:absolute; left:10px; top:10px;
+    background:#ff3b30; color:#fff; font-weight:800; font-size:12px;
+    padding:6px 8px; border-radius:6px; box-shadow:0 2px 6px rgba(0,0,0,.1);
+}
+.pc-badge{
+    position:absolute; left:10px; top:40px;
+    background:#111827; color:#fff; font-weight:700; font-size:11px;
+    padding:4px 8px; border-radius:999px; opacity:.9;
+}
+.pc-body{ padding:12px 12px 14px; display:flex; flex-direction:column; gap:8px; }
+.pc-name{ font-size:15px; font-weight:700; line-height:1.35; margin:0; }
+.pc-name a{ color:#111827; text-decoration:none; }
+.pc-name a:hover{ text-decoration:underline; }
+.pc-sub{ font-size:12px; color:#2563eb; font-weight:700; text-transform:uppercase; }
+.pc-price-row{ display:flex; align-items:baseline; gap:8px; margin-top:2px; }
+.pc-price{ font-size:18px; font-weight:800; color:#111827; }
+.pc-currency{ font-size:12px; margin-left:4px; color:#6b7280; }
+
+/* Nhỏ hơn nữa: 360–400px vẫn giữ 2 cột, khoảng cách nhỏ lại */
+@media (max-width: 380px){
+    .product-grid{ gap:14px; }
+    .pc-name{ font-size:14px; }
+    .pc-price{ font-size:16px; }
+}
+
+
+.price-old{
+    position:relative; color:#35383e; font-size:16px; padding:0 4px;
+    text-decoration:none; /* bỏ gạch mặc định để tự vẽ đẹp hơn */
+}
+.price-old::after{
+    content:""; position:absolute; left:0; right:0; top:55%;
+    height:2px; border-radius:2px;
+    background: linear-gradient(90deg, transparent 0 4%, #ef4444 4% 96%, transparent 96% 100%);
+    opacity:.9;
+}
+
+@media (max-width: 767.98px) {
+    .price-old {
+        font-size: 11px;
+    }
+}
+
+
+/* ====== Product card body – override cũ để giống ảnh ====== */
+.product-card .pc-body{
+    padding-top: 15px;
+}
+.product-card .pc-name{
+    margin: 0 0 10px 0;
+    font-size: 17px;
+    line-height: 1.3;
+    font-weight: 700;
+}
+.product-card .pc-name a{
+    color: #fff; /* giao diện dark như ảnh */
+    text-decoration: none;
+}
+
+/* Hàng chứa badge + pill giá */
+.product-card .pc-deal-row{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    flex-wrap: wrap;               /* để tự xuống dòng trên mobile */
+}
+
+/* Badge -% OFF màu cam */
+.product-card .pc-badge-off{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:8px 14px;
+    background:#F59E0B;            /* cam đậm */
+    color:#111;
+    font-weight:800;
+    font-size:13px;
+    border-radius:999px;           /* pill */
+    white-space:nowrap;
+    box-shadow:0 1px 0 rgba(0,0,0,.15) inset;
+}
+
+/* Pill giá nền tối */
+.product-card .pc-price-pill{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    padding:8px 14px;
+    background:#1f2937;            /* xám đậm (giống ảnh) */
+    color:#e5e7eb;
+    border-radius:999px;
+    line-height:1;
+    white-space:nowrap;
+}
+.product-card .pc-price-pill .old{
+    opacity:.65;
+    text-decoration: line-through;
+    text-decoration-thickness: 2px;
+}
+.product-card .pc-price-pill .now{
+    font-weight:800;
+    font-size:15px;
+    letter-spacing:.2px;
+}
+.product-card .pc-price-pill .pc-currency{
+    font-size: .85em;
+    margin-left: 2px;
+    opacity:.9;
+}
+
+/* Trường hợp “Liên hệ” */
+.product-card .pc-price-pill.is-contact{
+    background:#374151;
+    color:#fff;
+}
+
+/* ====== Responsive ====== */
+@media (max-width: 768px){
+    .product-card .pc-name{ font-size:16px; }
+    .product-card .pc-badge-off,
+    .product-card .pc-price-pill{
+        padding:7px 12px;
+        font-size: 13px;
+    }
+    .product-card .pc-price-pill .now{ font-size:15px; }
+}
+
+/* ====== Xoá/ghi đè style cũ (nếu có) ====== */
+.product-card .pc-price-row{ display:none !important; } /* ẩn khối giá cũ nếu còn */
+.product-card .price-old{ display:none !important; }    /* tránh style cũ chồng chéo */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /* Thân card chiếm phần còn lại */
+    .pc-body{
+        display:flex;
+        flex-direction:column;
+        gap:8px;
+        padding:12px 12px 14px;
+        flex:1;                    /* chiếm toàn bộ chiều cao còn lại */
+    }
+
+    /* ĐƯA GIÁ XUỐNG ĐÁY */
+    .pc-deal-row{
+        margin-top:auto;           /* đẩy khối giá về cuối .pc-body */
+    }
+
+    /* (Khuyên dùng) Giới hạn 2 dòng tên để lưới gọn gàng */
+    .pc-name{
+        line-height:1.35;
+        display:-webkit-box;
+        -webkit-line-clamp:2;      /* 2 dòng, đổi 3 nếu muốn */
+        -webkit-box-orient:vertical;
+        overflow:hidden;
+        min-height: calc(1.35em * 2);
+    }
+
+
+    /* 1) Ép các slide có chiều cao bằng nhau */
+    .swiper-wrapper{
+        align-items: stretch !important;     /* thay vì center */
+    }
+    .swiper-slide{
+        height: auto !important;
+        display: flex;                       /* để con stretch theo chiều cao lớn nhất */
+        align-items: stretch !important;
+    }
+
+    /* 2) Card dựng theo cột, phần body chiếm phần còn lại */
+    .product-card{
+        display:flex; flex-direction:column;
+        width:100%;
+        border-radius:12px; overflow:hidden;
+    }
+
+    /* 3) Ảnh: cố định theo tỉ lệ, không bị kéo giãn bởi nội dung bên dưới */
+    .pc-thumb{
+        display:block; overflow:hidden;
+        aspect-ratio: 1 / 1;                 /* đổi 1/1 nếu muốn vuông */
+        flex: 0 0 auto;                      /* KHÔNG cho kéo giãn theo chiều dọc */
+        background:#f6f7f8;
+    }
+    .pc-thumb img{
+        width:100%; height:100%;
+        object-fit:cover;
+        display:block;
+    }
+
+    /* 4) Body: giá luôn ở đáy, tên tối đa 2–3 dòng để đều hàng */
+    .pc-body{
+        display:flex; flex-direction:column; gap:8px;
+        padding:12px 12px 14px;
+        flex:1;                               /* chiếm phần còn lại */
+    }
+    .pc-deal-row{ margin-top:auto; }        /* đẩy giá xuống đáy */
+
+    .pc-name{
+        --lh:1.35;
+        line-height:var(--lh);
+        display:-webkit-box;
+        -webkit-box-orient:vertical;
+        -webkit-line-clamp:2;                 /* đổi 3 nếu muốn */
+        overflow:hidden;
+        min-height: calc(var(--lh) * 2em);    /* giữ chiều cao đều khi tên ngắn */
+    }

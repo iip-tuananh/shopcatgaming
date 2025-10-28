@@ -1,0 +1,796 @@
+@extends('site.layouts.master')
+@section('title'){{ $product->name }}- {{ $config->web_title }}@endsection
+@section('description'){{ strip_tags(html_entity_decode($config->introduction)) }}@endsection
+@section('image'){{@$config->image->path ?? ''}}@endsection
+
+@section('css')
+    <link type="text/css" rel="stylesheet" href="/site/assets/styles/editor-content.css">
+    <link rel="stylesheet" type="text/css" href="/site/assets/styles/product-card.css">
+
+    <style>
+        /* Vùng intro chung */
+        .prod-intro{
+            color:#fff;
+            font-size:15px;
+            line-height:1.65;
+        }
+
+        /* Khoảng cách đoạn */
+        .prod-intro p{ margin:0 0 10px; }
+
+        /* ===== LISTS ===== */
+        .prod-intro ul,
+        .prod-intro ol{
+            margin:8px 0 10px;
+            padding-left: 1.25em;                 /* lùi đầu dòng đẹp */
+        }
+        .prod-intro li{
+            margin:6px 0;
+        }
+        .prod-intro ul{ list-style: disc; }
+        .prod-intro ol{ list-style: decimal; }
+        /* màu bullet */
+        .prod-intro li::marker{ color:#fff; }
+
+        /* Danh sách lồng nhau nhỏ lại chút */
+        .prod-intro li ul,
+        .prod-intro li ol{
+            margin-top:4px; margin-bottom:6px;
+        }
+
+        /* ===== TABLE ===== */
+
+        .prod-intro caption{
+            caption-side: top;
+            font-weight:700; margin-bottom:8px; text-align:left;
+        }
+
+        /* ===== IMAGES / FIGURE ===== */
+        .prod-intro img{
+            max-width:100% !important;
+            height:auto !important;
+            display:block; margin:10px auto;
+        }
+        .prod-intro figure{
+            margin:12px 0; text-align:center;
+        }
+        .prod-intro figcaption{
+            font-size:13px; color:#6b7280; margin-top:6px;
+        }
+
+        /* ===== MISC ===== */
+        .prod-intro hr{
+            border:0; border-top:1px dashed #e5e7eb; margin:14px 0;
+        }
+        .prod-intro a{ color:#fff; text-decoration:underline; }
+        .prod-intro strong,
+        .prod-intro b{ color:#fff; }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 767.98px){
+            .prod-intro{ font-size:14.5px; }
+            .prod-intro th,
+            .prod-intro td{ padding:8px 10px; }
+            .prod-intro ul,
+            .prod-intro ol{ padding-left: 1.1em; }
+        }
+        @media (max-width: 479.98px){
+            .prod-intro{ font-size:14px; }
+        }
+
+    </style>
+
+    <style>
+        /* ===== Base ===== */
+        .variant-select{ margin-top:14px; }
+        .variant-select__label{ font-weight:500; margin-bottom:21px; color:#fff; font-size: 1.3rem}
+
+        /* Layout: desktop tự co nhiều cột, mobile bắt buộc 2 cột */
+        .variant-select__list{
+            display:grid;
+            grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+            gap:10px;
+        }
+        @media (max-width:576px){
+            .variant-select__list{
+                grid-template-columns: repeat(2, 1fr); /* đúng 2 phân loại / dòng */
+            }
+        }
+
+        /* Ẩn radio, vẫn truy cập được bàn phím qua label */
+        .variant-radio{
+            position:absolute;
+            opacity:0;
+            width:0; height:0;
+        }
+
+        /* Pill */
+        .variant-pill{
+            position:relative;
+            display:flex; flex-direction:column; justify-content:center;
+            min-height:70px;
+            padding:12px 14px;
+            border:1px solid #e5e7eb;
+            border-radius:12px;
+            background:#fff;
+            cursor:pointer;
+            transition:box-shadow .15s ease, border-color .15s ease, transform .02s ease;
+            outline:0;
+        }
+        .variant-pill:hover{ box-shadow:0 3px 10px rgba(0,0,0,.06); }
+        .variant-radio:focus-visible + .variant-pill{ outline:2px solid #111; outline-offset:2px; }
+
+        /* Trạng thái chọn: viền đen đậm */
+        .variant-radio:checked + .variant-pill{
+            border:5px solid #f29620; box-shadow:0 2px 0 rgba(0,0,0,.06) inset;
+        }
+
+        /* Texts */
+        .v-title{ font-weight:800; line-height:1.15; color:#0f172a; margin-bottom:4px; }
+        .v-price{ font-weight:600; color:#334155; }
+        .v-base{ color:#94a3b8; margin-left:6px; font-weight:500; font-size:.95em; }
+
+        /* Badge */
+        .v-badge{
+            position:absolute; right:10px; top:10px;
+            background:#f9d977; color:#111827;
+            font-weight:800; font-size:12px;
+            padding:4px 8px; border-radius:999px; line-height:1;
+            box-shadow:0 1px 0 rgba(0,0,0,.05) inset;
+        }
+
+    </style>
+
+    <style>
+        .prod-price-row{ display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; }
+
+        .prod-price{ font-size:28px; font-weight:800; color:#f29620; }
+        .prod-price span{ font-size:.7em; margin-left:2px; font-weight:700; }
+
+        .prod-price-old{
+            font-size:16px; color:#9ca3af; text-decoration: line-through;
+            font-weight:600;
+        }
+        .prod-price-old span{ font-size:.9em; margin-left:2px; }
+
+        /* (Tuỳ chọn) nhãn % giảm */
+        .prod-price-discount{
+            background:#fee2e2; color:#b91c1c; border:1px solid #fecaca;
+            padding:2px 8px; border-radius:999px; font-size:12px; font-weight:800;
+        }
+
+        /* Responsive */
+        @media (max-width: 767.98px){
+            .prod-price{ font-size:24px; }
+            .prod-price-old{ font-size:15px; }
+        }
+    </style>
+@endsection
+
+
+@section('content')
+    <main ng-controller="productDetail">
+
+        <!-- breadcrumb start -->
+        <section class="pt-60p">
+            <div class="section-pt">
+                <div
+                    class="relative  bg-cover bg-no-repeat rounded-24 overflow-hidden" style="background-image: url({{ @$product->category->banner->path ?? '' }})">
+                    <div class="container">
+                        <div class="grid grid-cols-12 gap-30p relative  py-20 z-[2]">
+                            <div class="lg:col-start-2 lg:col-end-12 col-span-12">
+                                <h2 class="heading-2 text-w-neutral-1 mb-3">
+                                    {{ $product->name }}
+                                </h2>
+                                <ul class="breadcrumb">
+                                    <li class="breadcrumb-item">
+                                        <a href="{{ route('front.home-page') }}" class="breadcrumb-link">
+                                            Trang chủ
+                                        </a>
+                                    </li>
+                                    <li class="breadcrumb-item">
+                                            <span class="breadcrumb-icon">
+                                                <i class="ti ti-chevrons-right"></i>
+                                            </span>
+                                    </li>
+                                    @if($product->category)
+                                        <li class="breadcrumb-item">
+                                            <a href="{{ route('front.getProductList', $product->category->slug ?? '') }}" class="breadcrumb-link">
+                                                {{ $product->category->name ?? '' }}
+                                            </a>
+                                        </li>
+                                        <li class="breadcrumb-item">
+                                            <span class="breadcrumb-icon">
+                                                <i class="ti ti-chevrons-right"></i>
+                                            </span>
+                                        </li>
+                                    @endif
+                                    <li class="breadcrumb-item">
+                                        <span class="breadcrumb-current">{{ $product->name }}</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="overlay-11"></div>
+                </div>
+            </div>
+        </section>
+        <!-- breadcrumb end -->
+
+        <!-- shop details section start -->
+        <section class="py-15 overflow-visible">
+            <div class="container">
+                <div class="grid grid-cols-12 gap-x-30p gap-y-10 mb-60p">
+                    <div class="xxl:col-span-6 xl:col-span-7 col-span-12 relative">
+                        <div class="xl:sticky xl:top-30">
+                            <div class="thumbs-carousel-container" data-carousel-name="product-slider"
+                                 data-slides-per-view="4" data-carousel-direction="vertical">
+                                <div class="swiper !flex md:gap-30p gap-2.5 xl:h-[514px] sm:h-[400px] h-[300px]">
+                                    <div class="shrink-0 sm:w-[110px] w-20  thumbs-gallery">
+                                        <div class="swiper-wrapper *:!h-fit" >
+
+                                            <a class="swiper-slide"  >
+                                                <div class="cursor-pointer  bg-b-neutral-3 rounded-12">
+                                                    <img class="w-full  h-24  object-contain"
+                                                         src="{{ $product->image->path ?? '' }}" alt="{{ $product->name }}">
+                                                </div>
+                                            </a>
+
+                                            @foreach($product->galleries as $k => $gal)
+                                                <a class="swiper-slide" >
+                                                    <div class="cursor-pointer bg-b-neutral-3 rounded-12">
+                                                        <img class="w-full  h-24  object-contain"
+                                                             src="{{ $gal->image->path ?? '' }}" alt="{{ $product->name }}">
+                                                    </div>
+                                                </a>
+                                            @endforeach
+                                        </div>
+                                    </div>
+
+                                    <div class="swiper thumbs-gallery-main">
+                                        <div class="swiper-wrapper" id="lightgallery">
+
+                                            <a class="swiper-slide" data-hash="0" href="{{ $product->image->path ?? '' }}">
+                                                <div
+                                                    class="w-full h-full flex-c   rounded-12 overflow-hidden" style="align-items: stretch">
+                                                    <img class=" object-contain"
+                                                         src="{{ $product->image->path ?? '' }}" alt="{{ $product->name }}" />
+                                                </div>
+                                            </a>
+
+                                            @foreach($product->galleries as $gal)
+                                                <a class="swiper-slide"  data-hash="{{ $k+1 }}" href="{{ $gal->image->path ?? '' }}">
+                                                    <div
+                                                        class="w-full h-full flex-c  rounded-12 overflow-hidden" style="align-items: stretch">
+                                                        <img class="object-contain"
+                                                             src="{{ $gal->image->path ?? '' }}" alt="{{ $product->name }}" />
+                                                    </div>
+                                                </a>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="xxl:col-span-6 xl:col-span-5 col-span-12">
+                        <div>
+                            <h2 class="heading-2 text-w-neutral-1 mb-16p">
+                                {{ $product->name }}
+                            </h2>
+                            <div class="flex-y gap-2 mb-20p">
+                                <div class="flex-c gap-1 icon-24 text-primary">
+                                    <i class="ti ti-star-filled"></i>
+                                    <i class="ti ti-star-filled"></i>
+                                    <i class="ti ti-star-filled"></i>
+                                    <i class="ti ti-star-filled"></i>
+                                    <i class="ti ti-star-filled"></i>
+                                </div>
+                            </div>
+                            @php
+                                $types = $product->types ?? collect();
+                                $hasTypes = $types->count() > 0;
+
+                                if ($hasTypes) {
+                                    $first = $types->first();
+                                    $initPrice = (int) $first->price;
+                                    $initBase  = (int) $first->base_price;
+                                } else {
+                                    $initPrice = (int) $product->price;
+                                    $initBase  = (int) $product->base_price;
+                                }
+
+                            @endphp
+                            <div class="flex-y gap-1 mb-20p">
+                                <div id="mainPrice">
+                                    @if($initPrice > 0)
+                                        <span class="text-lead-medium text-w-neutral-1" id="mainPriceValue">
+                                        {{ number_format($initPrice, 0, ',', '.') }} <span> VND</span>
+                                        </span>
+
+                                        @if($initBase > $initPrice)
+                                            <span class="text-xl text-w-neutral-4 line-through" id="mainBaseValue">
+                                        {{ number_format($initBase, 0, ',', '.') }} VND <span> VND</span>
+                                        </span>
+                                            <span class="prod-price-discount">
+                                                             -{{ round(100 * (1 - $product->price / $initBase)) }}%
+                                        </span>
+                                        @endif
+                                 @else
+                                    <span class="text-lead-medium text-w-neutral-1" id="mainPriceValue">
+                                     Liên hệ
+                                    </span>
+                                @endif
+                                </div>
+                            </div>
+
+                            <div class="text-base text-w-neutral-4 mb-3 prod-intro rte">
+                                {!! $product->intro !!}
+                            </div>
+
+                            @if($hasTypes)
+                                <fieldset id="variantSelect" class="variant-select">
+                                    <legend class="variant-select__label">Tùy chọn</legend>
+
+                                    <div class="variant-select__list" role="listbox" aria-label="Chọn phân loại">
+                                        @foreach($types as $i => $t)
+                                            @php
+                                                $base = (int) ($t->base_price ?? 0);
+                                                $price = (int) ($t->price ?? 0);
+                                                $save = ($base > $price && $price > 0) ? max(0, round((1 - ($price/$base))*100)) : 0;
+                                                $id = 'variant_'.$t->id ?? ('variant_'.$i);
+                                            @endphp
+
+                                            <input
+                                                class="variant-radio"
+                                                type="radio"
+                                                name="selected_type"
+                                                id="{{ $id }}"
+                                                value="{{ $t->id ?? $i }}"
+                                                data-title="{{ $t->title }}"
+                                                data-price="{{ $price }}"
+                                                data-base="{{ $base }}"
+                                                {{ $i === 0 ? 'checked' : '' }}
+                                            >
+                                            <label class="variant-pill" for="{{ $id }}" role="option" aria-selected="{{ $i===0 ? 'true':'false' }}">
+                                                @if($save > 0)
+                                                    <span class="v-badge">Sale {{ $save }}%</span>
+                                                @endif
+                                                <div class="v-title">{{ $t->title }}</div>
+                                                <div>
+                                                    <span class="v-price">{{ number_format($price, 0, ',', '.') }}₫</span>
+                                                    @if($base > $price)
+                                                        <del class="v-base">{{ number_format($base, 0, ',', '.') }}₫</del>
+                                                    @endif
+                                                </div>
+                                            </label>
+                                        @endforeach
+                                    </div>
+                                </fieldset>
+                            @endif
+
+
+                            <div class="flex items-center flex-wrap gap-3 my-32p">
+                                <div
+                                    class="qtySelector inline-flex items-center justify-center border border-shap px-16p sm:py-3.5 py-2.5 rounded-12 w-[144px] *:h-full">
+                                    <button class="decreaseQty flex-c size-12 icon-24">
+                                        <i class="ti ti-minus"></i>
+                                    </button>
+                                    <input min="1" value="1" type="number" placeholder="1" name="quantity"
+                                           class="qtyValue btn-xsm bg-transparent min-w-12 max-w-18 text-base text-w-neutral-1 text-center"
+                                           readonly="">
+                                    <button class="increaseQty flex-c size-12 icon-24">
+                                        <i class="ti ti-plus"></i>
+                                    </button>
+                                </div>
+                                <a href="#!" class="btn btn-lg-2 btn-primary rounded-12" ng-click="addToCart({{ $product->id }})">
+                                    <i class="ti ti-shopping-cart-plus icon-24"></i>
+                                    Thêm vào giỏ hàng
+                                </a>
+{{--                                                                <a href="shopping-cart.html"--}}
+{{--                                                                   class="btn py-3 px-16p btn-primary rounded-12 icon-28">--}}
+{{--                                                                    <i class="ti ti-heart"></i>--}}
+{{--                                                                </a>--}}
+                            </div>
+                            <div class="flex-y gap-3.5 mb-16p">
+                                    <span class="text-l-medium text-w-neutral-1">
+                                        Danh mục:
+                                    </span>
+                                <span class="text-base text-w-neutral-4">
+                                        {{ $product->category->name ?? '' }}
+                                    </span>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+                <div x-data="{ activeTab: 1 }" class="max-w-[1230px] w-full">
+                    <div class="flex items-center flex-wrap text-l-medium mb-6">
+                        <button @click="activeTab = 1"
+                                :class="activeTab === 1 ? 'bg-secondary text-b-neutral-4' : 'bg-b-neutral-3 text-w-neutral-4'"
+                                class="px-60p py-16p">
+                            Thông tin sản phẩm
+                        </button>
+                        <button @click="activeTab = 2"
+                                :class="activeTab === 2 ? 'bg-secondary text-b-neutral-4' : 'bg-b-neutral-3 text-w-neutral-4'"
+                                class="px-60p py-16p">
+                            Hướng dẫn cài đặt
+                        </button>
+                    </div>
+
+                    <div>
+                        <div x-show="activeTab === 1" x-transition>
+                            <div class="editor-content">
+                              {!! $product->body !!}
+                            </div>
+                        </div>
+
+                        <div x-show="activeTab === 2" x-transition>
+                            <div class="editor-content">
+                                {!! $product->hdcd !!}
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- shop details section end -->
+
+        <!-- realated product section start -->
+        <section class="section-pb">
+            <div class="container">
+                <div class="flex-y justify-between gap-24p mb-40p">
+                    <h2 class="heading-2 text-w-neutral-1">
+                        Sản phẩm liên quan
+                    </h2>
+                    <a href="{{ route('front.getProductList', $product->category->slug ?? '') }}" class="text-s-medium text-w-neutral-1 link-1">
+                        Xem thêm
+                        <i class="ti ti-arrow-right"></i>
+                    </a>
+                </div>
+                <div class="grid xxl+:grid-cols-4 xl:grid-cols-3 sm:grid-cols-2 gap-30p mb-60p">
+                    <!-- product card 1 -->
+                    @foreach($productsLq as $productLq)
+                        <div class="py-30p px-20p rounded-20 border border-shap group">
+                            @include('site.partials.product_item', ['product' => $productLq])
+                        </div>
+                    @endforeach
+                </div>
+
+            </div>
+        </section>
+        <!-- realated product section end -->
+
+
+    </main>
+@endsection
+
+@push('scripts')
+    <script>
+        function getSelectedVariant(){
+            const checked = document.querySelector('.variant-radio:checked');
+            if(!checked) return null;
+
+            let title = checked.getAttribute('data-title') || '';
+            if(!title){
+                const label = document.querySelector(`label[for="${checked.id}"] .v-title`);
+                title = label ? (label.textContent || '').trim() : '';
+            }
+
+            return {
+                id: checked.value,
+                title: title,
+                price: Number(checked.getAttribute('data-price') || 0),
+                base_price: Number(checked.getAttribute('data-base') || 0),
+            };
+        }
+    </script>
+
+    <script>
+        app.controller('productDetail', function ($rootScope, $scope, cartItemSync, $interval) {
+            $scope.cart = cartItemSync;
+
+            $scope.addToCart = function (productId, qty = null) {
+                url = "{{route('cart.add.item', ['productId' => 'productId'])}}";
+                url = url.replace('productId', productId);
+
+                if(! qty) {
+                    var currentVal = parseInt(jQuery('input[name="quantity"]').val());
+                } else {
+                    var currentVal = parseInt(qty);
+                }
+
+                const hasVariantInputs = document.querySelectorAll('.variant-radio').length > 0;
+                const selectedVariant = hasVariantInputs ? getSelectedVariant() : null;
+
+                if (hasVariantInputs && !selectedVariant) {
+                    toastr.error('Vui lòng chọn phân loại trước khi thêm giỏ hàng.');
+                    return;
+                }
+
+                const payload = { qty: currentVal };
+
+                // Nếu có phân loại, đính kèm thông tin type
+                if (selectedVariant) {
+                    payload.type_id = selectedVariant.id;
+                    payload.type_title = selectedVariant.title;
+                    payload.type_price = selectedVariant.price;
+                    payload.type_base_price = selectedVariant.base_price;
+                }
+
+
+                jQuery.ajax({
+                    type: 'POST',
+                    url: url,
+                    headers: {
+                        'X-CSRF-TOKEN': CSRF_TOKEN
+                    },
+                    data: payload,
+                    success: function (response) {
+                        if (response.success) {
+                            $interval.cancel($rootScope.promise);
+                            $rootScope.promise = $interval(function () {
+                                cartItemSync.items = response.items;
+                                cartItemSync.total = response.total;
+                                cartItemSync.count = response.count;
+                            }, 1000);
+                            toastr.success('Đã thêm sản phẩm vào giỏ hàng!');
+                        }
+                    },
+                    error: function () {
+                        toastr.error('Có lỗi xảy ra. Vui lòng thử lại.');
+
+                    },
+                    complete: function () {
+                        $scope.$applyAsync();
+                    }
+                });
+            }
+
+            $scope.buyNow = function (productId) {
+                url = "{{route('cart.add.item', ['productId' => 'productId'])}}";
+                url = url.replace('productId', productId);
+                var currentVal = parseInt(jQuery('input[name="quantity"]').val());
+
+                jQuery.ajax({
+                    type: 'POST',
+                    url: url,
+                    headers: {
+                        'X-CSRF-TOKEN': CSRF_TOKEN
+                    },
+                    data: {
+                        'qty': currentVal
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            $interval.cancel($rootScope.promise);
+                            $rootScope.promise = $interval(function () {
+                                cartItemSync.items = response.items;
+                                cartItemSync.total = response.total;
+                                cartItemSync.count = response.count;
+                            }, 1000);
+
+                            window.location.href = "{{ route('cart.checkout') }}";
+
+                        }
+                    },
+                    error: function () {
+                        jQuery.toast('Thao tác thất bại !')
+                    },
+                    complete: function () {
+                        $scope.$applyAsync();
+                    }
+                });
+            }
+
+            $scope.addToMyHeart = function (productId) {
+                url = "{{route('love.add.item', ['productId' => 'productId'])}}";
+                url = url.replace('productId', productId);
+                jQuery.ajax({
+                    type: 'POST',
+                    url: url,
+                    headers: {
+                        'X-CSRF-TOKEN': CSRF_TOKEN
+                    },
+                    data: {
+                        'qty': 1
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            $interval.cancel($rootScope.promise);
+
+                            $rootScope.promise = $interval(function () {
+                                loveItemSync.items = response.wishlistItems;
+                                loveItemSync.count = response.count;
+                            }, 1000);
+                            theme.alert.new('Thêm vào danh sách yêu thích', 'Sản phẩm của bạn đã thêm vào danh sách yêu thích thành công.', 3000, 'alert-success');
+                        } else {
+                            theme.alert.new('Thêm vào danh sách yêu thích', 'Sản phẩm của bạn đã thêm vào danh sách yêu thích thành công.', 3000, 'alert-success');
+                        }
+                    },
+                    error: function () {
+                        theme.alert.new('Lỗi hệ thống', 'Có lỗi xảy ra. Vui lòng thử lại sau', 3000, 'alert-warning');
+                    },
+                    complete: function () {
+                        $scope.$applyAsync();
+                    }
+                });
+            }
+
+        })
+
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $("#lightgallery").lightGallery({
+                thumbnail: false
+            });
+            $("#videolary").lightGallery({
+                thumbnail: false
+            });
+        });
+    </script>
+
+    <script>
+        (function(){
+            // helpers
+            const fmt = n => (Number(n)||0).toLocaleString('vi-VN');
+            const VND = ' VND';
+
+            // elements sẵn có
+            const priceBox = document.getElementById('mainPriceValue');   // .prod-price (đang chứa số + <span> VND</span>)
+            if(!priceBox) return;
+
+            // chèn/đảm bảo tồn tại element giá gốc & % giảm
+            function ensureBaseEl(){
+                let el = document.getElementById('mainBaseValue');
+                if(!el){
+                    el = document.createElement('span');
+                    el.id = 'mainBaseValue';
+                    el.className = 'prod-price-old';
+                    priceBox.parentNode.insertBefore(el, priceBox.nextSibling);
+                }
+                return el;
+            }
+            function ensureDiscountEl(){
+                let el = document.querySelector('#mainPrice .prod-price-discount');
+                if(!el){
+                    el = document.createElement('span');
+                    el.className = 'prod-price-discount';
+                    priceBox.parentNode.appendChild(el);
+                }
+                return el;
+            }
+
+            function updatePrice(price, base){
+                const p = Number(price)||0;
+                const b = Number(base)||0;
+
+                if(p > 0){
+                    priceBox.innerHTML = fmt(p) + '<span>'+VND+'</span>';
+                    // base price
+                    if(b > p){
+                        const baseEl = ensureBaseEl();
+                        baseEl.style.display = '';
+                        baseEl.innerHTML = fmt(b) + '<span>'+VND+'</span>';
+
+                        const disc = Math.max(0, Math.round(100*(1 - p/b)));
+                        const discEl = ensureDiscountEl();
+                        discEl.textContent = `-${disc}%`;
+                        discEl.style.display = '';
+                    }else{
+                        const baseEl = document.getElementById('mainBaseValue');
+                        if(baseEl){ baseEl.style.display = 'none'; baseEl.innerHTML = ''; }
+                        const discEl = document.querySelector('#mainPrice .prod-price-discount');
+                        if(discEl){ discEl.style.display = 'none'; discEl.textContent = ''; }
+                    }
+                }else{
+                    priceBox.textContent = 'Liên hệ';
+                    const baseEl = document.getElementById('mainBaseValue');
+                    if(baseEl){ baseEl.style.display = 'none'; baseEl.innerHTML = ''; }
+                    const discEl = document.querySelector('#mainPrice .prod-price-discount');
+                    if(discEl){ discEl.style.display = 'none'; discEl.textContent = ''; }
+                }
+            }
+
+            // lấy radios (có thể render động)
+            const selector = '.variant-radio';
+            function getCheckedRadio(){ return document.querySelector(selector+':checked'); }
+
+            // init theo radio đang chọn hoặc radio đầu
+            const initRadio = getCheckedRadio() || document.querySelector(selector);
+            if(initRadio){
+                updatePrice(initRadio.dataset.price, initRadio.dataset.base);
+            }
+
+            // lắng nghe thay đổi (uỷ quyền sự kiện – phòng trường hợp DOM thay đổi)
+            document.addEventListener('change', function(e){
+                const r = e.target.closest(selector);
+                if(!r) return;
+                updatePrice(r.dataset.price, r.dataset.base);
+            });
+
+        })();
+    </script>
+
+    <script>
+        /**
+         * Qty override: mỗi lần click chỉ +/- 1
+         * Chặn handler cũ bằng capture (third arg = true)
+         */
+        (function () {
+            // Helper: lấy input trong 1 qtySelector
+            function getInputFrom(el) {
+                const root = el.closest('.qtySelector');
+                if (!root) return null;
+                return root.querySelector('input.qtyValue');
+            }
+
+            // Tăng
+            document.addEventListener('click', function (e) {
+                const btn = e.target.closest('.increaseQty');
+                if (!btn) return;
+                e.preventDefault();
+                e.stopPropagation();                // chặn bubble
+                e.stopImmediatePropagation?.();     // chặn các handler khác cùng phần tử
+
+                const input = getInputFrom(btn);
+                if (!input) return;
+
+                const min = parseInt(input.getAttribute('min') || '1', 10);
+                const maxAttr = input.getAttribute('max');
+                const max = maxAttr ? parseInt(maxAttr, 10) : Infinity;
+
+                // Luôn bước = 1, bỏ qua step cũ nếu có
+                let val = parseInt(input.value || '0', 10);
+                if (isNaN(val) || val < min) val = min;
+
+                val = Math.min(max, val + 1);
+                input.value = String(val);
+                input.dispatchEvent(new Event('change', { bubbles: true }));
+            }, true); // capture = true
+
+            // Giảm
+            document.addEventListener('click', function (e) {
+                const btn = e.target.closest('.decreaseQty');
+                if (!btn) return;
+                e.preventDefault();
+                e.stopPropagation();
+                e.stopImmediatePropagation?.();
+
+                const input = getInputFrom(btn);
+                if (!input) return;
+
+                const min = parseInt(input.getAttribute('min') || '1', 10);
+
+                let val = parseInt(input.value || '0', 10);
+                if (isNaN(val) || val < min) val = min;
+
+                val = Math.max(min, val - 1);
+                input.value = String(val);
+                input.dispatchEvent(new Event('change', { bubbles: true }));
+            }, true); // capture = true
+
+            // (Tuỳ chọn) Nếu user gõ tay vào input, cũng ép về >= min và bước 1
+            document.addEventListener('input', function (e) {
+                const input = e.target.closest('.qtySelector .qtyValue');
+                if (!input) return;
+
+                const min = parseInt(input.getAttribute('min') || '1', 10);
+                const maxAttr = input.getAttribute('max');
+                const max = maxAttr ? parseInt(maxAttr, 10) : Infinity;
+
+                let val = parseInt(input.value || '0', 10);
+                if (isNaN(val)) val = min;
+                val = Math.max(min, Math.min(max, val));
+                input.value = String(val);
+            }, true);
+        })();
+    </script>
+
+@endpush
