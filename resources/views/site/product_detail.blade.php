@@ -126,7 +126,7 @@
         }
 
         /* Texts */
-        .v-title{ font-weight:800; line-height:1.15; color:#0f172a; margin-bottom:4px; }
+        .v-title{ font-weight:600; line-height:1.15; color:#0f172a; margin-bottom:4px; }
         .v-price{ font-weight:600; color:#334155; }
         .v-base{ color:#94a3b8; margin-left:6px; font-weight:500; font-size:.95em; }
 
