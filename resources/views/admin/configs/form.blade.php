@@ -1,3 +1,12 @@
+<style>
+    .bank-card{background:#fff;border:1px solid #e9ecef;border-radius:10px;padding:16px}
+    .bank-card__header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px}
+    .bank-card__title{font-weight:600}
+    .bank-card__grid{display:grid;grid-template-columns:1fr;gap:12px}
+    @media (min-width:768px){.bank-card__grid{grid-template-columns:1fr 1fr}}
+    .bank-card .form-label{margin-bottom:6px;font-weight:500}
+
+</style>
 <div class="card">
 	<div class="card-body">
 		<div class="row">
@@ -60,7 +69,7 @@
 					</span>
 				</div>
                 <div class="form-group custom-group">
-                    <label class="form-label">Twitter</label>
+                    <label class="form-label">Tiktok</label>
                     <input class="form-control" ng-model="form.twitter" type="text">
                 </div>
                 <div class="form-group custom-group">
@@ -88,13 +97,13 @@
                 </div>
 
 
-{{--				<div class="form-group custom-group">--}}
-{{--					<label class="form-label">Bài viết hướng dẫn mua hàng</label>--}}
-{{--					<textarea id="my-textarea" class="form-control" ck-editor ng-model="form.hdmh" rows="3"></textarea>--}}
-{{--					<span class="invalid-feedback d-block" role="alert">--}}
-{{--						<strong><% errors.hdmh[0] %></strong>--}}
-{{--					</span>--}}
-{{--				</div>--}}
+				<div class="form-group custom-group">
+					<label class="form-label">Giới thiệu (Footer)</label>
+					<textarea id="my-textarea" class="form-control" ck-editor ng-model="form.hdmh" rows="3"></textarea>
+					<span class="invalid-feedback d-block" role="alert">
+						<strong><% errors.hdmh[0] %></strong>
+					</span>
+				</div>
 
                 <div class="form-group custom-group">
                     <label class="form-label">Bài viết giới thiệu</label>
@@ -104,6 +113,35 @@
 					</span>
                 </div>
 
+                <div class="bank-card">
+                    <div class="bank-card__header">
+                        <span class="bank-card__title">Thông tin ngân hàng</span>
+                        <small class="text-muted">Dùng để nhận chuyển khoản</small>
+                    </div>
+
+                    <div class="bank-card__grid">
+                        <div class="form-group custom-group">
+                            <label class="form-label">Ngân hàng</label>
+                            <input class="form-control" ng-model="form.nganhang" type="text" placeholder="VD: Vietcombank">
+                        </div>
+
+                        <div class="form-group custom-group">
+                            <label class="form-label">Chủ tài khoản</label>
+                            <input class="form-control" ng-model="form.chutaikhoan" type="text" placeholder="VD: Nguyễn Văn A">
+                        </div>
+
+                        <div class="form-group custom-group">
+                            <label class="form-label">Số tài khoản</label>
+                            <input class="form-control" ng-model="form.sotaikhoan" type="text"
+                                   inputmode="numeric" pattern="[0-9]*" placeholder="VD: 0123456789">
+                        </div>
+
+                        <div class="form-group custom-group">
+                            <label class="form-label">Chi nhánh</label>
+                            <input class="form-control" ng-model="form.chinhanh" type="text" placeholder="VD: CN Hà Nội">
+                        </div>
+                    </div>
+                </div>
 			</div>
 			<div class="col-md-4 col-xs-12">
 				<div class="form-group text-center mb-4">
@@ -171,72 +209,27 @@
 					</span>
                 </div>
 
-{{--				<div class="form-group text-center mb-4">--}}
-{{--					<label class="form-label required-label">Video</label>--}}
-{{--					<div class="main-video-preview">--}}
-{{--						<p class="help-block-video">* Video định dạng: mp4, không quá 10MB (ví dụ).</p>--}}
-{{--						<!-- Nếu có video đã tải lên, hiển thị bản xem trước bằng thẻ <video> -->--}}
-{{--						<video class="video-preview" controls ng-src="<% form.video.preview_url %>" style="width: 100%; max-width: 300px;">--}}
-{{--							Trình duyệt của bạn không hỗ trợ thẻ video.--}}
-{{--						</video>--}}
-{{--					</div>--}}
-{{--					<div class="input-group" style="width: 100%; text-align: center">--}}
-{{--						<div class="input-group-btn" style="margin: 0 auto">--}}
-{{--							<div class="fileUpload fake-shadow cursor-pointer">--}}
-{{--								<label class="mb-0" for="<% form.video.element_id %>">--}}
-{{--									<i class="glyphicon glyphicon-upload"></i> Chọn video--}}
-{{--								</label>--}}
-{{--								<input class="d-none" id="<% form.video.element_id %>" type="file" class="attachment_upload" accept=".mp4" >--}}
-{{--							</div>--}}
-{{--						</div>--}}
-{{--					</div>--}}
-{{--					<span class="invalid-feedback d-block" role="alert">--}}
-{{--        <strong><% errors.video[0] %></strong>--}}
-{{--    </span>--}}
-{{--				</div>--}}
+                <div class="form-group text-center mb-4">
+                    <label class="form-label required-label">QR thanh toán</label>
+                    <div class="main-img-preview">
+                        <p class="help-block-img">* Ảnh định dạng: jpg, png </p>
+                        <img class="thumbnail img-preview" ng-src="<% form.qr.path %>">
+                    </div>
+                    <div class="input-group" style="width: 100%; text-align: center">
+                        <div class="input-group-btn" style="margin: 0 auto">
+                            <div class="fileUpload fake-shadow cursor-pointer">
+                                <label class="mb-0" for="<% form.qr.element_id %>">
+                                    <i class="glyphicon glyphicon-upload"></i> Chọn ảnh
+                                </label>
+                                <input class="d-none" id="<% form.qr.element_id %>" type="file" class="attachment_upload" accept=".jpg,.jpeg,.png">
+                            </div>
+                        </div>
+                    </div>
+                    <span class="invalid-feedback d-block" role="alert">
+						<strong><% errors.qr[0] %></strong>
+					</span>
+                </div>
 
-
-{{--                <div class="form-group text-center">--}}
-{{--                    <label for="">Chứng nhận</label>--}}
-{{--                    <div class="row gallery-area border">--}}
-{{--                        <div class="col-md-4 p-2" ng-repeat="g in form.galleries">--}}
-{{--                            <div class="gallery-item">--}}
-{{--                                <button class="btn btn-sm btn-danger remove" ng-click="form.removeGallery($index)">--}}
-{{--                                    <i class="fa fa-times mr-0"></i>--}}
-{{--                                </button>--}}
-{{--                                <div class="form-group">--}}
-{{--                                    <div class="img-chooser" title="Chọn ảnh">--}}
-{{--                                        <label for="<% g.image.element_id %>">--}}
-{{--                                            <img ng-src="<% g.image.path %>">--}}
-{{--                                            <input class="d-none" type="file" accept=".jpg,.png,.jpeg" id="<% g.image.element_id %>">--}}
-{{--                                        </label>--}}
-{{--                                    </div>--}}
-{{--                                    <span class="invalid-feedback d-block" role="alert" ng-if="!errors['galleries.' + $index + '.image_obj']">--}}
-{{--                                <strong>--}}
-{{--                                    <% errors['galleries.' + $index + '.image' ][0] %>--}}
-{{--                                </strong>--}}
-{{--                            </span>--}}
-{{--                                    <span class="invalid-feedback">--}}
-{{--                                <strong>--}}
-{{--                                    <% errors['galleries.' + $index + '.image_obj' ][0] %>--}}
-{{--                                </strong>--}}
-{{--                            </span>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                        <div class="col-md-4 p-2">--}}
-{{--                            <label class="gallery-item d-flex align-items-center justify-content-center cursor-pointer" for="gallery-chooser">--}}
-{{--                                <i class="fa fa-plus fa-2x text-secondary"></i>--}}
-{{--                            </label>--}}
-{{--                            <input class="d-none" type="file" accept=".jpg,.png,.jpeg" id="gallery-chooser" multiple>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                    <span class="invalid-feedback">--}}
-{{--                <strong>--}}
-{{--                    <% errors.galleries[0] %>--}}
-{{--                </strong>--}}
-{{--            </span>--}}
-{{--                </div>--}}
 
 			</div>
 		</div>

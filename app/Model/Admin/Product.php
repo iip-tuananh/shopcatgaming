@@ -111,7 +111,7 @@ class Product extends BaseModel
 
     public function attributeValues()
     {
-        return $this->belongsToMany(Attribute::class, 'attribute_values', 'product_id', 'attribute_id')->withPivot('value');
+        return $this->belongsToMany(Attribute::class, 'attribute_values', 'product_id', 'attribute_id')->withPivot(['id', 'value']);
     }
 
     public function manufacturer()
@@ -133,6 +133,12 @@ class Product extends BaseModel
     {
         return $this->hasMany(ProductVideo::class, 'product_id');
     }
+
+    public function attrs()
+    {
+        return $this->belongsToMany(Attribute::class, 'attribute_values', 'product_id', 'attribute_id')->withPivot('value');
+    }
+
 
     public function getLinkAttribute()
     {
@@ -219,11 +225,24 @@ class Product extends BaseModel
             ->firstOrFail();
 
         $product->category_special_ids = $product->category_specials->pluck('id')->toArray();
-        $product->attributeValues->map(function ($attribute) {
-            $attribute->attribute_id = $attribute->id;
-            $attribute->value = $attribute->pivot->value;
-            return $attribute;
-        });
+
+        $attributesArr = [];
+        $attributesGroup = $product->attrs->groupBy('id');
+
+        foreach ($attributesGroup as $k => $attGroup) {
+            $values = [];
+            foreach ($attGroup as $attr) {
+                $values[] = ['value' => $attr['pivot']['value']];
+            }
+            $attributesArr[$k] = [
+                'id' => $k,
+                'name' => $attGroup[0]['name'],
+                'values' => $values,
+            ];
+        }
+
+        $product->setRelation('attrs', array_values($attributesArr));
+        $product->attrs = array_values($attributesArr);
 
         $tags = $product->tags->map(function ($tag) {
             $tag->name = '<a href="'.route('front.search').'?keyword='.$tag->name.'">'.$tag->name.'</a>' ;
@@ -281,19 +300,17 @@ class Product extends BaseModel
 
     public function syncAttributes($attributes)
     {
-        // $this->attributeValues()->detach();
-        // $syncData = [];
-        // foreach ($attributes as $attribute) {
-        //     $syncData[$attribute['attribute_id']] = [
-        //         'value' => $attribute['value'],
-        //         'product_id' => $this->id,
-        //     ];
-        // }
-
-        // $this->attributeValues()->sync($syncData);
-        $this->attributeValues()->detach();
         foreach ($attributes as $attribute) {
-            $this->attributeValues()->attach($attribute['attribute_id'], ['value' => $attribute['value']]);
+            if(@$attribute['values']) {
+                foreach ($attribute['values'] as $values) {
+                    $attValue = new AttributeValue();
+                    $attValue->product_id = $this->id;
+                    $attValue->attribute_id = $attribute['id'];
+                    $attValue->value = $values['value'];
+
+                    $attValue->save();
+                }
+            }
         }
     }
 

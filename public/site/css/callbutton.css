@@ -1,0 +1,76 @@
+/* Stack dọc bên phải (tuỳ vị trí bạn muốn) */
+.inner-fabs{
+    position: fixed; right: 16px; bottom: 120px;
+    display: flex; flex-direction: column; gap: 14px;
+    z-index: 60;
+}
+
+/* Nút tròn có 2 vòng + glow */
+.roundCool{
+    --c:#60a5fa;   /* màu pastel ngoài */
+    --c2:#1d4ed8;  /* màu vòng trong đậm */
+    width: 64px; height: 64px; border-radius: 50%;
+    display: grid; place-items: center; position: relative;
+    text-decoration: none; isolation: isolate;
+    box-shadow: 0 6px 16px rgba(0,0,0,.25), inset 0 0 0 1px rgba(255,255,255,.15);
+    background:
+        radial-gradient(circle at 50% 40%, rgba(255,255,255,.25), rgba(255,255,255,0) 60%),
+        linear-gradient(180deg, color-mix(in oklab, var(--c) 60%, white),
+        color-mix(in oklab, var(--c) 20%, black));
+    transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
+}
+
+/* vòng trong */
+.roundCool::before{
+    content:""; position: absolute; inset: 11px; border-radius: 50%;
+    background:
+        radial-gradient(circle at 50% 20%, rgba(255,255,255,.25), rgba(255,255,255,0) 60%),
+        linear-gradient(180deg, color-mix(in oklab, var(--c2) 70%, white),
+        color-mix(in oklab, var(--c2) 15%, black));
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.18);
+    z-index: 0;
+}
+
+/* glow ngoài */
+.roundCool::after{
+    content:""; position:absolute; inset:-6px; border-radius:50%;
+    background: radial-gradient(60% 60% at 50% 50%, color-mix(in oklab, var(--c) 60%, transparent), transparent 70%);
+    filter: blur(6px); opacity: .45; z-index: -1;
+    transition: opacity .2s ease, transform .2s ease;
+}
+
+/* icon */
+.inner-fab-icon{
+    width: 26px; height: 26px; z-index: 1;
+    display: block; pointer-events: none;
+}
+
+/* Hover/active */
+.roundCool:hover{
+    transform: translateY(-2px) scale(1.04);
+    box-shadow: 0 10px 22px rgba(0,0,0,.35), 0 0 0 4px color-mix(in oklab, var(--c) 35%, transparent);
+}
+.roundCool:hover::after{ opacity:.7; transform: scale(1.06); }
+
+/* Thêm nhịp tim nhẹ cho nút gọi (tuỳ chọn) */
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(239,68,68,.45); }
+    70% { box-shadow: 0 0 0 12px rgba(239,68,68,0); }
+    100% { box-shadow: 0 0 0 0 rgba(239,68,68,0); }
+}
+.roundCool.phone:hover::after{ animation: pulse 1.6s infinite; }
+
+/* Biến màu theo loại */
+.roundCool.fb   { --c:#6fb3ff; --c2:#1977f3; }
+.roundCool.zalo { --c:#67c1ff; --c2:#0ea5e9; }
+.roundCool.phone{ --c:#fda4a4; --c2:#ef4444; }
+
+/* Ẩn trên mobile nhỏ nếu cần */
+@media (max-width: 575.98px){
+    .inner-fabs{ right: 10px; bottom: 90px; gap: 10px; }
+    .roundCool{ width:56px; height:56px; }
+    .roundCool::before{ inset:10px; }
+    .inner-fab-icon{ width:24px; height:24px; }
+}
+
+

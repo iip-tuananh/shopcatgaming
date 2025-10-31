@@ -30991,7 +30991,7 @@ h2,
     .heading-2,
     h2,
     .h2 {
-        font-size: 1.7rem;
+        font-size: 1.5rem;
     }
 }
 
@@ -31009,7 +31009,7 @@ h3,
     .heading-3,
     h3,
     .h3 {
-        font-size: 1.55rem;
+        font-size: 1.45rem;
     }
 }
 
@@ -35635,7 +35635,7 @@ code:not(.prose code) {
     position: absolute;
     inset: 0;
     z-index: 1;
-    background: linear-gradient(270deg, rgba(38, 38, 38, 0.36) 0%, rgba(19, 19, 19, 0.36) 21.5%, rgba(0, 0, 0, 0.72) 62.71%);
+    background: linear-gradient(270deg, rgba(38, 38, 38, 0.36) 0%, rgba(19, 19, 19, 0.36) 21.5%, rgb(0 0 0 / 57%) 62.71%);
 }
 
 .overlay-2 {
@@ -39258,7 +39258,7 @@ section {
 
 ::-webkit-scrollbar-thumb {
     border-radius: 40px;
-    background-color: #45f882;
+    background-color: #f29620;
 }
 
 .scrollbar-0::-webkit-scrollbar {
@@ -40593,6 +40593,7 @@ button:not(:disabled) {
     transform: rotateY(70deg);
     animation-delay: 0.4s;
 }
+
 
 @keyframes rotate {
     0% {
@@ -42691,6 +42692,10 @@ button:not(:disabled) {
 
     .lg\:bottom-15 {
         bottom: 60px;
+    }
+
+    .lg\:bottom-20 {
+        bottom: 22px;
     }
 
     .lg\:right-15 {

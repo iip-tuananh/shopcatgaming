@@ -163,6 +163,10 @@ class ProductController extends Controller
             FileHelper::uploadFileToCloudflare($request->image, $object->id, ThisModel::class, 'image');
             $object->syncGalleries($request->galleries);
 
+            if($request->input('attrs')) {
+                $object->syncAttributes($request->input('attrs'));
+            }
+
             DB::commit();
             $json->success = true;
             $json->message = "Thao tác thành công!";
@@ -218,6 +222,11 @@ class ProductController extends Controller
 
             ProductType::query()->where('product_id', $id)->delete();
             $object->syncTypes($request);
+
+            AttributeValue::query()->where('product_id', $object->id)->delete();
+            if($request->input('attrs')) {
+                $object->syncAttributes($request->input('attrs'));
+            }
 
             DB::commit();
 

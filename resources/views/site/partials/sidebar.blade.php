@@ -73,20 +73,20 @@
                                 <li class="sub-menu mobail-submenu border-none pb-0">
                                 <span class="mobail-submenu-btn flex-y hover:bg-primary hover:text-b-neutral-4 justify-between px-3 py-16p text-l-regular rounded-12 w-full transition-1">
                                     <span class="submenu-btn flex-y gap-3 ">
-                                        <span class="icon-28">
-                                           <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24"
-                                                fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                class="icon icon-tabler icons-tabler-outline icon-tabler-device-gamepad-2">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                                            <path
-                                                d="M12 5h3.5a5 5 0 0 1 0 10h-5.5l-4.015 4.227a2.3 2.3 0 0 1 -3.923 -2.035l1.634 -8.173a5 5 0 0 1 4.904 -4.019h3.4z"/>
-                                            <path d="M14 15l4.07 4.284a2.3 2.3 0 0 0 3.925 -2.023l-1.6 -8.232"/>
-                                            <path d="M8 9v2"/>
-                                            <path d="M7 10h2"/>
-                                            <path d="M14 10h2"/>
-                                        </svg>
-                                        </span>
+{{--                                        <span class="icon-28">--}}
+{{--                                           <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24"--}}
+{{--                                                fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"--}}
+{{--                                                stroke-linejoin="round"--}}
+{{--                                                class="icon icon-tabler icons-tabler-outline icon-tabler-device-gamepad-2">--}}
+{{--                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>--}}
+{{--                                            <path--}}
+{{--                                                d="M12 5h3.5a5 5 0 0 1 0 10h-5.5l-4.015 4.227a2.3 2.3 0 0 1 -3.923 -2.035l1.634 -8.173a5 5 0 0 1 4.904 -4.019h3.4z"/>--}}
+{{--                                            <path d="M14 15l4.07 4.284a2.3 2.3 0 0 0 3.925 -2.023l-1.6 -8.232"/>--}}
+{{--                                            <path d="M8 9v2"/>--}}
+{{--                                            <path d="M7 10h2"/>--}}
+{{--                                            <path d="M14 10h2"/>--}}
+{{--                                        </svg>--}}
+{{--                                        </span>--}}
                                      <span class="menu-text">{{ $category->name }}</span>
                                     </span>
 
@@ -102,20 +102,20 @@
                                             <li class="pt-2">
                                                 <a aria-label="item" class="flex-y gap-3 px-3 py-16p hover:bg-primary text-l-regular text-w-neutral-1 hover:text-b-neutral-4 rounded-12 justify-normal w-full transition-1"
                                                    href="{{ route('front.getProductList', $child->slug) }}">
-                                                     <span class="icon-28">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24"
-                                         fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                         stroke-linejoin="round"
-                                         class="icon icon-tabler icons-tabler-outline icon-tabler-device-gamepad-2">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                                        <path
-                                            d="M12 5h3.5a5 5 0 0 1 0 10h-5.5l-4.015 4.227a2.3 2.3 0 0 1 -3.923 -2.035l1.634 -8.173a5 5 0 0 1 4.904 -4.019h3.4z"/>
-                                        <path d="M14 15l4.07 4.284a2.3 2.3 0 0 0 3.925 -2.023l-1.6 -8.232"/>
-                                        <path d="M8 9v2"/>
-                                        <path d="M7 10h2"/>
-                                        <path d="M14 10h2"/>
-                                    </svg>
-                                </span>
+{{--                                                     <span class="icon-28">--}}
+{{--                                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24"--}}
+{{--                                         fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"--}}
+{{--                                         stroke-linejoin="round"--}}
+{{--                                         class="icon icon-tabler icons-tabler-outline icon-tabler-device-gamepad-2">--}}
+{{--                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>--}}
+{{--                                        <path--}}
+{{--                                            d="M12 5h3.5a5 5 0 0 1 0 10h-5.5l-4.015 4.227a2.3 2.3 0 0 1 -3.923 -2.035l1.634 -8.173a5 5 0 0 1 4.904 -4.019h3.4z"/>--}}
+{{--                                        <path d="M14 15l4.07 4.284a2.3 2.3 0 0 0 3.925 -2.023l-1.6 -8.232"/>--}}
+{{--                                        <path d="M8 9v2"/>--}}
+{{--                                        <path d="M7 10h2"/>--}}
+{{--                                        <path d="M14 10h2"/>--}}
+{{--                                    </svg>--}}
+{{--                                </span>--}}
                                                     <span class="menu-text">{{ $child->name }}</span>
                                                 </a>
                                             </li>
@@ -126,20 +126,20 @@
                                 <li>
                                     <a href="{{ route('front.getProductList', $category->slug) }}"
                                        class="mobail-submenu-btn flex-y gap-3 px-3 py-16p hover:bg-primary text-l-regular text-w-neutral-1 hover:text-b-neutral-4 rounded-12 justify-normal w-full transition-1">
-                                    <span class="icon-28">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24"
-                                         fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                         stroke-linejoin="round"
-                                         class="icon icon-tabler icons-tabler-outline icon-tabler-device-gamepad-2">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                                        <path
-                                            d="M12 5h3.5a5 5 0 0 1 0 10h-5.5l-4.015 4.227a2.3 2.3 0 0 1 -3.923 -2.035l1.634 -8.173a5 5 0 0 1 4.904 -4.019h3.4z"/>
-                                        <path d="M14 15l4.07 4.284a2.3 2.3 0 0 0 3.925 -2.023l-1.6 -8.232"/>
-                                        <path d="M8 9v2"/>
-                                        <path d="M7 10h2"/>
-                                        <path d="M14 10h2"/>
-                                    </svg>
-                                </span>
+{{--                                    <span class="icon-28">--}}
+{{--                                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24"--}}
+{{--                                         fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"--}}
+{{--                                         stroke-linejoin="round"--}}
+{{--                                         class="icon icon-tabler icons-tabler-outline icon-tabler-device-gamepad-2">--}}
+{{--                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>--}}
+{{--                                        <path--}}
+{{--                                            d="M12 5h3.5a5 5 0 0 1 0 10h-5.5l-4.015 4.227a2.3 2.3 0 0 1 -3.923 -2.035l1.634 -8.173a5 5 0 0 1 4.904 -4.019h3.4z"/>--}}
+{{--                                        <path d="M14 15l4.07 4.284a2.3 2.3 0 0 0 3.925 -2.023l-1.6 -8.232"/>--}}
+{{--                                        <path d="M8 9v2"/>--}}
+{{--                                        <path d="M7 10h2"/>--}}
+{{--                                        <path d="M14 10h2"/>--}}
+{{--                                    </svg>--}}
+{{--                                </span>--}}
                                         <span class="menu-text">{{ $category->name }}</span>
                                     </a>
                                 </li>
@@ -176,15 +176,15 @@
                             <li>
                                 <a href="{{ route('front.blogs', $postCategory->slug) }}"
                                    class="mobail-submenu-btn flex-y gap-3 px-3 py-16p hover:bg-primary text-l-regular text-w-neutral-1 hover:text-b-neutral-4 rounded-12 justify-normal w-full transition-1">
-                                        <span class="icon-28">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24"
-                                         fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                         stroke-linejoin="round"
-                                         class="icon icon-tabler icons-tabler-outline icon-tabler-bookmark">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                                        <path d="M18 7v14l-6 -4l-6 4v-14a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4z"/>
-                                    </svg>
-                                </span>
+{{--                                        <span class="icon-28">--}}
+{{--                                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24"--}}
+{{--                                         fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"--}}
+{{--                                         stroke-linejoin="round"--}}
+{{--                                         class="icon icon-tabler icons-tabler-outline icon-tabler-bookmark">--}}
+{{--                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>--}}
+{{--                                        <path d="M18 7v14l-6 -4l-6 4v-14a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4z"/>--}}
+{{--                                    </svg>--}}
+{{--                                </span>--}}
                                     <span class="menu-text">{{ $postCategory->name }}</span>
                                 </a>
                             </li>

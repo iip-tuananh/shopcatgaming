@@ -2131,9 +2131,22 @@
                                     </td>
                                     <td class="product-description">
                                     <span class="product-description-name order-summary-emphasis">{{$detail->product->name}}</span>
-                                    <div class="product-description-variant order-summary-small-text">
-                                        {{$detail->type}}
-                                    </div>
+
+                                        @if($detail->type)
+                                            <br>
+                                            <small class="cart-variant text-muted">
+                                                Phân loại:
+                                                <span>{{ $detail->type }}</span>
+                                            </small>
+                                        @endif
+
+                                        @if($detail->attributes)
+                                            <br>
+                                            <small class="cart-variant text-muted">
+                                                <span>{{ $detail->attributes }}</span>
+                                            </small>
+                                        @endif
+
                                     </td>
                                     <td class="product-quantity visually-hidden">{{$detail->qty}}</td>
                                     <td class="product-price">
@@ -2258,7 +2271,11 @@
                                     </p>
                                     <h3>Phương thức thanh toán</h3>
                                     <p>
-                                        Thanh toán khi nhận hàng - COD
+                                        @if (request()->query('method') === 'qr')
+                                            Thanh toán chuyển khoản
+                                        @else
+                                            Thanh toán khi nhận hàng
+                                        @endif
                                     </p>
                                     </div>
                                 </div>

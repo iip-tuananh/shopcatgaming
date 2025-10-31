@@ -26,6 +26,8 @@ Route::group(['namespace' => 'Front'], function () {
     Route::post('/update-cart','CartController@updateItem')->name('cart.update.item');
     Route::get('/thanh-toan','CartController@checkout')->name('cart.checkout');
     Route::post('/checkout','CartController@checkoutSubmit')->name('cart.submit.order');
+    Route::get('/thanh-toan/qr','CartController@checkoutQr')->name('cart.checkoutQr');
+    Route::post('/checkout-qr','CartController@checkoutQrSubmit')->name('cart.submitqr.order');
     Route::get('/dat-hang-thanh-cong.html','CartController@checkoutSuccess')->name('cart.checkout.success');
     Route::post('/apply-voucher','CartController@applyVoucher')->name('cart.apply.voucher');
 

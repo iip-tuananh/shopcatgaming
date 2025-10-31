@@ -58,6 +58,7 @@ class Handler extends ExceptionHandler
 
         // custom error message
         if ($exception instanceof \ErrorException) {
+            dd($exception->getMessage());
             return redirect()->route('front.home-page');
         } else {
             return parent::render($request, $exception);

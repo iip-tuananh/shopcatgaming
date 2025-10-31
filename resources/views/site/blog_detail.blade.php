@@ -5,7 +5,44 @@
 
 @section('css')
     <link type="text/css" rel="stylesheet" href="/site/assets/styles/editor-content.css">
+    <style>
+        .toc-container {
 
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #dee2e6;
+        }
+        .toc-title {
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 1.25rem;
+        }
+        /* Nút Ẩn/Hiện */
+        .toc-toggle {
+            margin-left: auto;
+            font-size: 1.075rem;
+            font-weight: 400;
+            text-decoration: none;
+            cursor: pointer;
+            color: #f29620;
+        }
+        #toc-list li {
+            margin-bottom: 4px;
+        }
+        #toc-list li a {
+            color: #f29620;
+            text-decoration: none;
+        }
+        #toc-list li a:hover {
+            text-decoration: underline;
+        }
+
+        /* Khi scroll, bạn có thể highlight mục đang ở viewport */
+        #toc-list li.active > a {
+            font-weight: bold;
+        }
+
+    </style>
 @endsection
 
 @section('content')
@@ -16,7 +53,7 @@
             <div
                 class="relative bg-cover bg-no-repeat rounded-24 overflow-hidden" style="background-image: url({{ @$blog->category->image->path ?? '' }})">
                 <div class="container">
-                    <div class="grid grid-cols-12 gap-30p relative xl:py-[130px] md:py-30 sm:py-25 py-20 z-[2]">
+                    <div class="grid grid-cols-12 gap-30p relative  py-20 z-[2]">
                         <div class="lg:col-start-2 lg:col-end-12 col-span-12">
                             <h2 class="heading-2 text-w-neutral-1 mb-3">
                                 {{ $blog->name }}
@@ -71,7 +108,15 @@
                             </h2>
                         </div>
 
-                        <div class="editor-content">
+                        <div class="toc-container mb-4" style="margin-bottom: 10px">
+                            <h4 class="toc-title">Mục lục
+                                <a href="#" id="toc-toggle" class="toc-toggle">Ẩn</a>
+                            </h4>
+
+                            <ul id="toc-list" class="list-unstyled"></ul>
+                        </div>
+
+                        <div class="editor-content" id="post-content">
                             {!! $blog->body !!}
                         </div>
 
@@ -156,5 +201,90 @@
 
 @push('scripts')
     <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const content   = document.getElementById("post-content");
+            const tocList   = document.getElementById("toc-list");
+            const tocToggle = document.getElementById("toc-toggle");
+            if (!content || !tocList || !tocToggle) return;
+
+            // === 0) Lấy chiều cao header cố định (đổi selector cho đúng site của bạn) ===
+            const headerEl = document.querySelector(".site-header, .header, [data-sticky-header]");
+            const getHeaderH = () => (headerEl ? headerEl.offsetHeight : 80); // fallback 80px
+            const EXTRA_GAP = 8; // khoảng cách thở
+
+            // 1) Sinh TOC
+            const headings = content.querySelectorAll("h1,h2,h3,h4,h5,h6");
+            if (headings.length === 0) {
+                tocList.innerHTML = "<li>Chưa có mục nào</li>";
+            } else {
+                headings.forEach((head, idx) => {
+                    if (!head.id) head.id = "heading-" + idx;
+
+                    // CSS scroll-margin để hỗ trợ cả các cuộn khác ngoài click TOC
+                    head.style.scrollMarginTop = (getHeaderH() + EXTRA_GAP) + "px";
+
+                    const level = parseInt(head.tagName.substring(1), 10);
+                    const li = document.createElement("li");
+                    li.style.paddingLeft = ((level - 1) * 12) + "px";
+                    const a  = document.createElement("a");
+                    a.href = "#" + head.id;
+                    a.textContent = head.textContent.trim();
+                    li.appendChild(a);
+                    tocList.appendChild(li);
+                });
+            }
+
+            // 2) Smooth scroll WITH OFFSET (tránh che tiêu đề)
+            tocList.addEventListener("click", function (e) {
+                const link = e.target.closest("a");
+                if (!link) return;
+                e.preventDefault();
+
+                const id = link.getAttribute("href").slice(1);
+                const target = document.getElementById(id);
+                if (!target) return;
+
+                const headerH = getHeaderH();
+                const top = target.getBoundingClientRect().top + window.pageYOffset - headerH - EXTRA_GAP;
+
+                window.scrollTo({ top, behavior: "smooth" });
+                history.pushState(null, "", "#" + id);
+            });
+
+            // 3) Highlight mục active khi scroll (so với mép dưới header)
+            const markActive = () => {
+                const headerH = getHeaderH();
+                const probeY = headerH + 10;
+                let currentId = null;
+
+                headings.forEach(h => {
+                    const rect = h.getBoundingClientRect();
+                    if (rect.top <= probeY) currentId = h.id;
+                });
+
+                document.querySelectorAll("#toc-list li").forEach(li => {
+                    li.classList.toggle(
+                        "active",
+                        li.querySelector("a")?.getAttribute("href") === "#" + currentId
+                    );
+                });
+            };
+            window.addEventListener("scroll", markActive, { passive: true });
+            markActive();
+
+            // 4) Toggle Ẩn/Hiện TOC
+            tocToggle.addEventListener("click", function (e) {
+                e.preventDefault();
+                const hidden = tocList.style.display === "none";
+                tocList.style.display = hidden ? "" : "none";
+                tocToggle.textContent = hidden ? "Ẩn" : "Hiện";
+            });
+
+            // 5) Recompute nếu header thay đổi chiều cao (ví dụ sticky co giãn)
+            window.addEventListener("resize", () => {
+                headings.forEach(h => h.style.scrollMarginTop = (getHeaderH() + EXTRA_GAP) + "px");
+            });
+        });
     </script>
+
 @endpush

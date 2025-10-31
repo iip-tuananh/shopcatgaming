@@ -118,11 +118,24 @@ class FrontController extends Controller
             $cat->setRelation('products', $cat->products->take(6));
         });
 
-        $blogs = Post::query()->with(['category', 'image'])->where('status', 1)
-            ->where('type', 'post')
-            ->latest()->limit(5)->get();
 
-        return view('site.home', compact(  'blogs', 'categories',
+        // danh mục blog
+        $postsCategory = PostCategory::query()->with([
+            'posts' => function ($q) {
+                $q->where('status', 1)
+                    ->where('type', 'post')
+                    ->orderByDesc('created_at')
+                    ->with('image');
+            },
+        ])
+            ->where('type', PostCategory::TYPE_POST)
+            ->where('parent_id', 0)->orderBy('sort_order')->get();
+
+        $postsCategory->each(function ($cat) {
+            $cat->setRelation('posts', $cat->posts->take(6));
+        });
+
+        return view('site.home', compact(  'postsCategory', 'categories',
             'banners', 'categoriesSpecial', 'categoriesParent'));
     }
 
@@ -276,6 +289,23 @@ class FrontController extends Controller
     public function getProductDetail(Request $request, $slug = null) {
         $product = Product::query()->with(['category.banner', 'image', 'galleries.image', 'types'])
             ->where('slug', $slug)->first();
+        $attributes = [];
+        foreach ($product->attributeValues as $attribute) {
+            $attrId = $attribute->id;
+
+            if (!isset($attributes[$attrId])) {
+                $attributes[$attrId] = [
+                    'name'   => $attribute->name,
+                    'values' => [],
+                ];
+            }
+
+            $attributes[$attrId]['values'][] = [
+                'id'    => $attribute->pivot->id,
+                'value' => $attribute->pivot->value,
+            ];
+        }
+        $product->attributes = array_values($attributes);
 
         $productsLq = Product::query()->with(['image'])
             ->where('status', 1)

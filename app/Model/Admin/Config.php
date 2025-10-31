@@ -30,6 +30,11 @@ class Config extends BaseModel
         return $this->morphOne(File::class, 'model')->where('custom_field', 'favicon');
     }
 
+    public function qr()
+    {
+        return $this->morphOne(File::class, 'model')->where('custom_field', 'qr');
+    }
+
     public function video()
     {
         return $this->morphOne(File::class, 'model')->where('custom_field', 'video');
@@ -45,7 +50,7 @@ class Config extends BaseModel
         return self::where('id', $id)
             ->with([
                 'video',
-                'image', 'favicon', 'image_back',
+                'image', 'favicon', 'image_back', 'qr',
                 'galleries' => function ($q) {
                     $q->select(['id', 'config_id', 'sort'])
                         ->with(['image'])

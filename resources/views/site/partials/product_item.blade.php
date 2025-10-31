@@ -54,7 +54,7 @@
           @else
               {{ formatCurrency($minPrice) }}
           @endif
-        <span class="pc-currency">VND</span>
+        <span class="pc-currency">đ</span>
       </span>
                 </div>
             @else

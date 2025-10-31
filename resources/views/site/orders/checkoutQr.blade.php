@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" class="flexbox">
 
 <head>
-    <link rel="shortcut icon" href="{{ $config->favicon->path ?? '' }}" type="image/png" />
+    <link rel="shortcut icon" href="{{ $config->favicon->path }}" type="image/png" />
     <title>
         {{ $config->web_title }} - Thanh toán đơn hàng
     </title>
@@ -82,7 +82,7 @@
         .banner {
             padding: 1.5em 0;
             display: none;
-            ;
+        ;
         }
 
         .alert {
@@ -345,7 +345,7 @@
             transform: scale(1);
             opacity: 1;
             -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=" 100 ")";
- filter: alpha(opacity=100);
+            filter: alpha(opacity=100);
         }
 
         .radio-wrapper .radio-input .input-radio:after,
@@ -360,7 +360,7 @@
             transition: all 0.2s ease-in-out 0.1s;
             opacity: 0;
             -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=" 0 ")";
- filter: alpha(opacity=0);
+            filter: alpha(opacity=0);
         }
 
         .radio-wrapper .radio-input .input-radio:after {
@@ -448,7 +448,7 @@
             /*transition: opacity 0.3s ease-in-out;*/
             opacity: 0;
             -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=" 0 ")";
- filter: alpha(opacity=0);
+            filter: alpha(opacity=0);
         }
 
         .btn-loading {
@@ -459,7 +459,7 @@
         .btn-loading .btn-content {
             opacity: 0;
             -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=" 0 ")";
- filter: alpha(opacity=0);
+            filter: alpha(opacity=0);
         }
 
         .btn-loading .btn-spinner {
@@ -467,7 +467,7 @@
             animation: rotate 0.5s linear infinite;
             opacity: 1;
             -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=" 100 ")";
- filter: alpha(opacity=100);
+            filter: alpha(opacity=100);
         }
 
         #div_location_country_not_vietnam {
@@ -917,7 +917,7 @@
             box-sizing: border-box;
             opacity: 0;
             -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=" 0 ")";
- filter: alpha(opacity=0);
+            filter: alpha(opacity=0);
             color: #999999;
             transition: all 0.2s ease-out;
             margin: 0.5em 0;
@@ -972,7 +972,7 @@
             transform: none;
             opacity: 1;
             -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=" 100 ")";
- filter: alpha(opacity=100);
+            filter: alpha(opacity=100);
         }
 
         .fieldset .field.field-show-floating-label .field-input-wrapper .field-input {
@@ -1480,7 +1480,7 @@
             .wrap {
                 padding: 0 5%;
                 width: 90%;
-                max-width: 78.57143em;
+                max-width: 89.57143em;
             }
 
             .order-summary-toggle {
@@ -1494,8 +1494,7 @@
             }
 
             .main {
-                width: 52%;
-                width: 52%;
+                width: 60%;
                 padding-right: 6%;
                 /* float: left;*/
             }
@@ -1990,7 +1989,7 @@
             animation: rotate 0.5s linear infinite;
             opacity: 1;
             -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=" 100 ")";
- filter: alpha(opacity=100);
+            filter: alpha(opacity=100);
         }
 
         .icon-redeem-button-spinner {
@@ -2496,7 +2495,7 @@
         }
     </style>
     <link href='/site/css/check_out.css?v=1811' rel='stylesheet' type='text/css'
-        media='all' />
+          media='all' />
     <script src='//hstatic.net/0/0/global/jquery.min.js' type='text/javascript'></script>
     {{-- <script src='//hstatic.net/0/0/global/api.jquery.js' type='text/javascript'></script>
     <script src='//hstatic.net/0/0/global/jquery.validate.js' type='text/javascript'></script> --}}
@@ -2546,1016 +2545,539 @@
         });
     </script>
 
+    <style>
+        :root{
+            --brand:#8b5e3c; /* nâu chủ đạo */
+        }
+        .no-scroll { overflow: hidden; }
 
+        .auth-wall{
+            position: fixed; inset: 0; z-index: 9999;
+            display: flex; align-items: center; justify-content: center;
+            padding: 16px;
+            background: rgba(0,0,0,.45);
+            backdrop-filter: blur(2px);
+        }
+        .auth-card{
+            width: 100%; max-width: 460px;
+            background: #fff; border: 1px solid #eee; border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,.12);
+            padding: 22px 22px 18px; text-align: center;
+        }
+        .auth-card h3{ margin: 0 0 6px; font-size: 1.25rem; color: #2a2a2a; }
+        .auth-card p{ margin: 0 0 16px; color: #555; }
 
+        .auth-actions{ display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+        .auth-actions .btn{
+            display: inline-block; padding: .7rem 1rem; border-radius: 999px;
+            border: 1px solid transparent; text-decoration: none; font-weight: 700;
+        }
+        .auth-actions .btn-primary{
+            background: #ff6a00; color: #fff; border-color: #ddd;
+        }
+        .auth-actions .btn-outline{
+            background: #fff; color: #333; border-color: #ddd;
+        }
+        .auth-actions .btn:hover{ filter: brightness(.95); }
+
+    </style>
 </head>
 
 <body ng-app="App" ng-controller="CheckoutController" ng-cloak>
-    <div class="banner">
-        <div class="wrap">
-            <a href="{{route('front.home-page')}}" class="logo">
-                <h1 class="logo-text">{{ $config->web_title }}</h1>
-            </a>
+<div class="banner">
+    <div class="wrap">
+        <a href="{{route('front.home-page')}}" class="logo">
+            <h1 class="logo-text">{{ $config->web_title }}</h1>
+        </a>
+    </div>
+</div>
+<button class="order-summary-toggle order-summary-toggle-hide">
+    <div class="wrap">
+        <div class="order-summary-toggle-inner">
+            <div class="order-summary-toggle-icon-wrapper">
+                <svg width="20" height="19" xmlns="http://www.w3.org/2000/svg"
+                     class="order-summary-toggle-icon">
+                    <path
+                        d="M17.178 13.088H5.453c-.454 0-.91-.364-.91-.818L3.727 1.818H0V0h4.544c.455 0 .91.364.91.818l.09 1.272h13.45c.274 0 .547.09.73.364.18.182.27.454.18.727l-1.817 9.18c-.09.455-.455.728-.91.728zM6.27 11.27h10.09l1.454-7.362H5.634l.637 7.362zm.092 7.715c1.004 0 1.818-.813 1.818-1.817s-.814-1.818-1.818-1.818-1.818.814-1.818 1.818.814 1.817 1.818 1.817zm9.18 0c1.004 0 1.817-.813 1.817-1.817s-.814-1.818-1.818-1.818-1.818.814-1.818 1.818.814 1.817 1.818 1.817z">
+                    </path>
+                </svg>
+            </div>
+            <div class="order-summary-toggle-text order-summary-toggle-text-show">
+                <span>Hiển thị thông tin đơn hàng</span>
+                <svg width="11" height="6" xmlns="http://www.w3.org/2000/svg"
+                     class="order-summary-toggle-dropdown" fill="#000">
+                    <path
+                        d="M.504 1.813l4.358 3.845.496.438.496-.438 4.642-4.096L9.504.438 4.862 4.534h.992L1.496.69.504 1.812z">
+                    </path>
+                </svg>
+            </div>
+            <div class="order-summary-toggle-text order-summary-toggle-text-hide">
+                <span>Ẩn thông tin đơn hàng</span>
+                <svg width="11" height="7" xmlns="http://www.w3.org/2000/svg"
+                     class="order-summary-toggle-dropdown" fill="#000">
+                    <path
+                        d="M6.138.876L5.642.438l-.496.438L.504 4.972l.992 1.124L6.138 2l-.496.436 3.862 3.408.992-1.122L6.138.876z">
+                    </path>
+                </svg>
+            </div>
+            <div class="order-summary-toggle-total-recap">
+                <span class="total-recap-final-price">{{ formatCurrency($order->total_after_discount) }}₫</span>
+            </div>
         </div>
     </div>
-    <button class="order-summary-toggle order-summary-toggle-hide">
-        <div class="wrap">
-            <div class="order-summary-toggle-inner">
-                <div class="order-summary-toggle-icon-wrapper">
-                    <svg width="20" height="19" xmlns="http://www.w3.org/2000/svg"
-                        class="order-summary-toggle-icon">
-                        <path
-                            d="M17.178 13.088H5.453c-.454 0-.91-.364-.91-.818L3.727 1.818H0V0h4.544c.455 0 .91.364.91.818l.09 1.272h13.45c.274 0 .547.09.73.364.18.182.27.454.18.727l-1.817 9.18c-.09.455-.455.728-.91.728zM6.27 11.27h10.09l1.454-7.362H5.634l.637 7.362zm.092 7.715c1.004 0 1.818-.813 1.818-1.817s-.814-1.818-1.818-1.818-1.818.814-1.818 1.818.814 1.817 1.818 1.817zm9.18 0c1.004 0 1.817-.813 1.817-1.817s-.814-1.818-1.818-1.818-1.818.814-1.818 1.818.814 1.817 1.818 1.817z">
-                        </path>
-                    </svg>
-                </div>
-                <div class="order-summary-toggle-text order-summary-toggle-text-show">
-                    <span>Hiển thị thông tin đơn hàng</span>
-                    <svg width="11" height="6" xmlns="http://www.w3.org/2000/svg"
-                        class="order-summary-toggle-dropdown" fill="#000">
-                        <path
-                            d="M.504 1.813l4.358 3.845.496.438.496-.438 4.642-4.096L9.504.438 4.862 4.534h.992L1.496.69.504 1.812z">
-                        </path>
-                    </svg>
-                </div>
-                <div class="order-summary-toggle-text order-summary-toggle-text-hide">
-                    <span>Ẩn thông tin đơn hàng</span>
-                    <svg width="11" height="7" xmlns="http://www.w3.org/2000/svg"
-                        class="order-summary-toggle-dropdown" fill="#000">
-                        <path
-                            d="M6.138.876L5.642.438l-.496.438L.504 4.972l.992 1.124L6.138 2l-.496.436 3.862 3.408.992-1.122L6.138.876z">
-                        </path>
-                    </svg>
-                </div>
-                <div class="order-summary-toggle-total-recap">
-                    <span class="total-recap-final-price"><% (total - discount.value) | number %>₫</span>
-                </div>
-            </div>
-        </div>
-    </button>
-    {{-- <div class="content content-second">
-        <div class="wrap">
-            <div class="sidebar sidebar-second">
-                <div class="sidebar-content">
-                    <div class="order-summary">
-                        <div class="order-summary-sections">
-                            <div class="order-summary-section order-summary-section-discount"
-                                data-order-summary-section="discount">
-                                <form id="form_discount_add">
-                                    <div class="fieldset">
-                                        <div class="field  ">
-                                            <div class="field-input-btn-wrapper">
-                                                <div class="field-input-wrapper">
-                                                    <label class="field-label">Mã giảm giá</label>
-                                                    <input placeholder="Mã giảm giá" class="field-input" size="30"
-                                                        type="text"
-                                                        ng-model="discount.code"
-                                                        value="" />
+</button>
+
+
+<style>
+    .qrpay-actions{margin-top:16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .qrpay-actions-hint{color:var(--qr-muted)}
+    .qr-btn[disabled]{opacity:.6;cursor:not-allowed}
+
+</style>
+<div class="content">
+    <div class="wrap">
+        <div class="sidebar">
+            <div class="sidebar-content">
+                <div class="order-summary order-summary-is-collapsed">
+                    <h2 class="visually-hidden">Thông tin đơn hàng</h2>
+                    <div class="order-summary-sections">
+                        <div class="order-summary-section order-summary-section-product-list"
+                             data-order-summary-section="line-items">
+                            <table class="product-table">
+                                <thead>
+                                <tr>
+                                    <th scope="col"><span class="visually-hidden">Hình ảnh</span></th>
+                                    <th scope="col"><span class="visually-hidden">Mô tả</span></th>
+                                    <th scope="col"><span class="visually-hidden">Số lượng</span></th>
+                                    <th scope="col"><span class="visually-hidden">Giá</span></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach($order->details as $detail)
+                                    <tr class="product" >
+                                        <td class="product-image">
+                                            <div class="product-thumbnail">
+                                                <div class="product-thumbnail-wrapper">
+                                                    <img class="product-thumbnail-image"
+                                                         alt="<% item.name %>"
+                                                         src="{{ @$detail->product->image->path ?? '' }}" />
                                                 </div>
-                                                <button type="submit" ng-click="applyVoucher()" style="cursor: pointer;"
-                                                    class="field-input-btn btn btn-default btn-disabled">
-                                                    <span class="btn-content">Sử dụng</span>
-                                                    <i class="btn-spinner icon icon-button-spinner"></i>
-                                                </button>
+                                                <span class="product-thumbnail-quantity"
+                                                      aria-hidden="true">{{ $detail->qty }}</span>
                                             </div>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="order-summary-section order-summary-section-display-discount"
-                                data-order-summary-section="discount-display">
-                                <div>
-                                    <div class="hrv-discount-choose-coupons">
-                                        <div ng-click="showVouchers()">
-                                            <svg width="15" height="10" viewBox="0 0 18 14" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                                    d="M17.3337 5.3335V2.00016C17.3337 1.07516 16.5837 0.333496 15.667 0.333496H2.33366C1.41699 0.333496 0.675326 1.07516 0.675326 2.00016V5.3335C1.59199 5.3335 2.33366 6.0835 2.33366 7.00016C2.33366 7.91683 1.59199 8.66683 0.666992 8.66683V12.0002C0.666992 12.9168 1.41699 13.6668 2.33366 13.6668H15.667C16.5837 13.6668 17.3337 12.9168 17.3337 12.0002V8.66683C16.417 8.66683 15.667 7.91683 15.667 7.00016C15.667 6.0835 16.417 5.3335 17.3337 5.3335ZM15.667 4.11683C14.6753 4.69183 14.0003 5.77516 14.0003 7.00016C14.0003 8.22516 14.6753 9.3085 15.667 9.8835V12.0002H2.33366V9.8835C3.32533 9.3085 4.00033 8.22516 4.00033 7.00016C4.00033 5.76683 3.33366 4.69183 2.34199 4.11683L2.33366 2.00016H15.667V4.11683ZM9.83366 9.50016H8.16699V11.1668H9.83366V9.50016ZM8.16699 6.16683H9.83366V7.8335H8.16699V6.16683ZM9.83366 2.8335H8.16699V4.50016H9.83366V2.8335Z"
-                                                    fill="#318DBB"></path>
-                                            </svg>
-                                            <span>Xem thêm mã giảm giá</span>
-                                        </div>
-                                        <div id="list_short_coupon">
-                                            <span ng-repeat="voucher in vouchers">
-                                                <span data-code="<% voucher.code %>"><% voucher.name %></span>
+                                        </td>
+                                        <td class="product-description">
+                                            <span class="product-description-name order-summary-emphasis">{{ $detail->product->name ?? '' }}
                                             </span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="hrv-coupons-popup">
-                                    <div class="hrv-title-coupons-popup">
-                                        <p>Chọn giảm giá</p>
-                                        <div class="hrv-coupons-close-popup">
-                                            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M17.1663 2.4785L15.5213 0.833496L8.99968 7.35516L2.47801 0.833496L0.833008 2.4785L7.35468 9.00016L0.833008 15.5218L2.47801 17.1668L8.99968 10.6452L15.5213 17.1668L17.1663 15.5218L10.6447 9.00016L17.1663 2.4785Z"
-                                                    fill="#424242"></path>
-                                            </svg>
-                                        </div>
-                                    </div>
-                                    <div class="hrv-content-coupons-code">
-                                        <h3 class="coupon_heading">Mã giảm giá của shop</h3>
-                                        <div class="hrv-discount-code-web">
-                                        </div>
-                                        <div class="hrv-discount-code-external">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="hrv-coupons-popup-site-overlay"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> --}}
-    <div class="content">
-        <div class="wrap">
-            <div class="sidebar">
-                <div class="sidebar-content">
-                    <div class="order-summary order-summary-is-collapsed">
-                        <h2 class="visually-hidden">Thông tin đơn hàng</h2>
-                        <div class="order-summary-sections">
-                            <div class="order-summary-section order-summary-section-product-list"
-                                data-order-summary-section="line-items">
-                                <table class="product-table">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col"><span class="visually-hidden">Hình ảnh</span></th>
-                                            <th scope="col"><span class="visually-hidden">Mô tả</span></th>
-                                            <th scope="col"><span class="visually-hidden">Số lượng</span></th>
-                                            <th scope="col"><span class="visually-hidden">Giá</span></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr class="product" ng-repeat="item in cart">
-                                            <td class="product-image">
-                                                <div class="product-thumbnail">
-                                                    <div class="product-thumbnail-wrapper">
-                                                        <img class="product-thumbnail-image"
-                                                            alt="<% item.name %>"
-                                                            ng-src="<% item.attributes.image %>" />
-                                                    </div>
-                                                    <span class="product-thumbnail-quantity"
-                                                        aria-hidden="true"><% item.quantity | number %></span>
-                                                </div>
-                                            </td>
-                                            <td class="product-description">
-                                                <span class="product-description-name order-summary-emphasis"><% item.name %></span>
 
-
-                                                <br ng-if="item.attributes && item.attributes.type && item.attributes.type.type_title">
-
-                                                <small class="cart-variant text-muted"
-                                                       ng-if="item.attributes && item.attributes.type && item.attributes.type.type_title">
+                                            @if($detail->type)
+                                                <br>
+                                                <small class="cart-variant text-muted">
                                                     Phân loại:
-                                                    <span ng-bind="item.attributes.type.type_title"></span>
+                                                    <span>{{ $detail->type }}</span>
                                                 </small>
-                                                <br ng-if="item.attributes && item.attributes.attributes">
-                                                <small class="cart-variant text-muted"
-                                                       ng-if="item.attributes && item.attributes.attributes">
-                                                    <span ng-bind="item.attributes.attributes"></span>
-                                                </small>
+                                            @endif
 
-{{--                                                <div ng-if="item.attributes">--}}
-{{--                                                    <div ng-repeat="attribute in item.attributes.attributes">--}}
-{{--                                                        <% attribute.name %>: <span style="font-weight: 400; color: #338dbc;"><% attribute.value %></span>--}}
-{{--                                                    </div>--}}
-{{--                                                </div>--}}
-                                            </td>
-                                            <td class="product-quantity visually-hidden"><% item.quantity | number %></td>
-                                            <td class="product-price">
+                                            @if($detail->attributes)
+                                                <br>
+                                                <small class="cart-variant text-muted">
+                                                    <span>{{ $detail->attributes }}</span>
+                                                </small>
+                                            @endif
+
+
+
+                                        </td>
+                                        <td class="product-quantity visually-hidden">{{ $detail->qty }}</td>
+                                        <td class="product-price">
+                                            <span class="order-summary-emphasis">{{ formatCurrency( $detail->price ) }}₫</span>
+                                        </td>
+                                    </tr>
+
+                                @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="order-summary-section order-summary-section-total-lines payment-lines"
+                             data-order-summary-section="payment-lines">
+                            <table class="total-line-table">
+                                <thead>
+                                <tr>
+                                    <th scope="col"><span class="visually-hidden">Mô tả</span></th>
+                                    <th scope="col"><span class="visually-hidden">Giá</span></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr class="total-line total-line-subtotal">
+                                    <td class="total-line-name">Tạm tính</td>
+                                    <td class="total-line-price">
                                                 <span class="order-summary-emphasis">
-                                                     <% (+item.price > 0)
-                                    ? (((+item.price) * (+item.quantity || 1)) | number) + '₫'
-                                    : 'Liên hệ' %>
+                                                    {{ formatCurrency($order->total_after_discount) }}₫
                                                 </span>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            {{-- <div class="order-summary-section order-summary-section-discount"
-                                data-order-summary-section="discount">
-                                <form id="form_discount_add">
-                                    <div class="fieldset">
-                                        <div class="field  ">
-                                            <div class="field-input-btn-wrapper">
-                                                <div class="field-input-wrapper">
-                                                    <label class="field-label">Mã giảm giá</label>
-                                                    <input placeholder="Mã giảm giá" class="field-input" size="30"
-                                                        type="text"
-                                                        ng-model="discount.code"
-                                                        value="" />
-                                                </div>
-                                                <button type="submit" ng-click="applyVoucher()" style="cursor: pointer;"
-                                                    class="field-input-btn btn btn-default btn-disabled">
-                                                    <span class="btn-content">Sử dụng</span>
-                                                    <i class="btn-spinner icon icon-button-spinner"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="order-summary-section order-summary-section-display-discount"
-                                data-order-summary-section="discount-display">
-                                <div>
-                                    <div class="hrv-discount-choose-coupons">
-                                        <div ng-click="showVouchers()">
-                                            <svg width="15" height="10" viewBox="0 0 18 14" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                                    d="M17.3337 5.3335V2.00016C17.3337 1.07516 16.5837 0.333496 15.667 0.333496H2.33366C1.41699 0.333496 0.675326 1.07516 0.675326 2.00016V5.3335C1.59199 5.3335 2.33366 6.0835 2.33366 7.00016C2.33366 7.91683 1.59199 8.66683 0.666992 8.66683V12.0002C0.666992 12.9168 1.41699 13.6668 2.33366 13.6668H15.667C16.5837 13.6668 17.3337 12.9168 17.3337 12.0002V8.66683C16.417 8.66683 15.667 7.91683 15.667 7.00016C15.667 6.0835 16.417 5.3335 17.3337 5.3335ZM15.667 4.11683C14.6753 4.69183 14.0003 5.77516 14.0003 7.00016C14.0003 8.22516 14.6753 9.3085 15.667 9.8835V12.0002H2.33366V9.8835C3.32533 9.3085 4.00033 8.22516 4.00033 7.00016C4.00033 5.76683 3.33366 4.69183 2.34199 4.11683L2.33366 2.00016H15.667V4.11683ZM9.83366 9.50016H8.16699V11.1668H9.83366V9.50016ZM8.16699 6.16683H9.83366V7.8335H8.16699V6.16683ZM9.83366 2.8335H8.16699V4.50016H9.83366V2.8335Z"
-                                                    fill="#318DBB"></path>
-                                            </svg>
-                                            <span>Xem thêm mã giảm giá</span>
-                                        </div>
-                                        <div id="list_short_coupon">
-                                            <span ng-repeat="voucher in vouchers">
-                                                <span data-code="<% voucher.code %>"><% voucher.name %></span>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> --}}
-                            <div class="order-summary-section order-summary-section-total-lines payment-lines"
-                                data-order-summary-section="payment-lines">
-                                <table class="total-line-table">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col"><span class="visually-hidden">Mô tả</span></th>
-                                            <th scope="col"><span class="visually-hidden">Giá</span></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr class="total-line total-line-subtotal">
-                                            <td class="total-line-name">Tạm tính</td>
-                                            <td class="total-line-price">
+                                    </td>
+                                </tr>
+                                <tr class="total-line total-line-shipping">
+                                    <td class="total-line-name">Giảm giá</td>
+                                    <td class="total-line-price">
                                                 <span class="order-summary-emphasis">
-                                                    <% total | number %>₫
+                                                    0₫
                                                 </span>
-                                            </td>
-                                        </tr>
-                                        <tr class="total-line total-line-shipping">
-                                            <td class="total-line-name">Giảm giá</td>
-                                            <td class="total-line-price">
-                                                <span class="order-summary-emphasis">
-                                                    <% discount.value | number %>₫
+                                    </td>
+                                </tr>
+                                </tbody>
+                                <tfoot class="total-line-table-footer">
+                                <tr class="total-line">
+                                    <td class="total-line-name payment-due-label">
+                                        <span class="payment-due-label-total">Tổng cộng</span>
+                                    </td>
+                                    <td class="total-line-name payment-due">
+                                        <span class="payment-due-currency">VND</span>
+                                        <span class="payment-due-price">
+                                                    {{ formatCurrency($order->total_after_discount) }}₫
                                                 </span>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                    <tfoot class="total-line-table-footer">
-                                        <tr class="total-line">
-                                            <td class="total-line-name payment-due-label">
-                                                <span class="payment-due-label-total">Tổng cộng</span>
-                                            </td>
-                                            <td class="total-line-name payment-due">
-                                                <span class="payment-due-currency">VND</span>
-                                                <span class="payment-due-price">
-                                                    <% (total - discount.value) | number %>₫
-                                                </span>
-                                            </td>
-                                        </tr>
-                                    </tfoot>
-                                </table>
-                            </div>
+                                    </td>
+                                </tr>
+                                </tfoot>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="main">
-                <div class="main-header">
-                    <a href="{{route('front.home-page')}}" class="logo">
-                        <h1 class="logo-text">{{$config->web_title}}</h1>
-                    </a>
-                    <style>
-                        a.logo {
+        </div>
+        <div class="main">
+            <div class="main-header">
+                <a href="{{route('front.home-page')}}" class="logo">
+                    <h1 class="logo-text">{{$config->web_title}}</h1>
+                </a>
+                <style>
+                    a.logo {
+                        display: block;
+                    }
+
+                    .logo-cus {
+                        width: 100%;
+                        padding: 15px 0;
+                        text-align: ;
+                    }
+
+                    .logo-cus img {
+                        max-height: 4.2857142857em
+                    }
+
+                    .logo-text {
+                        text-align: ;
+                    }
+
+                    @media (max-width: 767px) {
+                        .banner a {
                             display: block;
                         }
-
-                        .logo-cus {
-                            width: 100%;
-                            padding: 15px 0;
-                            text-align: ;
-                        }
-
-                        .logo-cus img {
-                            max-height: 4.2857142857em
-                        }
-
-                        .logo-text {
-                            text-align: ;
-                        }
-
-                        @media (max-width: 767px) {
-                            .banner a {
-                                display: block;
-                            }
-                        }
-                    </style>
-                    <ul class="breadcrumb">
-                        <li class="breadcrumb-item">
-                            <a href="{{route('cart.index')}}">Giỏ hàng</a>
-                        </li>
-                        <li class="breadcrumb-item breadcrumb-item-current">
-                            Thông tin giao hàng
-                        </li>
-                    </ul>
-                </div>
-                <div class="main-content">
-                    <div id="checkout_order_information_changed_error_message" class="hidden"
-                        style="margin-bottom:15px">
-                        <p class="field-message field-message-error alert alert-danger">
-                            <svg x="0px" y="0px" viewBox="0 0 286.054 286.054"
-                                style="enable-background:new 0 0 286.054 286.054;" xml:space="preserve">
-                                <g>
-                                    <path style="fill:#E2574C;"
-                                        d="M143.027,0C64.04,0,0,64.04,0,143.027c0,78.996,64.04,143.027,143.027,143.027 c78.996,0,143.027-64.022,143.027-143.027C286.054,64.04,222.022,0,143.027,0z M143.027,259.236 c-64.183,0-116.209-52.026-116.209-116.209S78.844,26.818,143.027,26.818s116.209,52.026,116.209,116.209 S207.21,259.236,143.027,259.236z M143.036,62.726c-10.244,0-17.995,5.346-17.995,13.981v79.201c0,8.644,7.75,13.972,17.995,13.972 c9.994,0,17.995-5.551,17.995-13.972V76.707C161.03,68.277,153.03,62.726,143.036,62.726z M143.036,187.723 c-9.842,0-17.852,8.01-17.852,17.86c0,9.833,8.01,17.843,17.852,17.843s17.843-8.01,17.843-17.843 C160.878,195.732,152.878,187.723,143.036,187.723z" />
-                                </g>
-                                <g> </g>
-                                <g> </g>
-                                <g> </g>
-                                <g> </g>
-                                <g> </g>
-                                <g> </g>
-                                <g> </g>
-                                <g> </g>
-                                <g> </g>
-                                <g> </g>
-                                <g> </g>
-                                <g> </g>
-                                <g> </g>
-                                <g> </g>
-                                <g> </g>
-                            </svg>
-                            <span>
-                            </span>
-                        </p>
-                    </div>
-                    <script>
-                        $("html, body").animate({
-                            scrollTop: 0
-                        }, "slow");
-                    </script>
-
-                    <style>
-                        /* ===== Fulfillment styles ===== */
-                        .checkout-fulfillment{
-                            --cf-border:#e5e7eb;
-                            --cf-text:#111827;
-                            --cf-muted:#6b7280;
-                            --cf-bg:#f8fafc;
-                            --cf-active:#f1f5f9;
-                            --cf-primary:#111827;
-                            margin-bottom: 20px;
-                        }
-                        .checkout-fulfillment .cf-head{margin-bottom:12px}
-                        .checkout-fulfillment .cf-title{
-                            font-size:20px; font-weight:700; color:var(--cf-text); margin:0 0 4px
-                        }
-                        .checkout-fulfillment .cf-sub{
-                            margin:0; color:var(--cf-muted); font-size:14px
-                        }
-
-                        .cf-toggle{
-                            display:flex; gap:12px; flex-wrap:wrap;
-                        }
-                        .cf-btn{
-                            flex:1 1 220px;
-                            display:flex; align-items:center; justify-content:center; gap:8px;
-                            padding:12px 14px;
-                            border:1px solid var(--cf-border);
-                            border-radius:10px;
-                            background:#fff;
-                            color:var(--cf-text);
-                            font-weight:600;
-                            transition:all .2s ease;
-                        }
-                        .cf-btn .cf-ico{display:inline-block; line-height:1}
-                        .cf-btn:hover{background:var(--cf-active)}
-                        .cf-btn.is-active{
-                            background:var(--cf-active);
-                            border-color:#cbd5e1;
-                            box-shadow:0 0 0 2px rgba(0,0,0,0.02) inset;
-                        }
-
-                        .cf-panel{margin-top:14px}
-                        .cf-panel.is-hidden{display:none}
-
-                        .cf-block-title{
-                            font-size:16px; font-weight:700; margin:8px 0 10px; color:var(--cf-text)
-                        }
-
-                        /* Pickup card */
-                        .cf-pickup-card{
-                            display:block;
-                            border:1px solid var(--cf-border);
-                            border-radius:10px;
-                            background:#fff;
-                            padding:14px;
-                            cursor:pointer;
-                            transition: border-color .2s ease, box-shadow .2s;
-                        }
-                        .cf-pickup-card:hover{border-color:#cbd5e1}
-                        .cf-pickup-body{
-                            display:flex; align-items:center; justify-content:space-between; gap:10px;
-                        }
-                        .cf-pickup-left{display:flex; align-items:flex-start; gap:12px}
-                        .cf-radio{
-                            width:18px; height:18px; border-radius:999px;
-                            border:2px solid var(--cf-primary); position:relative; margin-top:2px;
-                        }
-                        .cf-pickup-card input:checked + .cf-pickup-body .cf-radio::after{
-                            content:""; position:absolute; inset:3px; border-radius:999px; background:var(--cf-primary);
-                        }
-                        .cf-pickup-info{display:flex; flex-direction:column; gap:4px}
-                        .cf-pickup-name{font-weight:700; color:var(--cf-text)}
-                        .cf-pickup-addr{color:var(--cf-muted); font-size:14px; display:flex; gap:6px; align-items:flex-start}
-                        .cf-pickup-right{color:#059669; font-weight:700}
-
-                        .sr-only{
-                            position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden;
-                            clip:rect(0,0,0,0); white-space:nowrap; border:0;
-                        }
-
-                        /* Responsive */
-                        @media (max-width: 576px){
-                            .cf-btn{flex:1 1 100%}
-                            .cf-pickup-body{flex-direction:column; align-items:flex-start}
-                            .cf-pickup-right{margin-top:6px}
-                        }
-
-                    </style>
-
-                    <!-- ===== Fulfillment Toggle: Chuyển đến ===== -->
-                    <section class="checkout-fulfillment" id="checkoutFulfillment" ng-init="form.fulfillment_method = form.fulfillment_method || 'delivery'">
-                        <div class="cf-head">
-                            <div class="section-header">
-                                <h2 class="section-title">Chuyển đến
-                                </h2>
-                                <br>
+                    }
+                </style>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="{{route('cart.index')}}">Giỏ hàng</a>
+                    </li>
+                    <li class="breadcrumb-item breadcrumb-item-current">
+                        Thông tin đơn hàng
+                    </li>
+                </ul>
+            </div>
+            <div class="main-content">
+                <div class="qrpay">
+                    <div class="qrpay-grid">
+                        <!-- CỘT TRÁI: QR + THÔNG TIN NGÂN HÀNG -->
+                        <div class="qrpay-col">
+                            <div class="qrpay-qr" role="button" tabindex="0" aria-label="Phóng to mã QR">
+                                <img src="{{ $config->qr->path ?? '' }}" alt="Mã QR thanh toán">
+                                <div class="qrpay-zoomhint">Nhấn để phóng to</div>
                             </div>
 
-                            <p class="cf-sub">Chọn cách bạn muốn nhận đơn hàng của mình.</p>
+                            <ul class="qrpay-bank">
+                                <li><span>Ngân hàng:</span><strong>{{ $config->nganhang }}</strong></li>
+                                <li><span>Chủ tài khoản:</span><strong>{{ $config->chutaikhoan }}</strong></li>
+                                <li class="qrpay-rowcopy">
+                                    <span>Số tài khoản:</span>
+                                    <strong id="acc-number">{{ $config->sotaikhoan }}</strong>
+                                    <button class="qr-btn qr-btn-ghost qr-copy" data-source="#acc-number">Sao chép</button>
+                                </li>
+                                <li><span>Chi nhánh:</span><strong>{{ $config->chinhanh }}</strong></li>
+                            </ul>
+
+
+
+
+                            {{--                            <div id="section-payment-method" class="section">--}}
+                            {{--                                <div class="order-checkout__loading--box">--}}
+                            {{--                                    <div class="order-checkout__loading--circle"></div>--}}
+                            {{--                                </div>--}}
+                            {{--                                <div class="section-header">--}}
+                            {{--                                    <h2 class="section-title">Phương thức thanh toán</h2>--}}
+                            {{--                                </div>--}}
+                            {{--                                <div class="section-content">--}}
+                            {{--                                    <div class="content-box">--}}
+                            {{--                                        <div class="radio-wrapper content-box-row"  onclick="window.location.href='/thanh-toan.html' ">--}}
+                            {{--                                            <label class="radio-label" for="payment_method_id_1003258623">--}}
+                            {{--                                                <div class="radio-input payment-method-checkbox">--}}
+                            {{--                                                    <input type-id='1' id="payment_method_id_1003258623"--}}
+                            {{--                                                           class="input-radio" name="payment_method_id"--}}
+                            {{--                                                           type="radio" value="1003258623" />--}}
+                            {{--                                                </div>--}}
+                            {{--                                                <div class='radio-content-input'>--}}
+                            {{--                                                    <img class='main-img'--}}
+                            {{--                                                         src="https://hstatic.net/0/0/global/design/seller/image/payment/cod.svg?v=6" />--}}
+                            {{--                                                    <div>--}}
+                            {{--                                                                <span class="radio-label-primary">Thanh toán khi giao--}}
+                            {{--                                                                    hàng (COD)</span>--}}
+                            {{--                                                        <span class='quick-tagline hidden'></span>--}}
+                            {{--                                                    </div>--}}
+                            {{--                                                </div>--}}
+                            {{--                                            </label>--}}
+                            {{--                                        </div>--}}
+
+
+                            {{--                                        <div class="radio-wrapper content-box-row">--}}
+                            {{--                                            <label class="radio-label" for="payment_method_id_10032586231">--}}
+                            {{--                                                <div class="radio-input payment-method-checkbox">--}}
+                            {{--                                                    <input type-id='2' id="payment_method_id_10032586231"--}}
+                            {{--                                                           class="input-radio" name="payment_method_id"--}}
+                            {{--                                                           type="radio" value="1003258623" checked/>--}}
+                            {{--                                                </div>--}}
+                            {{--                                                <div class='radio-content-input'>--}}
+                            {{--                                                    <img class='main-img'--}}
+                            {{--                                                         src="https://hstatic.net/0/0/global/design/seller/image/payment/other.svg?v=6" />--}}
+                            {{--                                                    <div>--}}
+                            {{--                                                        <span class="radio-label-primary">Thanh toán chuyển khoản quét QR code</span>--}}
+                            {{--                                                        <span class='quick-tagline hidden'></span>--}}
+                            {{--                                                    </div>--}}
+                            {{--                                                </div>--}}
+                            {{--                                            </label>--}}
+                            {{--                                        </div>--}}
+
+                            {{--                                    </div>--}}
+                            {{--                                </div>--}}
+                            {{--                            </div>--}}
                         </div>
 
-                        <div class="cf-toggle" role="tablist" aria-label="Chọn phương thức nhận hàng">
-                            <button type="button" ng-click="setFulfillmentMethod('delivery')"
-                                    class="cf-btn is-active"
-                                    id="btnDelivery"
-                                    role="tab" aria-selected="true" aria-controls="panelDelivery">
-                                <span class="cf-ico" aria-hidden="true">🚚</span>
-                                <span>Giao hàng</span>
-                            </button>
-
-                            <button type="button"  ng-click="setFulfillmentMethod('pickup')"
-                                    id="btnPickup" class="cf-btn "
-                                    role="tab" aria-selected="false" aria-controls="panelPickup">
-                                <span class="cf-ico" aria-hidden="true">🏬</span>
-                                <span>Nhận hàng tại cửa hàng</span>
-                            </button>
-                        </div>
-
-                        <!-- Trạng thái để submit về server / đọc ở Angular -->
-                        <input type="hidden" name="fulfillment_method"
-                               value="delivery"
-                               id="fulfillmentMethod"
-                               ng-model="form.fulfillment_method">
-
-                        <!-- Panel mô tả cho từng phương thức (có thể tùy biến) -->
-                        <div id="panelDelivery" class="cf-panel" role="tabpanel" aria-labelledby="btnDelivery">
-                            <!-- Có thể thêm ghi chú phí ship / thời gian giao nếu bạn muốn -->
-                        </div>
-
-                        <div id="panelPickup" class="cf-panel is-hidden" role="tabpanel" aria-labelledby="btnPickup" ng-show="isPickup()">
-                            <h2 class="section-title">Địa điểm lấy hàng
-                            </h2> <br>
-
-                            <label class="cf-pickup-card">
-                                <input class="sr-only" type="radio" name="pickup_place" value="store-1" checked>
-                                <div class="cf-pickup-body">
-                                    <div class="cf-pickup-left">
-                                        <span class="cf-radio" aria-hidden="true"></span>
-                                        <div class="cf-pickup-info">
-                                            <div class="cf-pickup-name">Cửa hàng</div>
-                                            <div class="cf-pickup-addr">
-                                                <span class="cf-pin" aria-hidden="true">📍</span>
-                                             {{ $config->address_company }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="cf-pickup-right">MIỄN PHÍ</div>
-                                </div>
-                            </label>
-                        </div>
-                    </section>
-                    <!-- ===== /Fulfillment Toggle ===== -->
-
-
-
-
-
-
-                    <div class="step">
-                        <div class="step-sections steps-onepage" step="1">
-                            <div class="section">
-                                <div class="section-header">
-                                    <h2 class="section-title">Thông tin người đặt và giao hàng
-                                    </h2>
-                                </div>
-                                <div class="section-content section-customer-information no-mb">
-                                    <div class="fieldset">
-                                        <div class="field field-required  ">
-                                            <div class="field-input-wrapper">
-                                                <label class="field-label" for="billing_address_full_name">Họ và
-                                                    tên</label>
-                                                <input placeholder="Họ và tên" autocapitalize="off"
-                                                    spellcheck="false" class="field-input" size="30"
-                                                    type="text" id="billing_address_full_name"
-                                                    ng-model="form.customer_name" value=""
-                                                    autocomplete="false" />
-                                                <span class="invalid-feedback d-block" role="alert"
-                                                    ng-if="errors && errors['customer_name']">
-                                                    <strong><% errors['customer_name'][0] %></strong>
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="field field-required field-two-thirds  ">
-                                            <div class="field-input-wrapper">
-                                                <label class="field-label" for="checkout_user_email">Email</label>
-                                                <input autocomplete="false" placeholder="Email" autocapitalize="off"
-                                                    spellcheck="false" class="field-input" size="30"
-                                                    type="email" id="checkout_user_email"
-                                                    ng-model="form.customer_email" value="" />
-                                                <span class="invalid-feedback d-block" role="alert"
-                                                    ng-if="errors && errors['customer_email']">
-                                                    <strong><% errors['customer_email'][0] %></strong>
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="field field-required field-third  ">
-                                            <div class="field-input-wrapper">
-                                                <label class="field-label" for="billing_address_phone">Số điện
-                                                    thoại</label>
-                                                <input autocomplete="false" placeholder="Số điện thoại"
-                                                    autocapitalize="off" spellcheck="false" class="field-input"
-                                                    size="30" maxlength="15" type="tel"
-                                                    id="billing_address_phone" ng-model="form.customer_phone"
-                                                    value="" />
-                                                <span class="invalid-feedback d-block" role="alert"
-                                                    ng-if="errors && errors['customer_phone']">
-                                                    <strong><% errors['customer_phone'][0] %></strong>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="section-content">
-                                    <div class="fieldset">
-                                        <form autocomplete="off" id="form_update_shipping_method"
-                                            class="field default">
-                                            <div class="content-box mt0">
-                                                <div id="form_update_location_customer_shipping"
-                                                    class="order-checkout__loading radio-wrapper content-box-row content-box-row-padding content-box-row-secondary "
-                                                    for="customer_pick_at_location_false">
-                                                    <div class="order-checkout__loading--box">
-                                                        <div class="order-checkout__loading--circle"></div>
-                                                    </div>
-                                                    <div class="field field-required  ">
-                                                        <div class="field-input-wrapper">
-                                                            <label class="field-label"
-                                                                for="billing_address_address1">Địa chỉ</label>
-                                                            <input placeholder="Địa chỉ" autocapitalize="off"
-                                                                spellcheck="false" class="field-input" size="30"
-                                                                type="text" id="billing_address_address1"
-                                                                ng-model="form.customer_address" value="" />
-                                                            <span class="invalid-feedback d-block" role="alert"
-                                                                ng-if="errors && errors['customer_address']">
-                                                                <strong><% errors['customer_address'][0] %></strong>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                    <div
-                                                        class="field field-show-floating-label field-required field-third ">
-                                                        <div class="field-input-wrapper field-input-wrapper-select">
-                                                            <label class="field-label"
-                                                                for="customer_shipping_province"> Tỉnh / thành </label>
-                                                            <select class="field-input"
-                                                                id="customer_shipping_province"
-                                                                ng-model="form.customer_province"
-                                                                ng-change="changeProvince()">
-                                                                <option data-code="" value="">
-                                                                    Chọn tỉnh / thành
-                                                                </option>
-                                                                <option data-code="province.code"
-                                                                    ng-value="province.code"
-                                                                    ng-repeat="province in provinces">
-                                                                    <% province.name %>
-                                                                </option>
-                                                            </select>
-                                                            <span class="invalid-feedback d-block" role="alert"
-                                                                ng-if="errors && errors['customer_province']">
-                                                                <strong><% errors['customer_province'][0] %></strong>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                    <div
-                                                        class="field field-show-floating-label field-required field-third ">
-                                                        <div class="field-input-wrapper field-input-wrapper-select">
-                                                            <label class="field-label"
-                                                                for="customer_shipping_district">Quận / huyện</label>
-                                                            <select class="field-input"
-                                                                id="customer_shipping_district"
-                                                                ng-model="form.customer_district"
-                                                                ng-change="changeDistrict()">
-                                                                <option data-code="" value="">Chọn quận /
-                                                                    huyện</option>
-                                                                <option data-code="district.code"
-                                                                    ng-value="district.code"
-                                                                    ng-repeat="district in district_options">
-                                                                    <% district.name %>
-                                                                </option>
-                                                            </select>
-                                                            <span class="invalid-feedback d-block" role="alert"
-                                                                ng-if="errors && errors['customer_district']">
-                                                                <strong><% errors['customer_district'][0] %></strong>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                    <div
-                                                        class="field field-show-floating-label field-required  field-third  ">
-                                                        <div class="field-input-wrapper field-input-wrapper-select">
-                                                            <label class="field-label"
-                                                                for="customer_shipping_ward">Phường / xã</label>
-                                                            <select class="field-input" id="customer_shipping_ward"
-                                                                ng-model="form.customer_ward"
-                                                                ng-change="changeWard()">
-                                                                <option data-code="" value="" >Chọn
-                                                                    phường / xã</option>
-                                                                <option data-code="ward.code" ng-value="ward.code"
-                                                                    ng-repeat="ward in ward_options">
-                                                                    <% ward.name %>
-                                                                </option>
-                                                            </select>
-                                                            <span class="invalid-feedback d-block" role="alert"
-                                                                ng-if="errors && errors['customer_ward']">
-                                                                <strong><% errors['customer_ward'][0] %></strong>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </form>
-                                        <div class="field field-required ">
-                                            <div class="field-input-wrapper">
-                                                <label class="field-label" for="billing_address_phone">Yêu cầu giao hàng</label>
-                                                <textarea autocomplete="false" placeholder="Yêu cầu giao hàng"
-                                                    autocapitalize="off" class="field-input"
-                                                    ng-model="form.customer_required"
-                                                    value=""></textarea>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                 <div id="change_pick_location_or_shipping">
-                                    <div id="section-payment-method" class="section">
-                                        <div class="order-checkout__loading--box">
-                                            <div class="order-checkout__loading--circle"></div>
-                                        </div>
-                                        <div class="section-header">
-                                            <h2 class="section-title">Phương thức thanh toán</h2>
-                                        </div>
-                                        <div class="section-content" ng-init="form.payment_method = form.payment_method || 1">
-                                            <div class="content-box">
-
-                                                <!-- COD -->
-                                                <div class="radio-wrapper content-box-row">
-                                                    <label class="radio-label" for="pm_cod">
-                                                        <div class="radio-input payment-method-checkbox">
-                                                            <input id="pm_cod" class="input-radio"
-                                                                   type="radio" name="payment_method"
-                                                                   ng-model="form.payment_method" ng-value="1">
-                                                        </div>
-                                                        <div class="radio-content-input">
-                                                            <img class="main-img" src="https://hstatic.net/0/0/global/design/seller/image/payment/cod.svg?v=6">
-                                                            <div>
-                                                                <span class="radio-label-primary">Thanh toán khi giao hàng (COD)</span>
-                                                            </div>
-                                                        </div>
-                                                    </label>
-                                                </div>
-
-                                                <!-- QR -->
-                                                <div class="radio-wrapper content-box-row">
-                                                    <label class="radio-label" for="pm_qr">
-                                                        <div class="radio-input payment-method-checkbox">
-                                                            <input id="pm_qr" class="input-radio"
-                                                                   type="radio" name="payment_method"
-                                                                   ng-model="form.payment_method" ng-value="2">
-                                                        </div>
-                                                        <div class="radio-content-input">
-                                                            <img class="main-img" src="https://hstatic.net/0/0/global/design/seller/image/payment/other.svg?v=6">
-                                                            <div>
-                                                                <span class="radio-label-primary">Thanh toán chuyển khoản ngân hàng</span>
-                                                            </div>
-                                                        </div>
-                                                    </label>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                        <!-- CỘT PHẢI: NỘI DUNG CK + GHI CHÚ -->
+                        <div class="qrpay-col">
+                            <label for="qrpay-content" class="qrpay-label">Chuyển khoản với nội dung</label>
+                            <div class="qrpay-inputcopy">
+                                <input id="qrpay-content" type="text" readonly
+                                       value="{{ $order->code  }}">
+                                <button class="qr-btn qr-btn-primary qr-copy" data-source="#qrpay-content">Sao chép</button>
                             </div>
-                        </div>
-                        <div class="step-footer" id="step-footer-checkout">
-                            <button type="submit" class="step-footer-continue-btn btn" ng-click="submitOrder()" ng-disabled="loading">
-                                <span class="btn-content">Hoàn tất đơn hàng</span>
-                                <i class="btn-spinner icon icon-button-spinner" ng-class="{'btn-loading': loading}"></i>
-                            </button>
-                            <a class="step-footer-previous-link" href="{{ route('cart.index') }}">
-                                Giỏ hàng
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                {{-- <div class="hrv-coupons-popup">
-                    <div class="hrv-title-coupons-popup">
-                        <p>Chọn giảm giá <span class="count-coupons"></span></p>
-                        <div class="hrv-coupons-close-popup">
-                            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M17.1663 2.4785L15.5213 0.833496L8.99968 7.35516L2.47801 0.833496L0.833008 2.4785L7.35468 9.00016L0.833008 15.5218L2.47801 17.1668L8.99968 10.6452L15.5213 17.1668L17.1663 15.5218L10.6447 9.00016L17.1663 2.4785Z"
-                                    fill="#424242"></path>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="hrv-content-coupons-code">
-                        <h3 class="coupon_heading">Mã giảm giá của shop</h3>
-                        <div class="hrv-discount-code-web">
-                            <div class="coupon_item" ng-repeat="voucher in vouchers">
-                                <div class="coupon_icon pos-relative">
-                                    <div class="coupon_body">
-                                        <div class="coupon_head">
-                                            <div class="icon-svg">
-                                            <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M28.4325 45.5026C27.418 45.5026 26.5115 44.7611 25.631 44.0411C25.093 43.6006 24.3555 42.9976 23.9995 42.9976C23.644 42.9976 22.9065 43.6006 22.3685 44.0411C21.404 44.8296 20.31 45.7261 19.1055 45.4501C17.8625 45.1676 17.254 43.8606 16.717 42.7081C16.449 42.1316 16.043 41.2601 15.7545 41.1206C15.4485 40.9711 14.4985 41.2016 13.87 41.3526C12.6465 41.6471 11.2605 41.9791 10.2805 41.1976C9.297 40.4121 9.3145 38.9816 9.331 37.7201C9.339 37.0766 9.351 36.1046 9.144 35.8446C8.9395 35.5886 7.993 35.3861 7.3665 35.2521C6.1275 34.9871 4.7245 34.6866 4.1745 33.5466C3.6325 32.4241 4.265 31.1511 4.822 30.0281C5.1115 29.4461 5.5485 28.5656 5.472 28.2281C5.403 27.9256 4.65 27.3411 4.152 26.9541C3.1435 26.1721 2 25.2841 2 24.0001C2 22.7161 3.1435 21.8286 4.1525 21.0456C4.6505 20.6591 5.4035 20.0746 5.4725 19.7716C5.549 19.4341 5.112 18.5536 4.823 17.9711C4.2655 16.8481 3.6335 15.5756 4.176 14.4521C4.726 13.3126 6.129 13.0121 7.3675 12.7471C7.994 12.6131 8.9405 12.4106 9.1445 12.1551C9.3525 11.8946 9.3405 10.9221 9.3325 10.2786C9.3165 9.01706 9.299 7.58706 10.282 6.80156C11.2615 6.01956 12.6485 6.35256 13.8715 6.64656C14.501 6.79756 15.45 7.02606 15.7555 6.87906C16.0445 6.73956 16.45 5.86856 16.7185 5.29156C17.255 4.13856 17.863 2.83206 19.106 2.54956C20.309 2.27656 21.405 3.16956 22.369 3.95856C22.9075 4.39906 23.645 5.00206 24.0005 5.00206C24.356 5.00206 25.0935 4.39906 25.6315 3.95906C26.5965 3.16956 27.69 2.27456 28.895 2.54956C30.1375 2.83206 30.746 4.13906 31.283 5.29206C31.5515 5.86856 31.957 6.74006 32.246 6.87956C32.5525 7.02706 33.501 6.79806 34.1295 6.64706C35.353 6.35306 36.7395 6.02006 37.7195 6.80206C38.703 7.58756 38.6855 9.01756 38.669 10.2796C38.661 10.9231 38.649 11.8956 38.856 12.1551C39.0605 12.4106 40.007 12.6136 40.6335 12.7476C41.8725 13.0126 43.2755 13.3126 43.8255 14.4526C44.3675 15.5756 43.735 16.8486 43.178 17.9716C42.8885 18.5541 42.4515 19.4341 42.528 19.7716C42.597 20.0746 43.35 20.6591 43.848 21.0456C44.8565 21.8286 46 22.7161 46 24.0001C46 25.2841 44.8565 26.1716 43.8475 26.9546C43.3495 27.3411 42.5965 27.9251 42.5275 28.2291C42.451 28.5666 42.888 29.4466 43.177 30.0291C43.7345 31.1521 44.3665 32.4246 43.824 33.5481C43.274 34.6876 41.871 34.9881 40.6325 35.2526C40.006 35.3871 39.0595 35.5896 38.855 35.8451C38.6475 36.1056 38.6595 37.0781 38.6675 37.7216C38.6835 38.9826 38.701 40.4126 37.718 41.1981C36.7385 41.9801 35.3515 41.6466 34.1285 41.3531C33.499 41.2021 32.55 40.9726 32.2445 41.1211C31.9555 41.2601 31.55 42.1316 31.2815 42.7081C30.745 43.8616 30.137 45.1681 28.894 45.4506C28.738 45.4861 28.584 45.5026 28.4325 45.5026ZM15.445 39.0751C15.8595 39.0751 16.257 39.1421 16.6235 39.3186C17.555 39.7676 18.051 40.8331 18.5305 41.8636C18.768 42.3736 19.262 43.4346 19.5485 43.4996C19.815 43.5466 20.685 42.8331 21.102 42.4921C22.001 41.7571 22.93 40.9971 23.9995 40.9971C25.069 40.9971 25.9985 41.7576 26.897 42.4921C27.314 42.8331 28.158 43.5326 28.4515 43.4996C28.737 43.4341 29.2315 42.3736 29.4685 41.8636C29.9475 40.8331 30.4435 39.7686 31.3755 39.3186C32.3235 38.8611 33.4775 39.1396 34.595 39.4081C35.1325 39.5371 36.253 39.8066 36.469 39.6346C36.6885 39.4596 36.674 38.3021 36.667 37.7461C36.6525 36.6001 36.6375 35.4156 37.2915 34.5966C37.9415 33.7826 39.096 33.5356 40.213 33.2966C40.76 33.1796 41.8975 32.9361 42.022 32.6786C42.138 32.4371 41.629 31.4111 41.3845 30.9181C40.872 29.8856 40.3415 28.8176 40.5765 27.7856C40.804 26.7846 41.7275 26.0676 42.62 25.3746C43.103 25.0006 44 24.3046 44 24.0001C44 23.6956 43.103 22.9996 42.621 22.6251C41.728 21.9321 40.8045 21.2156 40.577 20.2141C40.3425 19.1821 40.873 18.1141 41.3855 17.0816C41.63 16.5886 42.1395 15.5631 42.023 15.3211C41.8985 15.0631 40.761 14.8201 40.2145 14.7031C39.0975 14.4641 37.9425 14.2171 37.2925 13.4036C36.639 12.5851 36.654 11.4001 36.6685 10.2546C36.6755 9.69856 36.69 8.54056 36.4705 8.36556C36.2555 8.19356 35.1345 8.46306 34.596 8.59206C33.479 8.86056 32.325 9.13856 31.3765 8.68106C30.445 8.23156 29.949 7.16656 29.4695 6.13656C29.232 5.62656 28.7385 4.56556 28.4515 4.50056C28.1765 4.45306 27.3145 5.16706 26.8975 5.50756C25.999 6.24306 25.07 7.00306 24.0005 7.00306C22.931 7.00306 22.002 6.24256 21.103 5.50756C20.686 5.16656 19.816 4.45606 19.5485 4.50006C19.2625 4.56506 18.768 5.62606 18.531 6.13606C18.0515 7.16606 17.556 8.23106 16.6245 8.68056C15.6765 9.13756 14.5225 8.86056 13.4045 8.59156C12.867 8.46206 11.7455 8.19306 11.5305 8.36456C11.311 8.54006 11.3255 9.69756 11.3325 10.2536C11.347 11.3996 11.362 12.5846 10.708 13.4026C10.058 14.2166 8.9035 14.4636 7.7865 14.7026C7.2395 14.8196 6.102 15.0631 5.9775 15.3206C5.8615 15.5621 6.3705 16.5881 6.615 17.0811C7.1275 18.1136 7.658 19.1816 7.423 20.2136C7.1955 21.2146 6.272 21.9316 5.3795 22.6246C4.897 22.9996 4 23.6956 4 24.0001C4 24.3046 4.897 25.0011 5.379 25.3751C6.272 26.0681 7.1955 26.7841 7.423 27.7856C7.6575 28.8176 7.127 29.8851 6.6145 30.9181C6.37 31.4111 5.8605 32.4366 5.977 32.6786C6.1015 32.9371 7.239 33.1801 7.786 33.2971C8.9025 33.5361 10.0575 33.7831 10.7075 34.5971C11.361 35.4156 11.346 36.6001 11.3315 37.7461C11.3245 38.3021 11.31 39.4601 11.5295 39.6351C11.7445 39.8046 12.8655 39.5376 13.404 39.4081C14.0885 39.2431 14.788 39.0751 15.445 39.0751Z" fill="#F47560"></path>
-                                                <path d="M18.207 32.207L32.207 18.207C32.5975 17.8165 32.5975 17.1835 32.207 16.793C31.8165 16.4025 31.1835 16.4025 30.793 16.793L16.793 30.793C16.4025 31.1835 16.4025 31.8165 16.793 32.207C16.9885 32.4025 17.244 32.5 17.5 32.5C17.756 32.5 18.0115 32.4025 18.207 32.207ZM19.5 23C17.5705 23 16 21.43 16 19.5C16 17.57 17.5705 16 19.5 16C21.4295 16 23 17.57 23 19.5C23 21.43 21.4295 23 19.5 23ZM19.5 18C18.673 18 18 18.673 18 19.5C18 20.327 18.673 21 19.5 21C20.327 21 21 20.327 21 19.5C21 18.673 20.327 18 19.5 18ZM29.5 33C27.5705 33 26 31.4295 26 29.5C26 27.5705 27.5705 26 29.5 26C31.4295 26 33 27.5705 33 29.5C33 31.4295 31.4295 33 29.5 33ZM29.5 28C28.673 28 28 28.673 28 29.5C28 30.327 28.673 31 29.5 31C30.327 31 31 30.327 31 29.5C31 28.673 30.327 28 29.5 28Z" fill="#F47560"></path>
-                                            </svg>
-                                            </div>
-                                            <h3 class="coupon_title">
-                                            <span><% voucher.name %></span>
-                                            <div class="coupon_exp">HSD: <% voucher.to_date | date:'dd/MM/yyyy' %></div>
-                                            </h3>
-                                        </div>
-                                        <div class="coupon_desc_short">
-                                            <ul>
-                                            <li>Giảm <% voucher.value | number %>₫</li>
-                                            </ul>
-                                        </div>
-                                        <div class="coupon_desc" ng-bind-html="voucher.content">
-                                        </div>
-                                        <div class="coupon_actions">
-                                            <div class="coupon_more">
-                                            Xem chi tiết
-                                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 330 330" style="enable-background:new 0 0 330 330;" xml:space="preserve">
-                                                <path id="XMLID_225_" d="M325.607,79.393c-5.857-5.857-15.355-5.858-21.213,0.001l-139.39,139.393L25.607,79.393 c-5.857-5.857-15.355-5.858-21.213,0.001c-5.858,5.858-5.858,15.355,0,21.213l150.004,150c2.813,2.813,6.628,4.393,10.606,4.393 s7.794-1.581,10.606-4.394l149.996-150C331.465,94.749,331.465,85.251,325.607,79.393z"></path>
-                                                <g></g>
-                                                <g></g>
-                                                <g></g>
-                                                <g></g>
-                                                <g></g>
-                                                <g></g>
-                                                <g></g>
-                                                <g></g>
-                                                <g></g>
-                                                <g></g>
-                                                <g></g>
-                                                <g></g>
-                                                <g></g>
-                                                <g></g>
-                                                <g></g>
-                                            </svg>
-                                            </div>
-                                            <button class="btn btn_apply_line_coupon" ng-click="applyVoucher(voucher.code)">Áp dụng</button>
-                                        </div>
-                                    </div>
-                                </div>
+
+                            <div class="qrpay-note">
+                                <div class="qrpay-note-title">Ghi chú</div>
+                                <ul class="qrpay-note-list">
+                                    <li>Quét đúng mã QR; kiểm tra lại tên người nhận trước khi thanh toán.</li>
+                                    <li>Ghi <b>đúng nội dung</b> để hệ thống tự khớp đơn hàng.</li>
+                                    <li>Nếu cần hỗ trợ nhanh, liên hệ: {{ $supportPhone ?? '0900 000 000' }}.</li>
+                                </ul>
                             </div>
-                            <div class="text-center">
-                                <button id="show_all_coupon">
-                                    <span>Xem thêm</span>
-                                    <span id="show_all_icon">
-                                        <svg width="12" height="12" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M11.3337 5.99984L10.3937 5.05984L6.66699 8.77984V0.666504H5.33366V8.77984L1.61366 5.05317L0.666992 5.99984L6.00033 11.3332L11.3337 5.99984Z"></path>
-                                        </svg>
-                                    </span>
+
+                            <div class="qrpay-actions">
+                                <button ng-click="submitOrder()"
+                                        id="btn-confirm-pay"
+                                        class="qr-btn qr-btn-primary"
+                                >
+                                    Xác nhận thanh toán
                                 </button>
                             </div>
-                        </div>
-                        <div class="hrv-discount-code-external">
+
+
                         </div>
                     </div>
-                </div> --}}
-                <div class="hrv-coupons-popup-site-overlay"></div>
-                <div class="main-footer footer-powered-by">Powered by {{ $config->web_title }}</div>
+
+                    <!-- MODAL PHÓNG TO QR -->
+                    <div class="qrpay-modal" aria-hidden="true">
+                        <div class="qrpay-backdrop"></div>
+                        <div class="qrpay-modal-body">
+                            <img src="{{ $config->qr->path ?? '' }}" alt="QR phóng to">
+                            <button class="qrpay-close" aria-label="Đóng">×</button>
+                        </div>
+                    </div>
+
+                    <!-- TOAST COPY -->
+                    <div class="qrpay-toast" hidden>Đã sao chép</div>
+
+
+
+
+
+                </div>
+
+                <style>
+                    :root{
+                        --qr-radius:14px;
+                        --qr-border:#e8edf2;
+                        --qr-muted:#6b7280;
+                        --qr-shadow:0 8px 24px rgba(0,0,0,.06);
+                        --qr-primary:#ff6a00; /* đổi theo brand */
+                        --qr-ring: rgba(255,106,0,.18);
+                    }
+                    .qrpay{background:#fff;border:1px solid var(--qr-border);border-radius:var(--qr-radius);box-shadow:var(--qr-shadow);padding:18px}
+                    .qrpay-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+                    .qrpay-col{min-width:0}
+
+                    .qrpay-qr{position:relative;border:1px solid var(--qr-border);border-radius:12px;overflow:hidden;cursor:zoom-in;background:#fafbfc}
+                    .qrpay-qr img{display:block;width:100%;max-width:360px;margin:auto;aspect-ratio:1/1;object-fit:contain}
+                    .qrpay-zoomhint{position:absolute;right:8px;bottom:8px;background:#fff;border:1px solid var(--qr-border);border-radius:999px;font-size:.85rem;padding:6px 10px;box-shadow:var(--qr-shadow)}
+
+                    .qrpay-bank{list-style:none;margin:14px 0 0;padding:0;border:1px dashed var(--qr-border);border-radius:12px}
+                    .qrpay-bank li{display:flex;align-items:center;gap:10px;padding:10px 12px}
+                    .qrpay-bank li+li{border-top:1px dashed var(--qr-border)}
+                    .qrpay-bank span{color:var(--qr-muted);width:110px;flex:0 0 110px}
+                    .qrpay-rowcopy strong{flex:1}
+
+                    .qrpay-label{display:block;margin:2px 0 8px;font-weight:600}
+                    .qrpay-inputcopy{display:flex;gap:10px;align-items:stretch}
+                    .qrpay-inputcopy input{flex:1;border:1px solid var(--qr-border);border-radius:12px;padding:12px}
+                    .qrpay-inputcopy input:focus{outline:none;border-color:var(--qr-primary);box-shadow:0 0 0 4px var(--qr-ring)}
+                    .qr-btn{border:1px solid transparent;border-radius:12px;padding:10px 14px;cursor:pointer;white-space:nowrap;transition:.18s}
+                    .qr-btn-primary{background:var(--qr-primary);color:#fff}
+                    .qr-btn-ghost{background:#fff;border-color:var(--qr-border);color:#111}
+                    .qr-btn:hover{filter:brightness(.97)}
+
+                    .qrpay-note{margin-top:16px;border:1px solid var(--qr-border);border-radius:12px;padding:12px 14px;background:#fafbfc}
+                    .qrpay-note-title{font-weight:700;margin-bottom:6px}
+                    .qrpay-note-list{padding-left:18px;margin:0;color:#111}
+                    .qrpay-note-list li{margin:6px 0}
+
+                    /* Modal */
+                    .qrpay-modal{position:fixed;inset:0;display:none}
+                    .qrpay-modal.is-open{display:block}
+                    .qrpay-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.56)}
+                    .qrpay-modal-body{position:absolute;inset:0;display:grid;place-items:center;padding:24px}
+                    .qrpay-modal-body img{max-width:min(92vw,640px);max-height:82vh;border-radius:12px;background:#fff}
+                    .qrpay-close{position:absolute;top:16px;right:16px;width:40px;height:40px;border-radius:999px;border:0;background:#fff;box-shadow:var(--qr-shadow);font-size:24px;line-height:1;cursor:pointer}
+
+                    /* Toast */
+                    .qrpay-toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#111;color:#fff;padding:10px 14px;border-radius:999px;box-shadow:var(--qr-shadow)}
+                    .qrpay-toast[hidden]{display:none}
+
+                    /* Responsive */
+                    @media (max-width: 900px){ .qrpay-grid{grid-template-columns:1fr} }
+                </style>
+
+                <script>
+                    (function(){
+                        // Copy helper
+                        function copyFromSource(selector){
+                            const el = document.querySelector(selector);
+                            if(!el) return false;
+                            const text = (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') ? el.value : el.textContent.trim();
+                            if(navigator.clipboard && window.isSecureContext){
+                                return navigator.clipboard.writeText(text);
+                            }else{
+                                const ta = document.createElement('textarea');
+                                ta.value = text; ta.style.position='fixed'; ta.style.opacity='0';
+                                document.body.appendChild(ta); ta.select();
+                                const ok = document.execCommand('copy'); document.body.removeChild(ta);
+                                return ok ? Promise.resolve() : Promise.reject();
+                            }
+                        }
+                        function showToast(msg){
+                            const t = document.querySelector('.qrpay-toast');
+                            if(!t) return;
+                            t.textContent = msg || 'Đã sao chép';
+                            t.hidden = false;
+                            clearTimeout(showToast._t); showToast._t = setTimeout(()=> t.hidden = true, 1500);
+                        }
+
+                        // Event: copy buttons
+                        document.addEventListener('click', function(e){
+                            const btn = e.target.closest('.qr-copy');
+                            if(btn){
+                                e.preventDefault();
+                                const sel = btn.getAttribute('data-source');
+                                copyFromSource(sel).then(()=> {
+                                    btn.classList.add('is-copied');
+                                    const old = btn.textContent; btn.textContent = 'Đã sao chép';
+                                    showToast('Đã sao chép');
+                                    setTimeout(()=>{ btn.textContent = old; btn.classList.remove('is-copied'); }, 1200);
+                                });
+                            }
+                        });
+
+                        // Modal open/close
+                        const modal = document.querySelector('.qrpay-modal');
+                        const qrBox = document.querySelector('.qrpay-qr');
+                        const closeBtn = document.querySelector('.qrpay-close');
+                        if(qrBox && modal){
+                            const open = ()=> modal.classList.add('is-open');
+                            const close = ()=> modal.classList.remove('is-open');
+                            qrBox.addEventListener('click', open);
+                            qrBox.addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); open(); }});
+                            modal.addEventListener('click', (e)=>{ if(e.target.classList.contains('qrpay-backdrop')) close(); });
+                            if(closeBtn) closeBtn.addEventListener('click', close);
+                            document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') modal.classList.remove('is-open'); });
+                        }
+                    })();
+                </script>
+
             </div>
+
+            <div class="hrv-coupons-popup-site-overlay"></div>
+            <div class="main-footer footer-powered-by">Powered by {{ $config->web_title }}</div>
         </div>
     </div>
-    <script>
-        app.controller('CheckoutController', function($scope, $http, $timeout) {
-            $scope.cart = @json($cartCollection);
+</div>
 
-            $scope.total = @json($total);
-            $scope.provinces = @json($provinces);
-            $scope.districts = @json($districts);
-            $scope.wards = @json($wards);
+
+
+
+
+
+<script>
+    app.controller('CheckoutController', function($scope, $http) {
+        {{--$scope.cart = @json($cartCollection);--}}
+            {{--console.log($scope.cart);--}}
+            {{--$scope.total = @json($total);--}}
             $scope.loading = false;
 
-            $scope.form = {
-                customer_province: '',
-                customer_district: '',
-                customer_ward: '',
-                fulfillment_method: 'delivery'
-            }
+        $scope.form = {
+            order_code: "{{ $order->code }}",
+            total: {{ $order->total_after_discount }},
+        }
 
+        $scope.submitOrder = function() {
+            $scope.loading = true;
+            let data = $scope.form;
+            data.items = $scope.cart;
 
-
-            $scope.setFulfillmentMethod = function (mode) {
-                if (mode !== 'delivery' && mode !== 'pickup') return;
-                $scope.form.fulfillment_method = mode;
-            };
-            $scope.isDelivery = function(){ return $scope.form.fulfillment_method === 'delivery'; };
-            $scope.isPickup   = function(){ return $scope.form.fulfillment_method === 'pickup'; };
-
-
-            function syncFulfillmentUI(){
-                var wrap          = document.getElementById('checkoutFulfillment');
-                if (!wrap) return;
-
-                var btnDelivery   = wrap.querySelector('#btnDelivery');
-                var btnPickup     = wrap.querySelector('#btnPickup');
-                var panelDelivery = wrap.querySelector('#panelDelivery');
-                var panelPickup   = wrap.querySelector('#panelPickup');
-
-                var isDelivery = $scope.form.fulfillment_method === 'delivery';
-
-                // toggle class & aria
-                if (btnDelivery && btnPickup) {
-                    btnDelivery.classList.toggle('is-active', isDelivery);
-                    btnPickup.classList.toggle('is-active', !isDelivery);
-                    btnDelivery.setAttribute('aria-selected', String(isDelivery));
-                    btnPickup.setAttribute('aria-selected', String(!isDelivery));
-                }
-                if (panelDelivery && panelPickup) {
-                    panelDelivery.classList.toggle('is-hidden', !isDelivery);
-                    panelPickup.classList.toggle('is-hidden', isDelivery);
-                }
-            }
-
-            $scope.$watch('form.fulfillment_method', function(){ $timeout(syncFulfillmentUI, 0); });
-
-
-
-
-            $scope.discount = {
-                code: '',
-                value: 0,
-            }
-
-            $scope.district_options = [];
-            $scope.ward_options = [];
-
-            $scope.changeProvince = function() {
-                $scope.district_options = $scope.districts.filter(function(district) {
-                    return district.parent_code == $scope.form.customer_province;
-                });
-            }
-
-            $scope.changeDistrict = function() {
-                $scope.ward_options = $scope.wards.filter(function(ward) {
-                    return ward.parent_code == $scope.form.customer_district;
-                });
-            }
-
-            $scope.submitOrder = function() {
-                $scope.loading = true;
-                let data = $scope.form;
-                data.items = $scope.cart;
-
-                $scope.errors = {};
-                $.ajax({
-                    url: '{{ route('cart.submit.order') }}',
-                    type: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                    },
-                    data: data,
-                    success: function(response) {
-                        if (response.success) {
-                            toastr.success(response.message);
-                            if(response.payment_method == 1) {
-                                window.location.href = '{{route('cart.checkout.success')}}';
-                            } else {
-                                window.location.href = '{{route('cart.checkoutQr')}}';
-                            }
-                        } else {
-                            $scope.errors = response.errors;
-                            toastr.error(response.message);
-                            $scope.loading = false;
-                        }
-                    },
-                    error: function(response) {
-                        toastr.error('Thao tác thất bại');
+            $scope.errors = {};
+            $.ajax({
+                url: '{{ route('cart.submitqr.order') }}',
+                type: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                },
+                data: JSON.stringify(data),
+                contentType: 'application/json',
+                processData: false,
+                success: function(response) {
+                    if (response.success) {
+                        toastr.success(response.message);
+                        window.location.href = '{{route('cart.checkout.success')}}?method=qr';
+                    } else {
+                        $scope.errors = response.errors;
+                        toastr.error(response.message);
                         $scope.loading = false;
-                    },
-                    complete: function() {
-                        $scope.$applyAsync();
                     }
-                });
-            }
-
-
-
-
-        });
-    </script>
-    <script>
-        $(document).ready(function() {
-            function togglePopupCoupons() {
-                if ($('.hrv-coupons-popup').hasClass('active-popup') && $('.hrv-coupons-popup-site-overlay')
-                    .hasClass('active-popup')) {
-                    $('.hrv-coupons-popup').removeClass('active-popup');
-                    $('.hrv-coupons-popup-site-overlay').removeClass('active-popup');
-                    $('[class*="hrv-discount-code-"]').removeClass('open-more');
-                    if ($(window).width() < 768) {
-                        $('body').css('overflow', '');
-                    }
-                } else {
-                    $('.hrv-coupons-popup').addClass('active-popup');
-                    $('.hrv-coupons-popup-site-overlay').addClass('active-popup');
-
-                    if ($(window).width() < 768) {
-                        $('body').css('overflow', 'hidden');
-                    }
-                }
-            }
-            $(document).on('click', '#show_all_coupon', function() {
-                var coupons = $('.coupon_item').length;
-                var parentDOM = $(this).parents('div[class*="hrv-discount-code-"]');
-                if (!parentDOM.hasClass('open-more')) {
-                    parentDOM.find('.coupon_item').removeClass('hidden');
-                    parentDOM.addClass('open-more');
-                    $(this).find('span:first-child').html('Thu gọn');
-                } else {
-                    parentDOM.find('.coupon_item:nth-child(n+3):nth-child(-n+' + coupons + ')').addClass(
-                        'hidden');
-                    parentDOM.removeClass('open-more');
-                    $(this).find('span:first-child').html('Xem thêm');
+                },
+                error: function(response) {
+                    toastr.error('Thao tác thất bại');
+                    $scope.loading = false;
+                },
+                complete: function() {
+                    $scope.$applyAsync();
                 }
             });
-
-            $('body').on('click', '.order-summary-section-display-discount .hrv-discount-choose-coupons',
-        function() {
-                togglePopupCoupons();
-                // renderCoupons();
-            })
-
-            $('body').on('click', '.hrv-coupons-close-popup svg', function() {
-                togglePopupCoupons();
-            })
-
-            $('body').on('click', '.hrv-discount-code-web .btn_apply_line_coupon', function() {
-                var codeCoupons = $(this).data('code');
-                togglePopupCoupons();
-                $('input[id="discount.code"]').val(codeCoupons).trigger("change");
-                $('form#form_discount_add button.field-input-btn.btn.btn-default').removeClass(
-                    'btn-disabled');
-                $('form#form_discount_add button.field-input-btn.btn.btn-default').trigger('click');
-            })
-
-            $('body').on('click', '.coupon_layer', function() {
-                $(this).siblings('.btn_apply_line_coupon').trigger('click');
-            });
-
-            $(document).on('click', '.coupon_more', function() {
-                $(this).parent().siblings('.coupon_desc_short').toggleClass('close');
-                $(this).toggleClass('open');
-            });
-
-            $(document).on('click', '.hrv-coupons-popup-site-overlay', function() {
-                togglePopupCoupons();
-            });
-        })
-
-    </script>
-
-
-
+        }
+    });
+</script>
 
 </body>
 

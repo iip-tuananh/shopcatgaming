@@ -84,6 +84,12 @@
                                                     Phân loại:
                                                     <span ng-bind="item.attributes.type.type_title"></span>
                                                 </small>
+                                                <br ng-if="item.attributes && item.attributes.attributes">
+                                                <small class="cart-variant text-muted"
+                                                       ng-if="item.attributes && item.attributes.attributes">
+                                                    <span ng-bind="item.attributes.attributes"></span>
+                                                </small>
+
                                             </a>
 
                                         </div>

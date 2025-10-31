@@ -45,7 +45,7 @@ class  BannerController extends Controller
                 return formatDate($object->updated_at);
             })
             ->editColumn('link', function ($object) {
-                return '<a href="' . $object->link . '">' . $object->link . '</a>';
+                return '<a href="' . $object->link . '" target="_blank">' . $object->link . '</a>';
             })
             ->addColumn('image', function ($object) {
                 return  ($object->image ? $object->image->path : '');

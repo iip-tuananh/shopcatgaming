@@ -18,12 +18,12 @@
 {{--                </div>--}}
 {{--            </div>--}}
 
-{{--            <div class="col-md-12 col-sm-12 col-xs-12">--}}
-{{--                <div class="form-group custom-group">--}}
-{{--                    <label class="form-label">Đường dẫn liên kết</label>--}}
-{{--                    <input class="form-control " type="text" ng-model="form.link">--}}
-{{--                </div>--}}
-{{--            </div>--}}
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="form-group custom-group">
+                    <label class="form-label">Đường dẫn liên kết</label>
+                    <input class="form-control " type="text" ng-model="form.link">
+                </div>
+            </div>
 
 
             <div class="col-md-12 col-sm-12 col-xs-12">

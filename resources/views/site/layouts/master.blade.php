@@ -8,9 +8,20 @@
 
 <body ng-app="App">
 
-{{--    <div class="preloader">--}}
-{{--        <div class="loader"></div>--}}
-{{--    </div>--}}
+    <div class="preloader">
+        <div class="cg-brand-loader" role="group" aria-label="CAT GAMING loading">
+            <div class="cg-title">
+                <span class="cg-shop">SHOP</span>
+                <span class="cg-cat">CAT GAMING</span>
+            </div>
+
+            <div class="cg-pixel-bounce" aria-label="Đang tải" role="progressbar">
+                <span></span><span></span><span></span><span></span><span></span><span></span>
+                <span></span><span></span><span></span><span></span><span></span><span></span>
+            </div>
+        </div>
+
+    </div>
 
     <!-- scroll to top button start -->
     <button class="scroll-to-top show" id="scrollToTop">
@@ -28,6 +39,24 @@
 
 
     @include('site.partials.angular_mix')
+
+<script src="/site/js/callbutton.js"></script>
+
+<div class="hidden-xs">
+    <div class="inner-fabs show">
+        <a href="tel:{{ $config->hotline }}" class="fabs roundCool phone" title="Gọi hotline">
+            <img class="inner-fab-icon" src="/site/imgs/phone.png" alt="Phone" loading="lazy">
+        </a>
+
+        <a target="_blank" href="https://zalo.me/{{ preg_replace('/\s+/', '', $config->zalo) }}" class="fabs roundCool zalo" title="Chat Zalo">
+            <img class="inner-fab-icon" src="/site/imgs/zalo.png" alt="Zalo" loading="lazy">
+        </a>
+
+        <a target="_blank" href="{{ $config->facebook }}" class="fabs roundCool fb" title="Facebook">
+            <img class="inner-fab-icon" src="/site/imgs/Facebook.png" alt="Facebook" loading="lazy">
+        </a>
+    </div>
+</div>
 
 
 

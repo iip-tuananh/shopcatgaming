@@ -52,6 +52,17 @@ class CartController extends Controller
         $uniId = $product->id;
         $type = null;
 
+        if($request->attribute_value_ids && $request->attribute_value_labels) {
+            $valAttrIds = (array) $request->input('attribute_value_ids', []);
+            $valAttrIds = array_map('intval', $valAttrIds);
+            $valAttrIds = array_values(array_unique($valAttrIds));
+
+            $suffix   = implode('-', $valAttrIds);
+            $uniId = $product->id . ($suffix ? '-' . $suffix : '');
+
+            $attrsName = implode(' - ', $request->attribute_value_labels);
+        }
+
         if($request->type_id) {
             $uniId .= '-'.$request->type_id;
             $type = [
@@ -88,6 +99,7 @@ class CartController extends Controller
                 'slug' => $product->slug,
                 'base_price' => $product->base_price,
                 'type' => $type,
+                'attributes' => @$attrsName ?? ''
             ]
         ]);
 
@@ -154,6 +166,7 @@ class CartController extends Controller
     // submit đặt hàng
     public function checkoutSubmit(Request $request)
     {
+
         DB::beginTransaction();
         try {
             $translate = [
@@ -195,16 +208,18 @@ class CartController extends Controller
             $customer_address = $request->customer_address . ', ' . $ward->path_with_type;
 
             $lastId = Order::query()->latest('id')->first()->id ?? 1;
-            $total_price = \Cart::getTotal();
-
+            $cart = \Cart::session('cartList');
+            $total_price = $cart->getTotal();
             $order = Order::query()->create([
                 'customer_name' => $request->customer_name,
                 'customer_phone' => $request->customer_phone,
                 'customer_email' => $request->customer_email,
                 'customer_address' => $customer_address,
                 'customer_required' => $request->customer_required,
+                'payment_method' => $request->payment_method,
+                'fulfillment_method' => $request->fulfillment_method,
                 'discount_code' => $request->discount_code,
-                'discount_value' => $request->discount_value,
+                'discount_value' => $request->discount_value ?? 0,
                 'total_before_discount' => $total_price,
                 'total_after_discount' => $total_price - ($request->discount_value ?? 0),
                 'code' => 'ORDER' . date('Ymd') . '-' . $lastId
@@ -213,6 +228,7 @@ class CartController extends Controller
             foreach ($request->items as $item) {
 
                 $typeTitle = @$item['attributes']['type']['type_title'];
+                $attributes = @$item['attributes']['attributes'];
 
                 $detail = new OrderDetail();
                 $detail->order_id = $order->id;
@@ -221,6 +237,7 @@ class CartController extends Controller
                 $detail->qty = $item['quantity'];
                 $detail->price = $item['price'];
                 $detail->type = $typeTitle ?? null;
+                $detail->attributes = $attributes ?? null;
                 $detail->save();
             }
 
@@ -238,13 +255,83 @@ class CartController extends Controller
 
 
             DB::commit();
-            return Response::json(['success' => true, 'order_code' => $order->code, 'message' => 'Đặt hàng thành công']);
+            return Response::json(['success' => true, 'order_code' => $order->code, 'message' => 'Đặt hàng thành công', 'payment_method' => $request->payment_method]);
         } catch (\Exception $exception) {
             DB::rollBack();
             dd($exception->getMessage());
         }
 
     }
+
+    public function checkoutQr(Request $request) {
+        if (!session()->has('order_id')) {
+            return redirect()->route('front.home-page');
+        }
+
+        $orderId = session('order_id') ?? 3;
+        $order = Order::query()->with('details', 'details.product', 'details.product.image')->find($orderId);
+
+        return view('site.orders.checkoutQr', compact('order'));
+    }
+
+
+    public function checkoutQrSubmit(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+//            $total_price = $request->total;
+//
+//            $order = Order::query()->create([
+//                'customer_id' => $request->customer_id,
+//                'total_after_discount' => $total_price,
+//                'code' => $request->order_code,
+//                'payment_method' => 2,
+//            ]);
+//
+//            $config = \App\Model\Admin\Config::where('id',1)->select('revenue_percent_1')->first();
+//            foreach ($request->items as $item) {
+//                $product = Product::query()->where('slug', $item['attributes']['slug'])->first();
+//                $detail = new OrderDetail();
+//                $detail->order_id = $order->id;
+//                $detail->product_id = $product->id;
+//                $detail->qty = $item['quantity'];
+//                $detail->price = $item['price'];
+//                $detail->attributes = isset($item['attributes']['attributes']) ? json_encode($item['attributes']['attributes']) : null;
+//                $detail->save();
+//
+//                \Cart::remove($item['id']);
+//            }
+//
+//
+//            if(\Cart::getContent()->sum('quantity') == 0) {
+//                \Cart::clear();
+//            }
+//
+//
+//            session(['order_id' => $order->id]);
+//
+//            $config = Config::query()->first();
+//
+//            // gửi mail thông báo có đơn hàng mới cho admin
+//            $users = User::query()->where('type', 1)->where('status', 1)->get();
+//            // Mail::to('nguyentienvu4897@gmail.com')->send(new NewOrder($order, $config, 'admin'));
+//
+//            if($users->count()) {
+//                foreach ($users as $user) {
+////                    Mail::to($user->email)->send(new NewOrder($order, $config, 'admin'));
+//                }
+//            }
+
+            DB::commit();
+            return Response::json(['success' => true, 'message' => 'Đặt hàng thành công']);
+        } catch (\Exception $exception) {
+            Log::error($exception);
+            DB::rollBack();
+            dd($exception->getMessage());
+        }
+
+    }
+
 
     // trả về trang đặt hàng thành công
     public function checkoutSuccess(Request $request)

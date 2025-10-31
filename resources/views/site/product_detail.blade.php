@@ -165,6 +165,119 @@
             .prod-price-old{ font-size:15px; }
         }
     </style>
+
+    <style>
+        /* ============ SWATCH – dark ============ */
+        .select-swatch{
+            --bg: #0b0b0c;           /* nền tổng thể của site */
+            --muted: #8b90a0;        /* chữ phụ */
+            --text: #e9edf3;         /* chữ chính */
+            --stroke: #2a2d36;       /* viền nhạt */
+            --primary: #3b82f6;      /* nhấn */
+            --success: #10b981;      /* dùng cho dot xanh lá */
+            --danger: #ef4444;       /* dot đỏ */
+            --warning: #f59e0b;      /* dot vàng */
+            --rounded: 999px;        /* pill */
+            --shadow: 0 6px 14px rgba(0,0,0,.35);
+            color: var(--text);
+        }
+
+        .select-swatch .swatch{
+            margin: 18px 0 14px;
+        }
+
+        .select-swatch .swatch .header{
+            margin-bottom: 10px;
+            font-weight: 500;
+            letter-spacing: .2px;
+            color: #fff;
+            display: flex;
+            gap: 8px;
+            font-size: 1.06rem;
+            align-items: baseline;
+        }
+        .select-swatch .swatch .header .value-roperties{
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        /* Mỗi item */
+        .select-swatch .swatch-element{
+            display: inline-block;
+            margin: 6px 8px 6px 0;
+            position: relative;
+        }
+
+        .select-swatch .swatch-element input{
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Nút label dạng pill */
+        .select-swatch .swatch-element label{
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 14px;
+            min-height: 38px;
+            border: 2px solid var(--stroke);
+            border-radius: var(--rounded);
+            color: var(--text);
+            background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0));
+            backdrop-filter: blur(2px);
+            cursor: pointer;
+            user-select: none;
+            transition: border-color .2s ease, box-shadow .2s ease, background .2s ease, transform .05s ease;
+        }
+
+        /* Hover / focus */
+        .select-swatch .swatch-element label:hover{
+            border-color: #3a3f4a;
+            box-shadow: 0 0 0 3px rgba(59,130,246,.12);
+        }
+        .select-swatch .swatch-element input:focus-visible + label{
+            outline: 2px solid rgba(59,130,246,.6);
+            outline-offset: 2px;
+        }
+
+        /* Active (đang chọn) */
+        .select-swatch .swatch-element input:checked + label{
+            border-color: #f29620;
+            background: linear-gradient(180deg, rgba(59,130,246,.12), rgba(59,130,246,.04));
+            transform: translateY(-1px);
+        }
+
+        /* Disabled (nếu có thêm class .soldout hoặc .unavailable) */
+        .select-swatch .swatch-element.unavailable label,
+        .select-swatch .swatch-element.soldout label{
+            color: #656b78;
+            border-style: dashed;
+            cursor: not-allowed;
+            opacity: .7;
+        }
+
+        /* Dot màu nhỏ trước text – map theo tên phổ biến (tuỳ chọn) */
+        .select-swatch .swatch-element label::before{
+            content: "";
+            width: 14px; height: 14px;
+            border-radius: 50%;
+            border: 1px solid rgba(255,255,255,.25);
+            background: linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,.02));
+            display: none;           /* mặc định tắt, chỉ bật khi match các case dưới */
+        }
+
+        /* Bật dot khi là màu sắc quen thuộc (dựa theo title/giá trị) */
+
+        /* bạn có thể thêm các case: Bạc, Tím, Xanh dương… */
+
+        /* Nhỏ gọn trên mobile */
+        @media (max-width: 575.98px){
+            .select-swatch .swatch .header{ font-size: 14px; }
+            .select-swatch .swatch-element label{ padding: 8px 12px; min-height: 34px; font-size: 14px; }
+        }
+
+    </style>
 @endsection
 
 
@@ -328,6 +441,36 @@
                             <div class="text-base text-w-neutral-4 mb-3 prod-intro rte">
                                 {!! $product->intro !!}
                             </div>
+
+
+                            <div class="select-swatch">
+                                @foreach($product->attributes as $keyAttr => $attribute)
+                                    <div class="swatch clearfix"
+                                         data-option-index="{{ $keyAttr }}"
+                                         @if(!empty($attribute['id'])) data-attr-id="{{ $attribute['id'] }}" @endif>
+                                        <div class="header">
+                                            {{ $attribute['name'] }}:
+                                            <span class="value-roperties"></span>
+                                        </div>
+
+                                        @foreach($attribute['values'] as $keyVal => $val)
+                                            @php $vid = $val['id']; $vlabel = $val['value']; @endphp
+
+                                            <div class="swatch-element {{ $keyAttr }}-{{ $keyVal }} available"
+                                                 data-id="{{ $vid }}" data-value="{{ $vlabel }}" title="{{ $vlabel }}">
+                                                <input id="swatch-{{ $keyAttr }}-{{ $keyVal }}"
+                                                       type="radio"
+                                                       name="option-{{ !empty($attribute['id']) ? $attribute['id'] : $keyAttr }}"
+                                                       value="{{ $vid }}" />
+                                                <label for="swatch-{{ $keyAttr }}-{{ $keyVal }}">{{ $vlabel }}</label>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                @endforeach
+                            </div>
+
+
+
 
                             @if($hasTypes)
                                 <fieldset id="variantSelect" class="variant-select">
@@ -504,15 +647,53 @@
                     var currentVal = parseInt(qty);
                 }
 
+                // mảng value attributes khi click chọn
+                var selectedValueIds = [];
+                var selectedValueLabels = [];
+                var missing = [];
+
+                jQuery('.swatch').each(function () {
+                    var $sw = jQuery(this);
+                    var $checked = $sw.find('input[type=radio]:checked');
+
+                    if ($checked.length) {
+                        // id (vid)
+                        var vid = parseInt($checked.val(), 10);
+                        selectedValueIds.push(vid);
+
+                        // label (vlabel)
+                        // ưu tiên lấy từ .swatch-element đang selected
+                        var $el = $checked.closest('.swatch-element');
+                        var vlabel = ($el.data('value') || '').toString().trim();
+
+                        // nếu vì lý do nào đó không có data-value, fallback sang text của <label>
+                        if (!vlabel) {
+                            vlabel = ($el.find('label').text() || '').trim();
+                        }
+
+                        selectedValueLabels.push(vlabel);
+                    } else {
+                        var name = $sw.find('.header').text().trim();
+                        missing.push(name);
+                    }
+                });
+
+                if (missing.length) {
+                    // alert('Vui lòng chọn: \n- ' + missing.join('\n- '));
+                    toastr.warning('Vui lòng chọn: \n- ' + missing.join('\n- '));
+                    return;
+                }
+
+
                 const hasVariantInputs = document.querySelectorAll('.variant-radio').length > 0;
                 const selectedVariant = hasVariantInputs ? getSelectedVariant() : null;
 
                 if (hasVariantInputs && !selectedVariant) {
-                    toastr.error('Vui lòng chọn phân loại trước khi thêm giỏ hàng.');
+                    toastr.warning('Vui lòng chọn phân loại trước khi thêm giỏ hàng.');
                     return;
                 }
 
-                const payload = { qty: currentVal };
+                const payload = { qty: currentVal,attribute_value_ids:selectedValueIds,attribute_value_labels:selectedValueLabels  };
 
                 // Nếu có phân loại, đính kèm thông tin type
                 if (selectedVariant) {
@@ -791,6 +972,20 @@
                 input.value = String(val);
             }, true);
         })();
+    </script>
+    <script>
+        document.addEventListener('change', function(e){
+            const target = e.target;
+            if(target.matches('.swatch-element input[type="radio"]')){
+                const swatch = target.closest('.swatch');
+                const val = target.value;
+                const text = target.nextElementSibling?.textContent?.trim() || '';
+                const out = swatch.querySelector('.value-roperties');
+                if(out){ out.textContent = text; }
+            }
+        });
+
+
     </script>
 
 @endpush

@@ -25,7 +25,8 @@
             </li>
 
 
-            <li class="nav-item has-treeview  {{ request()->is('admin/products') || request()->is('admin/products*') ||
+            <li class="nav-item has-treeview  {{ request()->is('admin/products') || request()->is('admin/products*') || request()->is('admin/attributes')
+|| request()->is('admin/attributes*') ||
 request()->is('admin/categories') || request()->is('admin/categories*') || request()->is('admin/category-special') ? 'menu-open' : '' }} ">
                 <a href="#" class="nav-link">
                     <i class="nav-icon fab fa-dropbox"></i>
@@ -46,6 +47,13 @@ request()->is('admin/categories') || request()->is('admin/categories*') || reque
                         <a href="{{ route('Category.index') }}" class="nav-link {{ Request::routeIs('Category.index') ? 'active' : '' }}">
                             <i class="far fas  fa-angle-right nav-icon"></i>
                             <p>Danh sách danh mục</p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="{{ route('attributes.index') }}" class="nav-link {{ Request::routeIs('attributes.index') ? 'active' : '' }}">
+                            <i class="far fas  fa-angle-right nav-icon"></i>
+                            <p>Danh mục thuộc tính</p>
                         </a>
                     </li>
 

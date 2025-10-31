@@ -39,6 +39,7 @@ class ConfigController extends Controller
 				'email' => 'required|email',
 				'facebook' => 'nullable|max:255',
 				'image' => 'nullable|file|mimes:jpg,jpeg,png|max:3000',
+				'qr' => 'nullable|file|mimes:jpg,jpeg,png|max:3000',
                 'favicon' => 'nullable|file|mimes:jpg,jpeg,png|max:3000',
                 'location' => 'nullable',
                 'google_map' => 'nullable'
@@ -86,6 +87,13 @@ class ConfigController extends Controller
 			$object->hdmh = $request->hdmh;
 			$object->facebook_mess = $request->facebook_mess;
 
+			$object->nganhang = $request->nganhang;
+			$object->chutaikhoan = $request->chutaikhoan;
+			$object->sotaikhoan = $request->sotaikhoan;
+			$object->chinhanh = $request->chinhanh;
+
+
+
 			$object->save();
 
 			if($request->image) {
@@ -107,6 +115,13 @@ class ConfigController extends Controller
                     FileHelper::deleteFileFromCloudflare($object->favicon, $object->id, ThisModel::class, 'favicon');
                 }
                 FileHelper::uploadFileToCloudflare($request->favicon, $object->id, ThisModel::class, 'favicon');
+            }
+
+            if($request->qr) {
+                if($object->qr) {
+                    FileHelper::deleteFileFromCloudflare($object->qr, $object->id, ThisModel::class, 'qr');
+                }
+                FileHelper::uploadFileToCloudflare($request->qr, $object->id, ThisModel::class, 'qr');
             }
 
 //            if($request->video) {

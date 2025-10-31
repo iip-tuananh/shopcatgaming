@@ -68,7 +68,7 @@
 /* Danh sách */
 .editor-content ul,
 .editor-content ol {
-    padding-left: 2em !important;
+    /*padding-left: 2em !important;*/
     margin: 0.5em 0 !important;
 }
 
@@ -156,7 +156,7 @@
 /* Khoảng cách & line-height cơ bản cho list */
 .editor-content ul,
 .editor-content ol {
-    padding-left: 1.25em;
+    /*padding-left: 1.25em;*/
     margin: 0 0 1em 0;
 }
 .editor-content li {

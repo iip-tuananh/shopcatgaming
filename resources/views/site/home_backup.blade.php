@@ -103,11 +103,10 @@
 
         .section-news {
             padding-top: 30px;
-            padding-bottom: 0;
         }
 
         .section-pt-1 {
-            padding-top: 40px;
+            padding-top: 20px;
         }
 
         @media (max-width: 639.98px){  /* mobile */
@@ -129,11 +128,11 @@
                             @foreach($banners as $banner)
                                 <div class="swiper-slide">
                                     <div class="w-full rounded-32 overflow-hidden relative">
-                                     <a href="{{ $banner->link }}">
-                                         <img
-                                             class="w-full xxl:h-[630px] xl:h-[580px] lg:h-[520px] md:h-[420px] sm:h-[380px] h-[300px] object-cover"
-                                             src="{{ $banner->image->path ?? '' }}" alt="product" />
-                                     </a>
+                                        <a href="{{ $banner->link }}">
+                                            <img
+                                                class="w-full xxl:h-[630px] xl:h-[580px] lg:h-[520px] md:h-[420px] sm:h-[380px] h-[300px] object-cover"
+                                                src="{{ $banner->image->path ?? '' }}" alt="product" />
+                                        </a>
 
                                     </div>
                                 </div>
@@ -156,7 +155,7 @@
                                                 class="xxl:w-[180px] xl:w-[140px] lg:w-[120px] md:w-25 w-20 xxl:h-[110px] xl:h-24 lg:h-20 md:h-18 h-16 hover:scale-110 hover:-rotate-6 object-cover transition-1"
                                                 src="{{ $banner->image->path ?? '' }}" alt="product">
 
-                                            <div class="overlay-1 rounded-20"></div>
+                                            <div class="overlay-1"></div>
                                         </div>
                                     </div>
                                 @endforeach
@@ -172,6 +171,8 @@
         <!-- hero section end -->
 
 
+
+
         <!-- Popular Games Two section start -->
         @foreach($categoriesSpecial as $categorySpecial)
             <section class="section-pt section-pt-1">
@@ -180,9 +181,9 @@
                         <h2 class="heading-2 text-w-neutral-1 text-split-left">
                             {{ $categorySpecial->name }}
                         </h2>
-{{--                        <a href="games.html" class="btn btn-lg py-3 btn-neutral-2 shrink-0">--}}
-{{--                            View All--}}
-{{--                        </a>--}}
+                        {{--                        <a href="games.html" class="btn btn-lg py-3 btn-neutral-2 shrink-0">--}}
+                        {{--                            View All--}}
+                        {{--                        </a>--}}
                     </div>
                     <div class="mt-40p" >
                         <div class="swiper four-card-carousel" data-carousel-name="popular-games-one">
@@ -205,38 +206,10 @@
         @endforeach
         <!-- Popular Games Two section end -->
 
-        <style>
-            /* Biến slider này thành lưới 2 cột */
-            .two-card-carousel .swiper-wrapper{
-                display: grid !important;
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-                gap: 24px;                /* chỉnh khoảng cách giữa 2 ô nếu muốn */
-                padding-bottom: 0 !important;
-            }
-
-            /* Để ô con co giãn tự nhiên như thẻ grid item */
-            .two-card-carousel .swiper-slide{
-                width: auto !important;
-                height: auto;
-                margin: 0 !important;
-            }
-
-            /* Ẩn thanh kéo & nút nếu không cần khi đã là grid */
-            .two-card-carousel .swiper-scrollbar,
-            .two-card-carousel .swp-navigation-one{ display: none !important; }
-
-            /* (Tuỳ chọn) Mobile 1 cột cho dễ đọc */
-            @media (max-width: 575.98px){
-                .two-card-carousel .swiper-wrapper{
-                    grid-template-columns: 1fr;
-                }
-            }
-
-        </style>
         <!-- Popular Categories section start -->
         <section class="">
             <div class="container">
-                <div class="mt-40p" >
+                <div class="mt-40p" data-aos="fade-left">
                     <div class="swiper two-card-carousel" data-carousel-name="popular-categories" data-carousel-reverse="true">
                         <div class="swiper-wrapper pb-40p">
                             @foreach($categoriesParent as $categoryParent)
@@ -257,10 +230,11 @@
                                                 </p>
                                             </div>
                                             <div class="flex-y gap-2.5 my-24p">
-
+                                                <span class="badge badge-secondary badge-circle size-3"></span>
+                                                <p class="text-base text-neutral-100"><span>{{ $categoryParent->total_products }}</span> sản phẩm</p>
                                             </div>
                                             <a href="{{ route('front.getProductList', $categoryParent->slug) }}" class="btn btn-sm flex btn-neutral-2 group-hover:btn-primary">
-                                               Tìm hiểu thêm
+                                                Xem tất cả
                                             </a>
                                         </div>
                                     </div>
@@ -286,57 +260,109 @@
         </section>
 
 
+        <!-- Popular Categories section end -->
 
-        @foreach($postsCategory as $postCategory)
-            <section class="section-py section-news">
+        @foreach($categories as $cate)
+            <section class="section-pt section-pt-1">
                 <div class="container">
+                    {{-- BANNER NGANG CHO CATEGORY --}}
+                    <a class="cat-banner" href="" aria-label="{{ $cate->name }}">
+                        @php
+                            $bannerUrl = @$cate->banner->path ?? null;
+                        @endphp
+
+                        @if($bannerUrl)
+                            <picture>
+                                <img class="cb-img" src="{{ $bannerUrl }}" alt="{{ $cate->name }}">
+                            </picture>
+                        @else
+                            <div class="cb-fallback">
+                                <strong class="cb-title">{{ strtoupper($cate->name) }}</strong>
+                            </div>
+                        @endif
+
+                    </a>
+
+                    {{-- HÀNG TIÊU ĐỀ + NÚT VIEW ALL --}}
                     <div class="flex items-center justify-between flex-wrap gap-24p">
-                        <h2 class="heading-2 text-w-neutral-1 text-split-left">
-                           {{ $postCategory->name }}
-                        </h2>
-                        <a href="{{ route('front.blogs', $postCategory->slug) }}" class="btn btn-lg px-32p btn-neutral-2">
+                        <h2 class="heading-2 text-w-neutral-1 text-split-left">{{ $cate->name }}</h2>
+                        <a href="{{ route('front.getProductList', $cate->slug ?? '') }}" class="btn btn-lg py-3 btn-neutral-2 shrink-0">
                             Xem tất cả
                         </a>
                     </div>
+
+
+
                     <div class="mt-40p">
-                        <div class="swiper three-card-carousel" data-carousel-name="top-rated-stream">
-                            <div class="swiper-wrapper ">
-
-                                @foreach($postCategory->posts as $blog)
+                        <div class="swiper four-card-carousel" data-carousel-name="popular-games-one">
+                            <div class="swiper-wrapper pb-15">
+                                @foreach($cate->products as $productCate)
                                     <div class="swiper-slide">
-                                        <div class="relative rounded-12 overflow-hidden w-full group">
-                                            <img class="w-full h-[300px] group-hover:scale-110 object-cover transition-1"
-                                                 src="{{ $blog->image->path ?? '' }}" alt="img"/>
-                                            <div class="overlay-6 p-20p flex flex-col items-start justify-between">
-                                                <div class="w-full">
-                                                    <a href="{{ route('front.blogDetail', $blog->slug) }}"
-                                                       class="library-title heading-4 link-1 mb-2">
-                                                        {{ $blog->name }}
-                                                    </a>
-                                                    <span class="text-l-regular text-w-neutral-2 mb-20p">{{ \Carbon\Carbon::parse($blog->created_at)->format('d/m/Y') }}</span>
-                                                    <div class="flex-y justify-between gap-16p">
-                                                        <a href="{{ route('front.blogDetail', $blog->slug) }}"
-                                                           class="btn btn-md btn-danger rounded-12">
-                                                            Chi tiết
-                                                        </a>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        @include('site.partials.product_item', ['product' => $productCate])
                                     </div>
-
                                 @endforeach
-
                             </div>
                             <div
-                                class="swiper-pagination pagination-one top-rated-stream-carousel-pagination flex-c gap-2.5">
+                                class="swiper-pagination pagination-one popular-games-one-carousel-pagination flex-c gap-2.5">
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
         @endforeach
+
+
+        <section class="section-py section-news">
+            <div class="container">
+                <div class="flex items-center justify-between flex-wrap gap-24p">
+                    <h2 class="heading-2 text-w-neutral-1 text-split-left">
+                        Tin tức
+                    </h2>
+                    <a href="{{ route('front.blogs') }}" class="btn btn-lg px-32p btn-neutral-2">
+                        Xem tất cả
+                    </a>
+                </div>
+                <div class="mt-40p">
+                    <div class="swiper three-card-carousel" data-carousel-name="top-rated-stream">
+                        <div class="swiper-wrapper pb-15">
+
+                            @foreach($blogs as $blog)
+                                <div class="swiper-slide">
+                                    <div class="relative rounded-12 overflow-hidden w-full group">
+                                        <img class="w-full h-[300px] group-hover:scale-110 object-cover transition-1"
+                                             src="{{ $blog->image->path ?? '' }}" alt="img"/>
+                                        <div class="overlay-6 p-20p flex flex-col items-start justify-between">
+                                            <div class="w-full">
+                                                <a href="{{ route('front.blogDetail', $blog->slug) }}"
+                                                   class="library-title heading-4 link-1 mb-2">
+                                                    {{ $blog->name }}
+                                                </a>
+                                                <span class="text-l-regular text-w-neutral-2 mb-20p">{{ \Carbon\Carbon::parse($blog->created_at)->format('d/m/Y') }}</span>
+                                                <div class="flex-y justify-between gap-16p">
+                                                    <a href="{{ route('front.blogDetail', $blog->slug) }}"
+                                                       class="btn btn-md btn-danger rounded-12">
+                                                        Chi tiết
+                                                    </a>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            @endforeach
+
+
+
+
+                        </div>
+                        <div
+                            class="swiper-pagination pagination-one top-rated-stream-carousel-pagination flex-c gap-2.5">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
 
     </main>

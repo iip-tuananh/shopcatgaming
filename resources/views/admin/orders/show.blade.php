@@ -52,11 +52,21 @@
                                 <label class="form-label">Tổng tiền: <% form.total_price | number %></label>
                             </div>
                         </div>
+
+
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="form-label">Phương thức thanh toán: <% form.payment_method_name %></label>
+                                <label class="form-label">Cách nhận hàng: <% form.fulfillment_method == 'pickup' ? 'Nhận hàng tại nhà' : 'Nhận tại cửa hàng' %></label>
                             </div>
                         </div>
+
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Phương thức thanh toán: <% form.payment_method == 1 ? 'Ship COD' : 'Chuyển khoản ngân hàng' %></label>
+                            </div>
+                        </div>
+
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="form-label">Trạng thái: <% getStatus(form.status) %></label>
@@ -96,7 +106,11 @@
                             <tr ng-repeat="detail in form.details track by $index">
                                 <td class="text-center"><% $index + 1 %></td>
                                 <td class="text-center"><% detail.product.name %></td>
-                                <td class="text-center"><% detail.type %></td>
+                                <td class="text-center">
+                                    <% detail.type %> <br>
+                                    <% detail.attributes %>
+
+                                </td>
                                 <td class="text-center" ng-if="detail.price > 0"><% detail.price | number %></td>
                                 <td class="text-center" ng-if="detail.price <= 0">Liên hệ</td>
                                 <td class="text-center"><% detail.qty | number %></td>

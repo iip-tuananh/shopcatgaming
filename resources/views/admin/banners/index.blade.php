@@ -58,7 +58,7 @@ Quản lý banner trang chủ
                     return `<img src="${data}" style="height:80px; object-fit:cover;">`;
                 }
             },
-            // {data: 'link', title: 'Link'},
+            {data: 'link', title: 'Link'},
             {data: 'updated_at', title: 'Ngày cập nhật'},
             {data: 'updated_by', title: 'Người cập nhật'},
             {data: 'action', orderable: false, title: "Hành động"}

@@ -166,13 +166,16 @@
 
 /* ====== Responsive ====== */
 @media (max-width: 768px){
-    .product-card .pc-name{ font-size:16px; }
+    .product-card .pc-name{ font-size:14px; }
     .product-card .pc-badge-off,
     .product-card .pc-price-pill{
         padding:7px 12px;
         font-size: 13px;
     }
-    .product-card .pc-price-pill .now{ font-size:15px; }
+    .product-card .pc-price-pill .now{
+        font-size:11px;
+        font-weight: 600;
+    }
 }
 
 /* ====== Xoá/ghi đè style cũ (nếu có) ====== */
@@ -211,7 +214,7 @@
     .pc-name{
         line-height:1.35;
         display:-webkit-box;
-        -webkit-line-clamp:2;      /* 2 dòng, đổi 3 nếu muốn */
+        /*-webkit-line-clamp:2;      !* 2 dòng, đổi 3 nếu muốn *!*/
         -webkit-box-orient:vertical;
         overflow:hidden;
         min-height: calc(1.35em * 2);
@@ -261,7 +264,7 @@
         line-height:var(--lh);
         display:-webkit-box;
         -webkit-box-orient:vertical;
-        -webkit-line-clamp:2;                 /* đổi 3 nếu muốn */
+        /*-webkit-line-clamp:2;                 !* đổi 3 nếu muốn *!*/
         overflow:hidden;
         min-height: calc(var(--lh) * 2em);    /* giữ chiều cao đều khi tên ngắn */
     }

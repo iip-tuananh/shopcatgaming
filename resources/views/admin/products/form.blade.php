@@ -244,42 +244,83 @@
 
 
 
-{{--        <div class="form-group">--}}
-{{--            <label class="form-label">Phân loại sản phẩm</label>--}}
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card mb-4">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0">Thêm thuộc tính</h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Chọn và thêm thuộc tính -->
+                        <div class="d-flex mb-3">
+                            <select class="form-control me-2"
+                                    ng-model="selectedAttribute"
+                                    ng-options="attr as attr.name for attr in form.all_attributes">
+                                <option value="">-- Chọn thuộc tính --</option>
+                            </select>
+                            <button class="btn btn-primary" style="margin-left: 5px"
+                                    ng-click="form.addAttributes(selectedAttribute)"
+                                    ng-disabled="!selectedAttribute">
+                                Thêm
+                            </button>
+                        </div>
+                        <span class="text-danger small" ng-if="errors.attrs.length">
+         <% errors.attrs[0] %>
+        </span>
 
-{{--            <div ng-repeat="(idx, item) in form.types" class="result-item">--}}
-{{--                <input type="text"--}}
-{{--                       class="form-control form-control--small"--}}
-{{--                       placeholder="Nhập tên"--}}
-{{--                       ng-model="item.title" />--}}
+                        <!-- Danh sách thuộc tính -->
+                        <ul class="list-group">
+                            <li class="list-group-item p-3" ng-repeat="attrObj in form.attrs track by $index">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <strong><% attrObj.name %></strong>
+                                    <button class="btn btn-sm btn-danger"
+                                            ng-click="form.removeAttributes($index)">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </div>
 
-{{--                <input type="text"--}}
-{{--                       class="form-control"--}}
-{{--                       placeholder="Nhập giá trước giảm"--}}
-{{--                       ng-model="item.base_price" />--}}
-
-{{--                <input type="text"--}}
-{{--                       class="form-control"--}}
-{{--                       placeholder="Nhập giá bán"--}}
-{{--                       ng-model="item.price" />--}}
-
-{{--                <button type="button"--}}
-{{--                        class="btn btn-success"--}}
-{{--                        ng-if="idx === form.types.length - 1"--}}
-{{--                        ng-click="form.addType()">--}}
-{{--                    <i class="fa fa-plus"></i>--}}
-{{--                </button>--}}
-
-{{--                <button type="button"--}}
-{{--                        class="btn btn-danger"--}}
-{{--                        ng-if="form.types.length > 1"--}}
-{{--                        ng-click="form.removeType(idx)">--}}
-{{--                    <i class="fa fa-times"></i>--}}
-{{--                </button>--}}
-{{--            </div>--}}
-
-{{--            <div class="invalid-feedback d-block"><% errors.types %></div>--}}
-{{--        </div>--}}
+                                <!-- Bảng giá trị -->
+                                <table class="table table-sm mb-0">
+                                    <thead>
+                                    <tr>
+                                        <th>Giá trị</th>
+                                        <th class="text-end">Hành động</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="(vIndex, item) in attrObj.values">
+                                        <td>
+                                            <input type="text"
+                                                   class="form-control form-control-sm"
+                                                   ng-model="item.value"
+                                                   placeholder="Nhập giá trị...">
+                                            <span class="text-danger">
+                                                <% errors['attrs.' + $parent.$index + '.values.' + $index + '.value'][0]%>
+                                            </span>
+                                        </td>
+                                        <td style="text-align: center">
+                                            <button class="btn btn-outline-danger btn-sm"
+                                                    ng-click="attrObj.removeValues(vIndex)">
+                                                <i class="fa fa-minus"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" class="text-center">
+                                            <button class="btn btn-sm btn-secondary"
+                                                    ng-click="attrObj.addValues()">
+                                                <i class="fa fa-plus"></i> Thêm giá trị
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- ====== Product Types (Variants) ====== -->
         <div class="form-group variant-group">

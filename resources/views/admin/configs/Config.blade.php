@@ -5,6 +5,7 @@
         no_set = [];
         before(form) {
             this.image = {};
+            this.qr = {};
         }
         after(form) {
         }
@@ -66,6 +67,14 @@
             this._video = new File(value, this, this.sce);
         }
 
+        get qr() {
+            return this._qr;
+        }
+
+        set qr(value) {
+            this._qr= new Image(value, this);
+        }
+
         get submit_data() {
             let data = {
                 web_title: this.web_title,
@@ -94,6 +103,10 @@
                 youtube_iframe: this.youtube_iframe,
                 hdmh: this.hdmh,
                 facebook_mess: this.facebook_mess,
+                nganhang: this.nganhang,
+                chutaikhoan: this.chutaikhoan,
+                sotaikhoan: this.sotaikhoan,
+                chinhanh: this.chinhanh,
             }
             data = jsonToFormData(data);
             let image = this.image.submit_data;
@@ -104,6 +117,10 @@
 
             let favicon = this.favicon.submit_data;
             if (favicon) data.append('favicon', favicon);
+
+            let qr = this.qr.submit_data;
+            if (qr) data.append('qr', qr);
+
             // let video = this.video.submit_data;
             // if (video) data.append('video', video);
 
