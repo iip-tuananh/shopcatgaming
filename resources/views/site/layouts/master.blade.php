@@ -190,6 +190,10 @@
     </script>
 
 
+    <script>
+
+
+    </script>
     @stack('scripts')
 
 

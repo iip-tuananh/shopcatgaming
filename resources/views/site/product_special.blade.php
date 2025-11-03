@@ -46,7 +46,7 @@
                 <div
                     class="relative  bg-cover bg-no-repeat rounded-24 overflow-hidden" style="background-image: url({{ @$category->image->path ?? '' }})">
                     <div class="container">
-                        <div class="grid grid-cols-12 gap-30p relative xl:py-[130px] md:py-30 sm:py-25 py-20 z-[2]">
+                        <div class="grid grid-cols-12 gap-30p relative  py-20 z-[2]">
                             <div class="lg:col-start-2 lg:col-end-12 col-span-12">
                                 <h2 class="heading-2 text-w-neutral-1 mb-3">
                                     {{ @$category->name ?? 'Sản phẩm' }}

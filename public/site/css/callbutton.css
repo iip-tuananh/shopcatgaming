@@ -74,3 +74,74 @@
 }
 
 
+/* ====== SOLID BRAND COLORS (no mix, no gradient) ====== */
+.roundCool{
+    /* dùng biến thuần cho nền/viền trong/glow */
+    --bg: #60a5fa;
+    --inner: #1d4ed8;
+    --glow: rgba(96,165,250,.55);
+
+    background: var(--bg) !important;                 /* nền bệt */
+    box-shadow: 0 6px 16px rgba(0,0,0,.25),           /* đổ bóng */
+    inset 0 0 0 1px rgba(255,255,255,.12);
+}
+
+/* vòng trong bệt, không gradient */
+.roundCool::before{
+    background: var(--inner) !important;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.16);
+}
+
+/* glow cùng tông màu, không pha */
+.roundCool::after{
+    background: radial-gradient(60% 60% at 50% 50%, var(--glow), transparent 70%) !important;
+}
+
+/* icon trắng để tương phản mạnh */
+.inner-fab-icon{
+    /*filter: brightness(0) invert(1);*/
+}
+
+/* hover ring theo đúng màu nền */
+.roundCool:hover{
+    box-shadow: 0 10px 22px rgba(0,0,0,.35),
+    0 0 0 4px color-mix(in srgb, var(--bg) 35%, transparent); /* nếu muốn bỏ hẳn mix: dùng rgba của --bg */
+}
+/* Nếu muốn bỏ hẳn color-mix vì compat, thay dòng trên bằng:
+   0 0 0 4px rgba(24,119,242,.35)  (với mỗi class fb/zalo/phone set theo màu tương ứng)
+*/
+
+/* ====== MÀU THEO TỪNG NÚT ====== */
+/* Facebook: xanh Facebook */
+.roundCool.fb{
+    --bg:#1877F2;          /* Facebook Blue */
+    --inner:#0d5bd3;       /* đậm hơn một tông */
+    --glow:rgba(24,119,242,.55);
+}
+
+/* Zalo: xanh Zalo */
+.roundCool.zalo{
+    --bg:#0068FF;          /* Zalo Blue */
+    --inner:#0052cc;       /* đậm hơn */
+    --glow:rgba(0,104,255,.55);
+}
+
+/* Hotline: đỏ đậm */
+.roundCool.phone{
+    --bg:#EF4444;          /* Red 500 */
+    --inner:#B91C1C;       /* Red 700 */
+    --glow:rgba(239,68,68,.55);
+}
+
+/* Giữ hiệu ứng pulse cho hotline */
+.roundCool.phone:hover::after{
+    animation: pulse 1.6s infinite;
+}
+
+/* Mobile size giữ nguyên như cũ */
+@media (max-width: 575.98px){
+    .inner-fabs{ right: 10px; bottom: 90px; gap: 10px; }
+    .roundCool{ width:56px; height:56px; }
+    .roundCool::before{ inset:10px; }
+    .inner-fab-icon{ width:24px; height:24px; }
+}

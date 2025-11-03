@@ -146,8 +146,9 @@ class CartController extends Controller
         $provinces = Vanthao03596Province::all();
         $districts = District::all();
         $wards = Ward::all();
+        $banner = Banner::query()->with('image')->where('type',7)->first();
 
-        return view('site.orders.checkout', compact('cartCollection', 'total', 'provinces', 'districts', 'wards'));
+        return view('site.orders.checkout_', compact('cartCollection', 'total', 'provinces', 'districts', 'wards', 'banner'));
     }
 
     // áp dụng mã giảm giá (boolean)
@@ -270,8 +271,9 @@ class CartController extends Controller
 
         $orderId = session('order_id') ?? 3;
         $order = Order::query()->with('details', 'details.product', 'details.product.image')->find($orderId);
+        $banner = Banner::query()->with('image')->where('type',7)->first();
 
-        return view('site.orders.checkoutQr', compact('order'));
+        return view('site.orders.checkoutQr_', compact('order', 'banner'));
     }
 
 
@@ -339,12 +341,13 @@ class CartController extends Controller
         if (!session()->has('order_id')) {
             return redirect()->route('front.home-page');
         }
+        $banner = Banner::query()->with('image')->where('type',7)->first();
 
         $orderId = session('order_id');
-        $order = Order::query()->with('details', 'details.product', 'details.product.image')->find($orderId);
+        $order = Order::query()->with('details', 'details.product', 'details.product.image')->find($orderId) ;
         session()->forget('order_id');
 
-        return view('site.orders.checkout_success', compact('order'));
+        return view('site.orders.checkout_success_', compact('order', 'banner'));
     }
 
 }

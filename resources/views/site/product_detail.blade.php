@@ -278,6 +278,15 @@
         }
 
     </style>
+
+    <style>
+        /* Swatch bắt buộc nhưng chưa chọn (auto highlight) */
+        .swatch.is-required:has(input[type=radio]):not(:has(input[type=radio]:checked)){
+            outline: 2px solid #ef4444;
+            outline-offset: 2px;
+            border-radius: 10px;
+        }
+    </style>
 @endsection
 
 
@@ -335,25 +344,118 @@
         <section class="py-15 overflow-visible">
             <div class="container">
                 <div class="grid grid-cols-12 gap-x-30p gap-y-10 mb-60p">
-                    <div class="xxl:col-span-6 xl:col-span-7 col-span-12 relative">
+{{--                    <div class="xxl:col-span-6 xl:col-span-7 col-span-12 relative">--}}
+{{--                        <div class="xl:sticky xl:top-30">--}}
+{{--                            <div class="thumbs-carousel-container" data-carousel-name="product-slider"--}}
+{{--                                 data-slides-per-view="4" data-carousel-direction="vertical">--}}
+{{--                                <div class="swiper !flex md:gap-30p gap-2.5 xl:h-[514px] sm:h-[400px] h-[300px]">--}}
+{{--                                    <div class="shrink-0 sm:w-[110px] w-20  thumbs-gallery">--}}
+{{--                                        <div class="swiper-wrapper *:!h-fit" >--}}
+
+{{--                                            <a class="swiper-slide"  >--}}
+{{--                                                <div class="cursor-pointer  bg-b-neutral-3 rounded-12">--}}
+{{--                                                    <img class="w-full  h-24  object-contain"--}}
+{{--                                                         src="{{ $product->image->path ?? '' }}" alt="{{ $product->name }}">--}}
+{{--                                                </div>--}}
+{{--                                            </a>--}}
+
+{{--                                            @foreach($product->galleries as $k => $gal)--}}
+{{--                                                <a class="swiper-slide" >--}}
+{{--                                                    <div class="cursor-pointer bg-b-neutral-3 rounded-12">--}}
+{{--                                                        <img class="w-full  h-24  object-contain"--}}
+{{--                                                             src="{{ $gal->image->path ?? '' }}" alt="{{ $product->name }}">--}}
+{{--                                                    </div>--}}
+{{--                                                </a>--}}
+{{--                                            @endforeach--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
+
+{{--                                    <div class="swiper thumbs-gallery-main">--}}
+{{--                                        <div class="swiper-wrapper" id="lightgallery">--}}
+
+{{--                                            <a class="swiper-slide" data-hash="0" href="{{ $product->image->path ?? '' }}">--}}
+{{--                                                <div--}}
+{{--                                                    class="w-full h-full flex-c   rounded-12 overflow-hidden" style="align-items: stretch">--}}
+{{--                                                    <img class=" object-contain"--}}
+{{--                                                         src="{{ $product->image->path ?? '' }}" alt="{{ $product->name }}" />--}}
+{{--                                                </div>--}}
+{{--                                            </a>--}}
+
+{{--                                            @foreach($product->galleries as $gal)--}}
+{{--                                                <a class="swiper-slide"  data-hash="{{ $k+1 }}" href="{{ $gal->image->path ?? '' }}">--}}
+{{--                                                    <div--}}
+{{--                                                        class="w-full h-full flex-c  rounded-12 overflow-hidden" style="align-items: stretch">--}}
+{{--                                                        <img class="object-contain"--}}
+{{--                                                             src="{{ $gal->image->path ?? '' }}" alt="{{ $product->name }}" />--}}
+{{--                                                    </div>--}}
+{{--                                                </a>--}}
+{{--                                            @endforeach--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+
+
+                    <div class="xxl:col-span-5 xl:col-span-6 col-span-12 relative">
                         <div class="xl:sticky xl:top-30">
                             <div class="thumbs-carousel-container" data-carousel-name="product-slider"
-                                 data-slides-per-view="4" data-carousel-direction="vertical">
-                                <div class="swiper !flex md:gap-30p gap-2.5 xl:h-[514px] sm:h-[400px] h-[300px]">
-                                    <div class="shrink-0 sm:w-[110px] w-20  thumbs-gallery">
-                                        <div class="swiper-wrapper *:!h-fit" >
+                                 data-slides-per-view="4" data-carousel-direction="horizontal"> <!-- đổi vertical -> horizontal -->
+                                <!-- đổi layout: flex-col (thay vì row) -->
+                                <div class="swiper !flex flex-col gap-3">  <!-- bỏ các class set chiều cao cố định -->
 
-                                            <a class="swiper-slide"  >
-                                                <div class="cursor-pointer  bg-b-neutral-3 rounded-12">
-                                                    <img class="w-full  h-24  object-contain"
-                                                         src="{{ $product->image->path ?? '' }}" alt="{{ $product->name }}">
+                                    <!-- MAIN ảnh lớn: order-1 -->
+                                    <!-- MAIN ảnh lớn -->
+                                    <div class="swiper thumbs-gallery-main order-1 w-full">
+                                        <div class="swiper-wrapper" id="lightgallery">
+
+                                            <a class="swiper-slide" data-hash="0" href="{{ $product->image->path ?? '' }}">
+                                                <!-- Khung có tỉ lệ + padding để ảnh trông nhỏ lại -->
+                                                <div class="w-full rounded-12 overflow-hidden bg-b-neutral-3
+                  aspect-[4/3] sm:aspect-[16/12] lg:aspect-[16/10]
+                  flex items-center justify-center
+                  p-4 sm:p-6 lg:p-8">
+                                                    <img
+                                                        class="object-contain
+                 max-w-[88%] sm:max-w-[84%] lg:max-w-[78%] xl:max-w-[60%]
+                 max-h-full"
+                                                        src="{{ $product->image->path ?? '' }}" alt="{{ $product->name }}" />
                                                 </div>
                                             </a>
 
                                             @foreach($product->galleries as $k => $gal)
-                                                <a class="swiper-slide" >
+                                                <a class="swiper-slide" data-hash="{{ $k+1 }}" href="{{ $gal->image->path ?? '' }}">
+                                                    <div class="w-full rounded-12 overflow-hidden bg-b-neutral-3
+                    aspect-[4/3] sm:aspect-[16/12] lg:aspect-[16/10]
+                    flex items-center justify-center
+                    p-4 sm:p-6 lg:p-8">
+                                                        <img
+                                                            class="object-contain
+                   max-w-[88%] sm:max-w-[84%] lg:max-w-[78%] xl:max-w-[72%]
+                   max-h-full"
+                                                            src="{{ $gal->image->path ?? '' }}" alt="{{ $product->name }}" />
+                                                    </div>
+                                                </a>
+                                            @endforeach
+
+                                        </div>
+                                    </div>
+
+
+                                    <!-- THUMBNAILS: order-2 + full width + nằm ngang -->
+                                    <div class="order-2 w-full thumbs-gallery">
+                                        <div class="swiper-wrapper *:!h-fit">
+                                            <a class="swiper-slide !w-auto">
+                                                <div class="cursor-pointer bg-b-neutral-3 rounded-12">
+                                                    <img class="w-full sm:h-[114px] h-24  object-contain"
+                                                         src="{{ $product->image->path ?? '' }}" alt="{{ $product->name }}">
+                                                </div>
+                                            </a>
+                                            @foreach($product->galleries as $k => $gal)
+                                                <a class="swiper-slide !w-auto">
                                                     <div class="cursor-pointer bg-b-neutral-3 rounded-12">
-                                                        <img class="w-full  h-24  object-contain"
+                                                        <img class="w-full sm:h-[114px] h-24  object-contain"
                                                              src="{{ $gal->image->path ?? '' }}" alt="{{ $product->name }}">
                                                     </div>
                                                 </a>
@@ -361,33 +463,12 @@
                                         </div>
                                     </div>
 
-                                    <div class="swiper thumbs-gallery-main">
-                                        <div class="swiper-wrapper" id="lightgallery">
-
-                                            <a class="swiper-slide" data-hash="0" href="{{ $product->image->path ?? '' }}">
-                                                <div
-                                                    class="w-full h-full flex-c   rounded-12 overflow-hidden" style="align-items: stretch">
-                                                    <img class=" object-contain"
-                                                         src="{{ $product->image->path ?? '' }}" alt="{{ $product->name }}" />
-                                                </div>
-                                            </a>
-
-                                            @foreach($product->galleries as $gal)
-                                                <a class="swiper-slide"  data-hash="{{ $k+1 }}" href="{{ $gal->image->path ?? '' }}">
-                                                    <div
-                                                        class="w-full h-full flex-c  rounded-12 overflow-hidden" style="align-items: stretch">
-                                                        <img class="object-contain"
-                                                             src="{{ $gal->image->path ?? '' }}" alt="{{ $product->name }}" />
-                                                    </div>
-                                                </a>
-                                            @endforeach
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="xxl:col-span-6 xl:col-span-5 col-span-12">
+
+                    <div class="xxl:col-span-7 xl:col-span-6 col-span-12">
                         <div>
                             <h2 class="heading-2 text-w-neutral-1 mb-16p">
                                 {{ $product->name }}
@@ -451,6 +532,9 @@
                                         <div class="header">
                                             {{ $attribute['name'] }}:
                                             <span class="value-roperties"></span>
+                                        </div>
+                                        <div class="header-none" style="display: none">
+                                            {{ $attribute['name'] }}
                                         </div>
 
                                         @foreach($attribute['values'] as $keyVal => $val)
@@ -548,6 +632,63 @@
 
                         </div>
                     </div>
+
+
+
+{{--                    <div class="xxl:col-span-6 xl:col-span-7 col-span-12 relative">--}}
+{{--                        <div class="xl:sticky xl:top-30">--}}
+{{--                            <div class="thumbs-carousel-container" data-carousel-name="product-slider"--}}
+{{--                                 data-slides-per-view="4" data-carousel-direction="horizontal"> <!-- đổi vertical -> horizontal -->--}}
+{{--                                <!-- đổi layout: flex-col (thay vì row) -->--}}
+{{--                                <div class="swiper !flex flex-col gap-3">  <!-- bỏ các class set chiều cao cố định -->--}}
+
+{{--                                    <!-- MAIN ảnh lớn: order-1 -->--}}
+{{--                                    <div class="swiper thumbs-gallery-main order-1 w-full">--}}
+{{--                                        <div class="swiper-wrapper" id="lightgallery">--}}
+{{--                                            <a class="swiper-slide" data-hash="0" href="{{ $product->image->path ?? '' }}">--}}
+{{--                                                <div class="w-full rounded-12 overflow-hidden">--}}
+{{--                                                    <img class="w-full h-auto object-contain"--}}
+{{--                                                         src="{{ $product->image->path ?? '' }}" alt="{{ $product->name }}" />--}}
+{{--                                                </div>--}}
+{{--                                            </a>--}}
+{{--                                            @foreach($product->galleries as $gal)--}}
+{{--                                                <a class="swiper-slide" data-hash="{{ $k+1 }}" href="{{ $gal->image->path ?? '' }}">--}}
+{{--                                                    <div class="w-full rounded-12 overflow-hidden">--}}
+{{--                                                        <img class="w-full h-auto object-contain"--}}
+{{--                                                             src="{{ $gal->image->path ?? '' }}" alt="{{ $product->name }}" />--}}
+{{--                                                    </div>--}}
+{{--                                                </a>--}}
+{{--                                            @endforeach--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
+
+{{--                                    <!-- THUMBNAILS: order-2 + full width + nằm ngang -->--}}
+{{--                                    <div class="order-2 w-full thumbs-gallery">--}}
+{{--                                        <div class="swiper-wrapper *:!h-fit">--}}
+{{--                                            <a class="swiper-slide !w-auto">--}}
+{{--                                                <div class="cursor-pointer bg-b-neutral-3 rounded-12">--}}
+{{--                                                    <img class="w-[88px] h-[64px] sm:w-[100px] sm:h-[72px] object-contain"--}}
+{{--                                                         src="{{ $product->image->path ?? '' }}" alt="{{ $product->name }}">--}}
+{{--                                                </div>--}}
+{{--                                            </a>--}}
+{{--                                            @foreach($product->galleries as $k => $gal)--}}
+{{--                                                <a class="swiper-slide !w-auto">--}}
+{{--                                                    <div class="cursor-pointer bg-b-neutral-3 rounded-12">--}}
+{{--                                                        <img class="w-[88px] h-[64px] sm:w-[100px] sm:h-[72px] object-contain"--}}
+{{--                                                             src="{{ $gal->image->path ?? '' }}" alt="{{ $product->name }}">--}}
+{{--                                                    </div>--}}
+{{--                                                </a>--}}
+{{--                                            @endforeach--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
+
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+
+
+
                 </div>
                 <div x-data="{ activeTab: 1 }" class="max-w-[1230px] w-full">
                     <div class="flex items-center flex-wrap text-l-medium mb-6">
@@ -673,16 +814,20 @@
 
                         selectedValueLabels.push(vlabel);
                     } else {
-                        var name = $sw.find('.header').text().trim();
+                        var name = $sw.find('.header-none').text().trim();
                         missing.push(name);
                     }
                 });
 
                 if (missing.length) {
-                    // alert('Vui lòng chọn: \n- ' + missing.join('\n- '));
-                    toastr.warning('Vui lòng chọn: \n- ' + missing.join('\n- '));
-                    return;
+                    document.querySelector('.swatch.is-required:has(input[type=radio]):not(:has(:checked))')
+                        ?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+                    return void toastr.warning(
+                        'Vui lòng chọn: ' + missing.map(n => `<b>${n}</b>`).join(', ')
+                    );
                 }
+
 
 
                 const hasVariantInputs = document.querySelectorAll('.variant-radio').length > 0;

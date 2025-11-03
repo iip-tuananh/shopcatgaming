@@ -110,7 +110,7 @@
             padding-top: 40px;
         }
 
-        @media (max-width: 639.98px){  /* mobile */
+        @media (max-width: 991.98px){  /* mobile */
             .banners-swiper-thumb { display:none !important; }
         }
     </style>

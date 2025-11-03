@@ -18,7 +18,7 @@
                 <div
                     class="relative bg-cover bg-no-repeat rounded-24 overflow-hidden" style="background-image: url({{ $banner->image->path ?? '' }})">
                     <div class="container">
-                        <div class="grid grid-cols-12 gap-30p relative xl:py-[130px] md:py-30 sm:py-25 py-20 z-[2]">
+                        <div class="grid grid-cols-12 gap-30p relative  py-20 z-[2]">
                             <div class="lg:col-start-2 lg:col-end-12 col-span-12">
                                 <h2 class="heading-2 text-w-neutral-1 mb-3">
                                     Giỏ hàng
@@ -55,7 +55,7 @@
                         <div class="overflow-x-auto scrollbar-sm w-full mb-5">
                             <table class="w-full text-left">
                                 <thead>
-                                <tr class="md:text-2xl sm:text-xl text-lg font-borda">
+                                <tr class="md:text-xl sm:text-xl text-lg font-borda">
                                     <th class="min-w-[320px] w-full">Sản phẩm</th>
                                     <th class="3xl:min-w-[157px] min-w-[144px] p-16p">Đơn giá</th>
                                     <th class="3xl:min-w-[206px] min-w-[144px] p-16p text-center">Số lượng</th>

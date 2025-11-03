@@ -267,4 +267,31 @@
     }
 }
 
+/* Khôi phục danh sách */
+.editor-content ul,
+.editor-content ol{
+    margin: 0 0 1em 1.5em;           /* khoảng cách dưới + thụt vào trái */
+    padding-left: 1.25em;            /* bảo đảm có chỗ cho marker */
+    list-style-position: outside;
+}
 
+/* Loại marker mặc định */
+.editor-content ul{ list-style-type: disc; }
+.editor-content ol{ list-style-type: decimal; }
+
+/* Danh sách lồng nhau */
+.editor-content ul ul{ list-style-type: circle; }
+.editor-content ul ul ul{ list-style-type: square; }
+.editor-content ol ol{ list-style-type: lower-alpha; }
+.editor-content ol ol ol{ list-style-type: lower-roman; }
+
+/* Mục danh sách */
+.editor-content li{
+    display: list-item !important;    /* “chặn” các reset flex/inline */
+    margin: .35em 0;
+}
+
+/* Tinh chỉnh marker (nếu trình duyệt hỗ trợ) */
+.editor-content li::marker{
+    color: currentColor;
+}

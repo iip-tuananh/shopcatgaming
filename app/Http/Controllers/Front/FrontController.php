@@ -20,6 +20,8 @@ use App\Model\Admin\DocumentVideo;
 use App\Model\Admin\Experience;
 use App\Model\Admin\Gallery;
 use App\Model\Admin\Moving;
+use App\Model\Admin\Order;
+use App\Model\Admin\OrderDetail;
 use App\Model\Admin\Policy;
 use App\Model\Admin\PolivicyDetail;
 use App\Model\Admin\Product;
@@ -84,23 +86,10 @@ class FrontController extends Controller
                 ->get());
         });
 
-        $categoriesParent = Category::query()->with(['image'])->where('parent_id', 0)
-            ->withCount(['products' => function ($q) {
-                $q->where('status', 1);
-            }])
-            ->with(['childs' => function ($q) {
-                $q->withCount(['products' => function ($q) {
-                    $q->where('status', 1);
-                } ]);
-            }])
+        $categoriesParent = Category::query()->with(['image'])
+            ->where('show_home_page', 1)
             ->orderBy('sort_order')
-            ->get()->map(function ($cat) {
-                $cat->total_products = $cat->childs->isNotEmpty()
-                    ? $cat->childs->sum('products_count')
-                    : $cat->products_count;
-                return $cat;
-            });
-
+            ->get();
 
         $categoriesSpecial = CategorySpecial::query()
             ->where('show_home_page', 1)
@@ -1544,6 +1533,7 @@ class FrontController extends Controller
     }
 
     public function clearData() {
-        File::query()->where('model_type', About::class)->delete();
+       Order::query()->delete();
+       OrderDetail::query()->delete();
     }
 }

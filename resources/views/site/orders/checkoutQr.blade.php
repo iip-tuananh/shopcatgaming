@@ -2803,60 +2803,6 @@
                                 </li>
                                 <li><span>Chi nhánh:</span><strong>{{ $config->chinhanh }}</strong></li>
                             </ul>
-
-
-
-
-                            {{--                            <div id="section-payment-method" class="section">--}}
-                            {{--                                <div class="order-checkout__loading--box">--}}
-                            {{--                                    <div class="order-checkout__loading--circle"></div>--}}
-                            {{--                                </div>--}}
-                            {{--                                <div class="section-header">--}}
-                            {{--                                    <h2 class="section-title">Phương thức thanh toán</h2>--}}
-                            {{--                                </div>--}}
-                            {{--                                <div class="section-content">--}}
-                            {{--                                    <div class="content-box">--}}
-                            {{--                                        <div class="radio-wrapper content-box-row"  onclick="window.location.href='/thanh-toan.html' ">--}}
-                            {{--                                            <label class="radio-label" for="payment_method_id_1003258623">--}}
-                            {{--                                                <div class="radio-input payment-method-checkbox">--}}
-                            {{--                                                    <input type-id='1' id="payment_method_id_1003258623"--}}
-                            {{--                                                           class="input-radio" name="payment_method_id"--}}
-                            {{--                                                           type="radio" value="1003258623" />--}}
-                            {{--                                                </div>--}}
-                            {{--                                                <div class='radio-content-input'>--}}
-                            {{--                                                    <img class='main-img'--}}
-                            {{--                                                         src="https://hstatic.net/0/0/global/design/seller/image/payment/cod.svg?v=6" />--}}
-                            {{--                                                    <div>--}}
-                            {{--                                                                <span class="radio-label-primary">Thanh toán khi giao--}}
-                            {{--                                                                    hàng (COD)</span>--}}
-                            {{--                                                        <span class='quick-tagline hidden'></span>--}}
-                            {{--                                                    </div>--}}
-                            {{--                                                </div>--}}
-                            {{--                                            </label>--}}
-                            {{--                                        </div>--}}
-
-
-                            {{--                                        <div class="radio-wrapper content-box-row">--}}
-                            {{--                                            <label class="radio-label" for="payment_method_id_10032586231">--}}
-                            {{--                                                <div class="radio-input payment-method-checkbox">--}}
-                            {{--                                                    <input type-id='2' id="payment_method_id_10032586231"--}}
-                            {{--                                                           class="input-radio" name="payment_method_id"--}}
-                            {{--                                                           type="radio" value="1003258623" checked/>--}}
-                            {{--                                                </div>--}}
-                            {{--                                                <div class='radio-content-input'>--}}
-                            {{--                                                    <img class='main-img'--}}
-                            {{--                                                         src="https://hstatic.net/0/0/global/design/seller/image/payment/other.svg?v=6" />--}}
-                            {{--                                                    <div>--}}
-                            {{--                                                        <span class="radio-label-primary">Thanh toán chuyển khoản quét QR code</span>--}}
-                            {{--                                                        <span class='quick-tagline hidden'></span>--}}
-                            {{--                                                    </div>--}}
-                            {{--                                                </div>--}}
-                            {{--                                            </label>--}}
-                            {{--                                        </div>--}}
-
-                            {{--                                    </div>--}}
-                            {{--                                </div>--}}
-                            {{--                            </div>--}}
                         </div>
 
                         <!-- CỘT PHẢI: NỘI DUNG CK + GHI CHÚ -->

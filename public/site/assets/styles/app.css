@@ -39232,9 +39232,10 @@ section {
     left: 0;
     width: 100%;
     z-index: 399;
-    animation-name: fadeDown;
-    animation-duration: 1s;
-    background-color: #030304;
+    /*animation-name: fadeDown;*/
+    /*animation-duration: 1s;*/
+    /*background-color: #030304;*/
+    background-color: rgb(14 16 18 / var(--tw-bg-opacity))
 }
 
 @keyframes fadeDown {
@@ -43260,6 +43261,10 @@ button:not(:disabled) {
 
     .xxl\:w-\[572px\] {
         width: 572px;
+    }
+
+    .xxl\:w-\[470px\] {
+        width: 470px;
     }
 
     .xxl\:grid-cols-1 {

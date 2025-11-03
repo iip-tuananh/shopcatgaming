@@ -41,7 +41,7 @@ class AttributeController extends Controller
             })
             ->addColumn('products', function ($object) {
                 return '<button class="btn btn-info btn-sm btn-branch" type="button">
-                        ' . $object->products()->count() . '
+                        ' . $object->products()->distinct('product_id')->count() . '
                 </button>';
             })
             ->addColumn('action', function ($object) {
