@@ -123,7 +123,7 @@
         <!-- hero section start -->
         <section class="section-pt banner-home">
             <div class="container relative pt-[60px] ">
-                <div class="thumbs-carousel-container" data-carousel-name="home-hero-slider" data-slides-per-view="3">
+                <div class="thumbs-carousel-container" data-carousel-name="home-hero-slider" data-slides-per-view="4">
                     <div class="swiper thumbs-gallery-main">
                         <div class="swiper-wrapper">
                             @foreach($banners as $banner)
