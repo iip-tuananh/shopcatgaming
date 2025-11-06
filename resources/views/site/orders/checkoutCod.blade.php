@@ -486,7 +486,7 @@
                                             >
                                                 <div class="relative bg-b-neutral-2 rounded-4">
                                                     <img class="size-[74px]"  src="{{ @$detail->product->image->path ?? '' }}"
-                                                         alt="product" />
+                                                         alt="product" style="max-width: 80px; height: auto"/>
                                                     <span class="absolute -top-3 -right-3 badge-box-neutral-1">
                                                  {{ $detail->qty }}
                                                 </span>
