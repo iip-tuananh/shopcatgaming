@@ -139,6 +139,25 @@ class Product extends BaseModel
         return $this->belongsToMany(Attribute::class, 'attribute_values', 'product_id', 'attribute_id')->withPivot('value');
     }
 
+    public function suggestions()
+    {
+        return $this->belongsToMany(Product::class, 'product_suggestions', 'product_id', 'suggested_product_id')->withPivot('type');
+    }
+
+
+    public function upsells()
+    {
+        return $this->belongsToMany(
+            Product::class,
+            'product_suggestions',
+            'product_id',
+            'suggested_product_id'
+        )
+            ->withPivot('type')
+            ->wherePivot('type','upsell')
+            ->withTimestamps();
+    }
+
 
     public function getLinkAttribute()
     {
@@ -172,7 +191,10 @@ class Product extends BaseModel
         }
 
         if (!empty($request->cate_id)) {
-            $result = $result->where('cate_id', $request->cate_id);
+            $childIds = Category::query()->where('parent_id', $request->cate_id)->pluck('id')->toArray();
+            $cateIds = array_merge($childIds, [$request->cate_id]);
+
+            $result = $result->whereIn('cate_id', $cateIds);
         }
 
         if (!empty($request->cate_special_id)) {

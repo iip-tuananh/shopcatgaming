@@ -129,7 +129,7 @@ class FrontController extends Controller
     }
 
     public function getProductList(Request $request, $slug = null) {
-        $sort = $request->get('sort', 'id_desc');
+        $sort = $request->get('sort', 'price_desc');
 
         $category = null;
         $parentCategory = null;
@@ -276,7 +276,7 @@ class FrontController extends Controller
     }
 
     public function getProductDetail(Request $request, $slug = null) {
-        $product = Product::query()->with(['category.banner', 'image', 'galleries.image', 'types'])
+        $product = Product::query()->with(['category.banner', 'image', 'galleries.image', 'types', 'upsells.image'])
             ->where('slug', $slug)->first();
         $attributes = [];
         foreach ($product->attributeValues as $attribute) {

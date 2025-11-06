@@ -35,11 +35,13 @@ class NewOrder extends Mailable
     public function build()
     {
         if ($this->type == 'customer') {
-            $title = 'Đặt hàng thành công #';
+            $title = $this->config->web_title. ' - '. 'Đặt hàng thành công #';
+            $view = 'site.mails.new-order-customer';
         } else {
             $title = 'Thông báo đơn hàng mới #';
+            $view = 'site.mails.new-order';
         }
 
-        return $this->subject($title . $this->data->code)->view('site.mails.new-order', ['data' => $this->data, 'config' => $this->config, 'type' => $this->type]);
+        return $this->subject($title . $this->data->code)->view($view, ['data' => $this->data, 'config' => $this->config, 'type' => $this->type]);
     }
 }

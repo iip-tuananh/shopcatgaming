@@ -98,6 +98,7 @@
                 zalo_chat: this.zalo_chat,
                 phone_switchboard: this.phone_switchboard,
                 introduction: this.introduction,
+                notedatcoc: this.notedatcoc,
                 introduction_eng: this.introduction_eng,
                 tax_code: this.tax_code,
                 youtube_iframe: this.youtube_iframe,

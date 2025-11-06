@@ -2,11 +2,15 @@
     class Category extends BaseClass {
         no_set = [];
         all_categories = @json(\App\Model\Admin\Category::getForSelect(true));
-
+        show_menus = [
+            {'name': 'hiển thị', 'value': '1'},
+            {'name': 'không', 'value': '0'},
+        ];
         before(form) {
             this.image = {};
             this.banner = {};
             this.show_home_page = 1;
+            this.show_menu = 0;
         }
 
         after(form) {
@@ -57,6 +61,7 @@
                 short_des: this.short_des,
                 icon: this.icon,
                 show_home_page: this.show_home_page,
+                show_menu: this.show_menu,
                 seo_title: this.seo_title,
                 seo_description: this.seo_description,
             }

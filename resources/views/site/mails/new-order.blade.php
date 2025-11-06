@@ -33,7 +33,7 @@
                                                     style="font-family:-apple-system,BlinkMacSystemFont,&quot;Segoe UI&quot;,&quot;Roboto&quot;,&quot;Oxygen&quot;,&quot;Ubuntu&quot;,&quot;Cantarell&quot;,&quot;Fira Sans&quot;,&quot;Droid Sans&quot;,&quot;Helvetica Neue&quot;,sans-serif;text-transform:uppercase;font-size:14px;color:#999"
                                                     align="right">
                       <span style="font-size:16px">
-                        Order {{$data->code}}
+                        Mã đơn hàng {{$data->code}}
                       </span>
                                                 </td>
                                             </tr>
@@ -141,7 +141,15 @@
                                                                 <td style="font-family:-apple-system,BlinkMacSystemFont,&quot;Segoe UI&quot;,&quot;Roboto&quot;,&quot;Oxygen&quot;,&quot;Ubuntu&quot;,&quot;Cantarell&quot;,&quot;Fira Sans&quot;,&quot;Droid Sans&quot;,&quot;Helvetica Neue&quot;,sans-serif;width:100%">
                                                                 <span
                                                                     style="font-size:16px;font-weight:600;line-height:1.4;color:#555">{{$item->product->name}} ×&nbsp;{{$item->qty}}</span><br>
-                                                                    <span style="font-size:14px;color:#999"></span><br>
+                                                                    <span style="font-size:14px;color:#999">
+                                                                        {{ $item->type }}
+                                                                    </span>
+                                                                    <br>
+                                                                    <span style="font-size:14px;color:#999">
+                                                                        {{ $item->attributes }}
+                                                                    </span>
+
+
                                                                 </td>
                                                                 <td style="font-family:-apple-system,BlinkMacSystemFont,&quot;Segoe UI&quot;,&quot;Roboto&quot;,&quot;Oxygen&quot;,&quot;Ubuntu&quot;,&quot;Cantarell&quot;,&quot;Fira Sans&quot;,&quot;Droid Sans&quot;,&quot;Helvetica Neue&quot;,sans-serif;white-space:nowrap">
                                                                     <p style="color:#555;line-height:150%;font-size:16px;font-weight:600;margin:0 0 0 15px"
@@ -317,10 +325,12 @@
                                                 <td class="m_4006744279472501712customer-info__item"
                                                     style="font-family:-apple-system,BlinkMacSystemFont,&quot;Segoe UI&quot;,&quot;Roboto&quot;,&quot;Oxygen&quot;,&quot;Ubuntu&quot;,&quot;Cantarell&quot;,&quot;Fira Sans&quot;,&quot;Droid Sans&quot;,&quot;Helvetica Neue&quot;,sans-serif;padding-bottom:40px;width:50%">
                                                     <h4 style="font-weight:500;font-size:16px;color:#555;margin:0 0 5px">
-                                                        Phương thức thanh toán</h4>
+
+                                                        Phương thức thanh toán
+                                                    </h4>
 
                                                     <p style="color:#777;line-height:150%;font-size:16px;margin:0">
-                                                        Thanh toán khi nhận hàng - COD
+                                                     {{ $data->payment_method == 1 ? 'Thanh toán khi nhận hàng - COD' : 'Chuyển khoản ngân hàng'}}
                                                     </p>
                                                 </td>
 

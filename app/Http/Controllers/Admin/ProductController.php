@@ -10,6 +10,7 @@ use App\Model\Admin\Post;
 use App\Model\Admin\Product;
 use App\Model\Admin\ProductCategorySpecial;
 use App\Model\Admin\ProductGallery;
+use App\Model\Admin\ProductSuggestions;
 use App\Model\Admin\ProductType;
 use App\Model\Admin\ProductVideo;
 use App\Model\Admin\Tag;
@@ -123,6 +124,7 @@ class ProductController extends Controller
                 }
 
                 $result = $result . ' <a href="" title="thêm vào danh mục đặc biệt" class="dropdown-item add-category-special"><i class="fa fa-angle-right"></i>Thêm vào danh mục đặc biệt</a>';
+                $result = $result . ' <a href="' . route('products-suggest.edit').'?product-id='.$object->id . '" title="Cấu hình gợi ý sản phẩm" class="dropdown-item" target="_blank"><i class="fa fa-angle-right"></i>Cấu hình gợi ý sản phẩm</a>';
 
                 $result = $result . '</div></div>';
                 return $result;
@@ -262,6 +264,10 @@ class ProductController extends Controller
                 FileHelper::deleteFileFromCloudflare($object->image, $object->id, ThisModel::class, 'image');
             }
 
+            ProductType::query()->where('product_id', $id)->delete();
+            ProductSuggestions::query()->where('product_id', $id)->delete();
+            AttributeValue::query()->where('product_id', $id)->delete();
+
             $object->delete();
 
             $message = array(
@@ -328,11 +334,25 @@ class ProductController extends Controller
     public function actDelete(Request $request) {
         DB::statement('SET FOREIGN_KEY_CHECKS = 0');
         $product_ids = explode(',', $request->product_ids);
+
         foreach ($product_ids as $product_id) {
-            $product = ThisModel::findOrFail($product_id);
+            $product = Product::query()->with(['image', 'galleries.image'])->find($product_id);
             if($product->image) {
                 FileHelper::deleteFileFromCloudflare($product->image, $product->id, ThisModel::class, 'image');
             }
+
+            if($product->galleries->count() > 0) {
+                foreach ($product->galleries as $gallery) {
+                    if ($gallery->image) {
+                        FileHelper::deleteFileFromCloudflare($gallery->image, $gallery->id, ProductGallery::class);
+                    }
+                    $gallery->removeFromDB();
+                }
+            }
+
+            ProductType::query()->where('product_id', $product_id)->delete();
+            ProductSuggestions::query()->where('product_id', $product_id)->delete();
+            AttributeValue::query()->where('product_id', $product_id)->delete();
         }
 
         Product::query()->whereIn('id', $product_ids)->delete();
@@ -367,6 +387,64 @@ class ProductController extends Controller
         $json->data = $req;
 
         return \Response::json($json);
+    }
+
+
+    public function productSuggest(Request $request) {
+        $product = Product::query()->find($request->get('product-id'));
+
+        if(! $product) return view('not_found');
+
+        $suggestUpSellArr = $product
+            ->upsells()
+            ->get()
+            ->map(function ($item) {
+                return [
+                    'id'    => $item->id,
+                    'name'  => $item->name,
+                    'image' => optional($item->image)->path ?: '',
+                ];
+            })
+            ->toArray();
+
+        $suggestions = [
+            'upsell' => $suggestUpSellArr,
+        ];
+
+        return view('admin.product_suggest.edit', compact('product', 'suggestions'));
+    }
+    public function submitProductSuggest(Request $request) {
+        \Illuminate\Support\Facades\DB::beginTransaction();
+        try {
+            $data = $request->validate([
+                'product_id'                     => 'required|exists:products,id',
+                'suggestions'                    => 'nullable|array',
+                'suggestions.upsell'             => 'array',
+                'suggestions.*.*'                => 'integer|exists:products,id',
+            ]);
+
+            $product = Product::findOrFail($data['product_id']);
+
+
+
+            $product->upsells()->detach();
+            foreach ($data['suggestions']['upsell'] ?? [] as $id) {
+                $product->upsells()
+                    ->attach($id, ['type' => 'upsell']);
+            }
+
+
+            $json = new stdclass();
+            $json->success = true;
+            $json->message = 'Thao tác thành công';
+
+            \Illuminate\Support\Facades\DB::commit();
+
+            return Response::json($json);
+        } catch (\Exception $exception) {
+            \Illuminate\Support\Facades\DB::rollBack();
+            \Illuminate\Support\Facades\Log::error($exception);
+        }
     }
 
 }

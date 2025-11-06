@@ -254,6 +254,19 @@ class CartController extends Controller
 
             session(['order_id' => $order->id]);
 
+            $order = Order::query()->with(['details' => function ($q) {
+                $q->with(['product.image']);
+            }])->where('id', $order->id)->first();
+
+            $config = Config::query()->first();
+
+            if($config->email) {
+                Mail::to($config->email)->send(new NewOrder($order, $config, 'admin'));
+            }
+
+            if($order->customer_email) {
+                Mail::to($order->customer_email)->send(new NewOrder($order, $config, 'customer'));
+            }
 
             DB::commit();
             return Response::json(['success' => true, 'order_code' => $order->code, 'message' => 'Đặt hàng thành công', 'payment_method' => $request->payment_method]);
@@ -274,6 +287,18 @@ class CartController extends Controller
         $banner = Banner::query()->with('image')->where('type',7)->first();
 
         return view('site.orders.checkoutQr_', compact('order', 'banner'));
+    }
+
+    public function checkoutCod(Request $request) {
+        if (!session()->has('order_id')) {
+            return redirect()->route('front.home-page');
+        }
+
+        $orderId = session('order_id') ?? 3;
+        $order = Order::query()->with('details', 'details.product', 'details.product.image')->find($orderId);
+        $banner = Banner::query()->with('image')->where('type',7)->first();
+
+        return view('site.orders.checkoutCod', compact('order', 'banner'));
     }
 
 

@@ -134,6 +134,7 @@ class CategoryController extends Controller
             $object->intro = $request->intro;
             $object->short_des = $request->short_des;
             $object->show_home_page = $request->show_home_page ?? 0;
+            $object->show_menu = $request->show_menu ?? 0;
             $object->save();
 
             // Cập nhật lại stt các danh mục có stt lớn hơn
@@ -233,6 +234,7 @@ class CategoryController extends Controller
             $object->intro = $request->intro;
             $object->short_des = $request->short_des;
             $object->show_home_page = $request->show_home_page ?? 0;
+            $object->show_menu = $request->show_menu ?? 0;
             $object->save();
 
             if($request->image) {

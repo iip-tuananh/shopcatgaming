@@ -64,6 +64,18 @@
 
     <div class="col-sm-4">
         <div class="form-group custom-group mb-4">
+            <label class="form-label required-label">Hiển thị menu</label>
+            <select id="my-select" class="form-control custom-select" ng-model="form.show_menu">
+                <option ng-repeat="sm in form.show_menus" ng-value="sm.value" ng-selected="form.show_menu == sm.value"><% sm.name %></option>
+
+            </select>
+            <span class="invalid-feedback d-block" role="alert">
+                <strong><% errors.show_menu[0] %></strong>
+            </span>
+        </div>
+
+
+        <div class="form-group custom-group mb-4">
             <label class="form-label required-label">Hiển thị ngoài trang chủ</label>
             <select id="my-select" class="form-control custom-select" ng-model="form.show_home_page">
                 <option ng-repeat="s in show_home_page" ng-value="s.value" ng-selected="form.show_home_page == s.value"><% s.name %></option>
@@ -73,8 +85,6 @@
                 <strong><% errors.show_home_page[0] %></strong>
             </span>
         </div>
-
-
 
 
         <div class="form-group text-center mb-4">
@@ -99,7 +109,7 @@
         </div>
 
         <div class="form-group text-center mb-4">
-            <label class="form-label">Ảnh bìa</label>
+            <label class="form-label">Ảnh banner</label>
             <div class="main-img-preview">
                 <p class="help-block-img">* Ảnh định dạng: jpg,jpeg,png,webp không quá 2MB.</p>
                 <img class="thumbnail img-preview" ng-src="<% form.banner.path %>">

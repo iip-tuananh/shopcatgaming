@@ -11,6 +11,11 @@
 @section('css')
     <link rel="stylesheet" type="text/css" href="{{ asset('css/nested.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/jquery.nestable.css') }}">
+
+    <style>
+        .js-row-link { cursor: pointer; }
+        .dd3-handle  { cursor: grab; } /* kéo thả vẫn bằng handle */
+    </style>
 @endsection
 @section('buttons')
     <a href="{{ route('Category.create') }}" class="btn btn-outline-success btn-sm" class="btn btn-info"><i class="fa fa-plus"></i> Thêm mới</a>
@@ -61,7 +66,7 @@
 
                                               $html.= '<li class="dd-item dd3-item" data-id="'.$value['id'].'">
                                                 <div class="dd-handle dd3-handle"></div>
-                                                <div class="dd3-content"> <span id="label_show'.$value['id'].'">'.$value['name'].'</span>
+                                                <div class="dd3-content js-row-link" data-href="'.route('Category.edit',$value['id']).'"> <span id="label_show'.$value['id'].'">'.$value['name'].'</span>
                                                 '.$icon.'
                                                   <span class="span-right">
 
@@ -223,7 +228,6 @@
                     },
                     complete: function () {
                         // $scope.loading.submit = false;
-                        $scope.$applyAsync();
                     },
                 });
 
@@ -305,6 +309,37 @@
                 });
             };
 
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var nest = document.getElementById('nestable');
+
+            // Click vào vùng dòng -> đi đến link
+            nest.addEventListener('click', function (e) {
+                // bỏ qua khi click vào các phần không nên điều hướng
+                if (
+                    e.target.closest('a') ||                 // edit/delete
+                    e.target.closest('button') ||            // collapse/expand
+                    e.target.closest('.dd3-handle') ||       // tay nắm kéo
+                    e.target.closest('.home-flag')           // icon home
+                ) return;
+
+                var row = e.target.closest('.js-row-link');
+                if (row && row.dataset.href) {
+                    window.location.href = row.dataset.href;
+                }
+            });
+
+            // Enter để mở (hỗ trợ bàn phím)
+            nest.addEventListener('keydown', function (e) {
+                if ((e.key === 'Enter' || e.keyCode === 13)) {
+                    var row = e.target.closest('.js-row-link');
+                    if (row && row.dataset && row.dataset.href) {
+                        window.location.href = row.dataset.href;
+                    }
+                }
+            });
         });
     </script>
 

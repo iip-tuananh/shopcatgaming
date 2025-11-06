@@ -34,6 +34,12 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
         Route::post('/update', 'Admin\SpaController@update')->name('Spa.update');
     });
 
+    Route::group(['prefix' => 'products-suggest'], function () {
+        Route::get('/edit', 'Admin\ProductController@productSuggest')->name('products-suggest.edit');
+        Route::post('/submitProductSuggest', 'Admin\ProductController@submitProductSuggest')->name('products-suggest.submitProductSuggest');
+    });
+
+
     // dịch vụ spa
     Route::group(['prefix' => 'services-spa'], function () {
         Route::get('/', 'Admin\ServiceSpaController@index')->name('ServiceSpa.index');

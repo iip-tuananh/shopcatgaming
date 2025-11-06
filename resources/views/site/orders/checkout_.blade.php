@@ -575,9 +575,19 @@
 
                                     </div>
                                     <div class="flex-y flex-wrap gap-3">
-                                        <a href="javascript:void(0)" class="btn btn-md btn-primary rounded-12" ng-click="submitOrder()" ng-disabled="loading">
-                                            Hoàn tất đơn hàng
-                                        </a>
+{{--                                        <a href="javascript:void(0)" class="btn btn-md btn-primary rounded-12" ng-click="submitOrder()" ng-disabled="loading">--}}
+{{--                                            Hoàn tất đơn hàng--}}
+{{--                                        </a>--}}
+
+                                        <button type="button"
+                                                class="btn btn-md btn-primary rounded-12"
+                                                ng-click="submitOrder()"
+                                                ng-disabled="loading">
+                                            <span ng-if="!loading">Hoàn tất đơn hàng</span>
+                                            <span ng-if="loading">Đang xử lý…</span>
+                                        </button>
+
+
                                         <a href="{{ route('cart.index') }}" class="btn btn-md btn-neutral-4 rounded-12">
                                            Về giỏ hàng
                                         </a>
@@ -745,7 +755,9 @@
             }
 
             $scope.submitOrder = function() {
+                if ($scope.loading) return;
                 $scope.loading = true;
+
                 let data = $scope.form;
                 data.items = $scope.cart;
 
@@ -761,7 +773,7 @@
                         if (response.success) {
                             toastr.success(response.message);
                             if(response.payment_method == 1) {
-                                window.location.href = '{{route('cart.checkout.success')}}';
+                                window.location.href = '{{route('cart.checkoutCod')}}';
                             } else {
                                 window.location.href = '{{route('cart.checkoutQr')}}';
                             }

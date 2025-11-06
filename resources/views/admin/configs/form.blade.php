@@ -142,6 +142,15 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="form-group custom-group">
+                    <label class="form-label">Ghi chú đặt cọc</label>
+                    <textarea id="my-textarea" class="form-control"  ng-model="form.notedatcoc" rows="5"></textarea>
+                    <span class="invalid-feedback d-block" role="alert">
+						<strong><% errors.notedatcoc[0] %></strong>
+					</span>
+                </div>
+
 			</div>
 			<div class="col-md-4 col-xs-12">
 				<div class="form-group text-center mb-4">

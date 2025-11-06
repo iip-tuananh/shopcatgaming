@@ -145,3 +145,42 @@
     }
 
 </style>
+
+<style>
+    /* Mobile-only */
+    @media (max-width: 992px) {
+        .category-hero{
+            /* Hiển thị toàn bộ ảnh banner, không crop */
+            background-size: contain !important;
+            background-position: center top !important;
+            background-repeat: no-repeat !important;
+
+            /*!* Chiều cao tối thiểu cho khối (tùy banner, có thể tăng/giảm) *!*/
+            /*min-height: 260px;*/
+        }
+
+        /* Đặt nội dung vào giữa khối */
+        .category-hero .grid{
+            display: flex;
+            align-items: center;
+            min-height: inherit;
+            padding-top: 6px;   /* mềm hơn trên mobile */
+            padding-bottom: 16px;
+        }
+
+        /* Căn giữa text + breadcrumb */
+        .category-hero h2{ margin-left: auto; margin-right: auto; font-size: 17px }
+        .category-hero .breadcrumb{
+            display: flex;
+            align-items: center;
+            /*justify-content: center;*/
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 6px;
+        }
+
+        .breadcrumb-item {
+            font-size: 13px;
+        }
+    }
+</style>

@@ -74,6 +74,7 @@ class ConfigController extends Controller
 			$object->youtube = $request->youtube;
 			$object->location = $request->location;
 			$object->google_map = $request->google_map;
+			$object->notedatcoc = $request->notedatcoc;
 			$object->introduction = $request->introduction;
 			$object->introduction_eng = $request->introduction_eng;
 			$object->address = $request->address;

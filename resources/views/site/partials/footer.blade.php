@@ -9,12 +9,15 @@
                 class="grid 4xl:grid-cols-12 3xl:grid-cols-4 sm:grid-cols-2 grid-cols-1 4xl:gap-x-6 max-4xl:gap-40p border-y-2 border-dashed border-shap py-80p">
                 <div class="4xl:col-start-1 4xl:col-end-4">
                     <img class="mb-16p" src="{{ $config->image_back->path ?? '' }}" alt="logo" style="max-width: 88%" />
-                    <div class="text-base text-w-neutral-3 mb-32p">
-                        {!! $config->hdmh !!}
-                    </div>
+{{--                    <div class="text-base text-w-neutral-3 mb-32p">--}}
+{{--                        {!! $config->hdmh !!}--}}
+{{--                    </div>--}}
                     <div class="flex items-center gap-3">
                         <a href="{{ $config->facebook }}" class="btn-socal-primary" title="Facebook">
                             <i class="ti ti-brand-facebook"></i>
+                        </a>
+                        <a href="{{ $config->youtube }}" class="btn-socal-primary" title="Youtube">
+                            <i class="ti ti-brand-youtube"></i>
                         </a>
                         <a href="{{ $config->twitter }}" class="btn-socal-primary" title="Tiktok">
                             <i class="ti ti-brand-tiktok"></i>
@@ -22,9 +25,7 @@
                         <a href="{{ $config->instagram }}" class="btn-socal-primary" title="Instagram">
                             <i class="ti ti-brand-instagram"></i>
                         </a>
-                        <a href="{{ $config->youtube }}" class="btn-socal-primary" title="Youtube">
-                            <i class="ti ti-brand-youtube"></i>
-                        </a>
+
                     </div>
                 </div>
                 <div class="4xl:col-start-5 4xl:col-end-7">
@@ -50,20 +51,65 @@
 
                     </ul>
                 </div>
-                <div class="4xl:col-start-11 4xl:col-end-13">
-                    <h4 class="heading-4 text-w-neutral-1 whitespace-nowrap  mb-3">
-                        Email
-                    </h4>
-                    <a href="mailto: {{ $config->email }}" class="text-base text-w-neutral-3 mb-32p">
-                      {{ $config->email }}
-                    </a>
-                    <h4 class="heading-5 whitespace-nowrap mb-3">
-                        Hotline
-                    </h4>
-                    <a href="tel:{{ $config->hotline }}" class="text-base text-w-neutral-3">
-                        {{ $config->hotline }}
-                    </a>
+{{--                <div class="4xl:col-start-11 4xl:col-end-13">--}}
+{{--                    <h4 class="heading-4 text-w-neutral-1 whitespace-nowrap  mb-3">--}}
+{{--                        Email--}}
+{{--                    </h4>--}}
+{{--                    <a href="mailto: {{ $config->email }}" class="text-base text-w-neutral-3 mb-32p">--}}
+{{--                      {{ $config->email }}--}}
+{{--                    </a>--}}
+{{--                    <h4 class="heading-5 whitespace-nowrap mb-3">--}}
+{{--                        Hotline--}}
+{{--                    </h4>--}}
+{{--                    <a href="tel:{{ $config->hotline }}" class="text-base text-w-neutral-3">--}}
+{{--                        {{ $config->hotline }}--}}
+{{--                    </a>--}}
+{{--                </div>--}}
+
+                <style>
+                    /* mỗi item cách nhau 12–16px */
+                    .contact-list > * + * { margin-top: 12px; }
+                    /* icon và text đồng hàng, đổi màu icon nếu muốn nổi hơn */
+                    .text-w-neutral-2 { opacity: .8; }
+                </style>
+                <div class="4xl:col-start-8 4xl:col-end-11">
+                    <div class="flex items-center gap-24p mb-24p">
+                        <h4 class="heading-4 text-w-neutral-1 whitespace-nowrap ">
+                           Liên hệ
+                        </h4>
+                        <span class="w-full max-w-[110px] h-0.5 bg-w-neutral-1"></span>
+                    </div>
+                    <ul class="contact-list">
+                        <li class="flex items-start gap-2">
+                            <span class="text-base text-w-neutral-3">
+                                Địa chỉ: {{ $config->address_company }}
+                            </span>
+                        </li>
+
+                        <li class="flex items-start gap-2">
+                            <a href="tel:{{ preg_replace('/\s+/', '', $config->hotline) }}"
+                               class="text-base text-w-neutral-3 hover:text-w-neutral-1">
+                                Điện thoại: {{ $config->hotline }}
+                            </a>
+                        </li>
+
+                        <li class="flex items-start gap-2">
+
+                            <span class="text-base text-w-neutral-3">
+                Thời gian mở cửa: 9:00 - 20:00
+            </span>
+                        </li>
+
+                        <li class="flex items-start gap-2">
+                            <span class="text-base text-w-neutral-3">
+                Bạn vui lòng liên hệ trước khi tới cửa hàng.
+            </span>
+                        </li>
+                    </ul>
                 </div>
+
+
+
             </div>
             <div class="flex items-center justify-between flex-wrap gap-24p py-30p">
                 <div class="flex items-center flex-wrap">

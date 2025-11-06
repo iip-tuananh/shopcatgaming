@@ -44,7 +44,7 @@
         <section class="pt-60p">
             <div class="section-pt">
                 <div
-                    class="relative  bg-cover bg-no-repeat rounded-24 overflow-hidden" style="background-image: url({{ @$category->banner->path ?? '' }})">
+                    class="relative  bg-cover bg-no-repeat rounded-24 overflow-hidden category-hero" style="background-image: url({{ @$category->banner->path ?? '' }})">
                     <div class="container">
                         <div class="grid grid-cols-12 gap-30p relative  py-20 z-[2]">
                             <div class="lg:col-start-2 lg:col-end-12 col-span-12">
@@ -109,7 +109,7 @@
                                 </h5>
                                 <div class="flex items-center sm:justify-end max-sm:flex-wrap gap-24p">
                                     @php
-                                        $currentSort = request('sort', 'date_desc');
+                                        $currentSort = request('sort', 'price_desc');
                                     @endphp
                                     <div class="shrink-0 flex-y gap-28p">
                                 <span class="text-m-medium text-w-neutral-1">

@@ -104,8 +104,16 @@
                     DATATABLE.mergeSearch(d, context);
                 }
             },
-
+            columnDefs: [
+                {
+                    'targets': 0,
+                    'checkboxes': {
+                        'selectRow': true
+                    }
+                }
+            ],
             columns: [
+                {data: 'id', orderable: false},
                 {data: 'DT_RowIndex', orderable: false, title: "STT", className: "text-center"},
                 {
                     data: 'code',
@@ -150,12 +158,16 @@
                     data: 'status', search_type: "select", placeholder: "Trạng thái",
                     column_data: [{id: 1, name: "Xuất bản"}, {id: 0, name: "Nháp"}]
                 },
-
+                {
+                    data: 'cate_id', search_type: "select", placeholder: "Danh mục",
+                    column_data: @json(App\Model\Admin\Category::getForSelect())
+                },
                 {
                     data: 'cate_special_id', search_type: "select", placeholder: "Danh mục đặc biệt",
                     column_data: @json(App\Model\Admin\CategorySpecial::getForSelectForProduct())
                 }
             ],
+            act: true,
         }).datatable;
 
         app.controller('Product', function ($scope, $rootScope, $http) {

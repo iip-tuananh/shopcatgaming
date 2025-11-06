@@ -287,6 +287,64 @@
             border-radius: 10px;
         }
     </style>
+
+    <style>
+        /* ===== Bundle styles (updated) ===== */
+        .ak-bundle{background:#fff;border-radius:12px}
+        .ak-bundle__head{
+            display:flex;align-items:center;justify-content:space-between;
+            padding:12px 16px;background:#FFF7D6;border-radius:12px;border:1px solid #F2E7A6
+        }
+        .ak-bundle__title{font-weight:700;font-size:18px;color:#232325;margin:0}
+        .ak-bundle__more{font-size:14px;color:#2a73ff;text-decoration:none}
+
+        .ak-bundle__wrap{position:relative;padding:14px 36px}
+        .ak-bundle-swiper{overflow:hidden}
+
+        /* Card */
+        .ak-card{
+            display:flex;gap:12px;align-items:center;
+            border:1px solid #eee;border-radius:12px;padding:12px;background:#fff;
+            text-decoration:none;min-height:110px;transition:box-shadow .2s
+        }
+        .ak-card:hover{box-shadow:0 6px 18px rgba(0,0,0,.07)}
+        .ak-card__media{width:110px;flex:0 0 110px;display:flex;align-items:center;justify-content:center}
+        .ak-card__media img{width:100%;height:auto;border-radius:8px;object-fit:cover}
+        .ak-card__body{flex:1;min-width:0}
+        .ak-card__title{
+            margin:0 0 6px;color:#222;font-weight:600;line-height:1.35;
+            /* hiển thị FULL, bỏ clamp/ellipsis */
+            white-space:normal;overflow:visible;display:block
+        }
+        .ak-card__sub{margin:0 0 6px;color:#6b7280;font-size:13px}
+        .ak-card__sale{margin:0 0 8px;color:#e11d48;font-weight:700}
+        .ak-card__cta{
+            display:inline-block;padding:6px 10px;background:#f5f7ff;border:1px solid #dfe6ff;
+            border-radius:999px;font-size:13px;color:#1f3aff
+        }
+
+        /* Nav buttons */
+        .ak-bundle__nav{
+            position:absolute;top:50%;transform:translateY(-50%);
+            width:36px;height:36px;border-radius:50%;border:1px solid #e5e7eb;background:#fff;
+            box-shadow:0 2px 8px rgba(0,0,0,.08);cursor:pointer;z-index:2
+        }
+        .ak-bundle__prev{left:8px}
+        .ak-bundle__next{right:8px}
+        .ak-bundle__nav:after{
+            content:"";display:block;width:8px;height:8px;border-top:2px solid #111;border-right:2px solid #111;margin:3px auto 0 auto
+        }
+        .ak-bundle__prev:after{transform:rotate(-135deg)}
+        .ak-bundle__next:after{transform:rotate(45deg)}
+
+        /* Responsive */
+        @media (max-width:639.98px){
+            .ak-bundle__wrap{padding:12px 28px}
+            .ak-card__media{width:96px;flex-basis:96px}
+            .ak-bundle__head{padding:10px 12px}
+        }
+
+    </style>
 @endsection
 
 
@@ -297,12 +355,12 @@
         <section class="pt-60p">
             <div class="section-pt">
                 <div
-                    class="relative  bg-cover bg-no-repeat rounded-24 overflow-hidden" style="background-image: url({{ @$product->category->banner->path ?? '' }})">
+                    class="relative  bg-cover bg-no-repeat rounded-24 overflow-hidden category-hero" style="background-image: url({{ @$product->category->banner->path ?? '' }})">
                     <div class="container">
                         <div class="grid grid-cols-12 gap-30p relative  py-20 z-[2]">
                             <div class="lg:col-start-2 lg:col-end-12 col-span-12">
                                 <h2 class="heading-2 text-w-neutral-1 mb-3">
-                                    {{ $product->name }}
+
                                 </h2>
                                 <ul class="breadcrumb">
                                     <li class="breadcrumb-item">
@@ -628,6 +686,49 @@
                                         {{ $product->category->name ?? '' }}
                                     </span>
                             </div>
+
+
+                            @if($product->upsells->count())
+                                <section class="ak-bundle mt-16">
+                                    <div class="ak-bundle__head">
+                                        <h3 class="ak-bundle__title">Sản phẩm mua kèm</h3>
+                                    </div>
+
+                                    <div class="ak-bundle__wrap">
+                                        <div class="swiper ak-bundle-swiper">
+                                            <div class="swiper-wrapper">
+
+                                                @foreach($product->upsells as $pUp)
+                                                    <div class="swiper-slide">
+                                                        <a href="{{ route('front.getProductDetail', $pUp->slug) }}" class="ak-card">
+                                                            <div class="ak-card__media">
+                                                                <img src="{{ $pUp->image->path ?? '' }}" alt="">
+                                                            </div>
+                                                            <div class="ak-card__body">
+                                                                <p class="ak-card__title">{{ $pUp->name }}</p>
+
+
+                                                                <span class="ak-card__cta">
+                                                                  Chi tiết
+                                                                </span>
+
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                @endforeach
+
+
+                                            </div>
+                                        </div>
+
+                                        <!-- Điều hướng -->
+                                        <button type="button" class="ak-bundle__nav ak-bundle__prev" aria-label="Prev"></button>
+                                        <button type="button" class="ak-bundle__nav ak-bundle__next" aria-label="Next"></button>
+                                    </div>
+                                </section>
+
+                            @endif
+
 
 
                         </div>
@@ -1132,5 +1233,32 @@
 
 
     </script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+
+    <script>
+        (function(){
+            new Swiper('.ak-bundle-swiper', {
+                spaceBetween: 12,
+                // 1.05 trên mobile để lộ preview
+                slidesPerView: 1.05,
+                slidesPerGroup: 1,
+                navigation: {
+                    nextEl: '.ak-bundle__next',
+                    prevEl: '.ak-bundle__prev'
+                },
+                // thêm chút "peek" ở đầu/cuối
+                slidesOffsetBefore: 0,
+                slidesOffsetAfter: 12,
+                breakpoints: {
+                    // từ 640px trở lên: luôn 2 item full + 1 chút preview
+                    640:  { slidesPerView: 2.05, spaceBetween: 14 },
+                    1024: { slidesPerView: 2.05, spaceBetween: 16 },
+                    1280: { slidesPerView: 2.05, spaceBetween: 18 }
+                }
+            });
+        })();
+    </script>
+
 
 @endpush
