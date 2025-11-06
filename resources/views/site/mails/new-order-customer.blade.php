@@ -146,8 +146,17 @@
                                                 <td style="background:#ffffff;border:1px solid #f0ead7;border-right:0;border-radius:8px 0 0 8px;padding:10px 8px;">
                                                     <table role="presentation" cellpadding="0" cellspacing="0">
                                                         <tr>
+                                                            @php
+
+                                                                $imgPath = $item->product && $item->product->image ? $item->product->image->path : null;
+
+                                                                $imgUrl = $imgPath
+                                                                    ? (Str::startsWith($imgPath, ['http://','https://']) ? $imgPath : url(ltrim($imgPath, '/')))
+                                                                    : asset('site/image/no-image.png');
+                                                            @endphp
+
                                                             <td valign="top" style="padding-right:10px;">
-                                                                <img src="{{$item->product->image ? $_SERVER['HTTP_HOST'].$item->product->image->path : asset('site/image/no-image.png')}}"
+                                                                <img src="{{ $imgUrl }}"
                                                                      alt="{{ $item->product->name }}"
                                                                      width="56" height="56"
                                                                      style="display:block;width:56px;height:56px;border-radius:6px;border:1px solid #eee7cc;object-fit:cover;">

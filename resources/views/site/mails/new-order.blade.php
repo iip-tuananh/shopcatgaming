@@ -130,9 +130,18 @@
                                                         <table style="border-spacing:0;border-collapse:collapse">
                                                             <tbody>
                                                             <tr>
+                                                                @php
+
+                                                                    $imgPath = $item->product && $item->product->image ? $item->product->image->path : null;
+
+                                                                    $imgUrl = $imgPath
+                                                                        ? (Str::startsWith($imgPath, ['http://','https://']) ? $imgPath : url(ltrim($imgPath, '/')))
+                                                                        : asset('site/image/no-image.png');
+                                                                @endphp
+
                                                                 <td style="font-family:-apple-system,BlinkMacSystemFont,&quot;Segoe UI&quot;,&quot;Roboto&quot;,&quot;Oxygen&quot;,&quot;Ubuntu&quot;,&quot;Cantarell&quot;,&quot;Fira Sans&quot;,&quot;Droid Sans&quot;,&quot;Helvetica Neue&quot;,sans-serif">
                                                                     <img
-                                                                        src="{{$item->product->image ? $_SERVER['HTTP_HOST'].$item->product->image->path : asset('site/image/no-image.png')}}"
+                                                                        src="{{$imgUrl}}"
                                                                         align="left" width="60" height="60"
                                                                         style="margin-right:15px;border-radius:8px;border:1px solid #e5e5e5"
                                                                         class="CToWUd">
