@@ -130,7 +130,7 @@
                                                 <a href="{{ route('front.home-page') }}">Trang chủ</a>
                                             </li>
                                             @foreach($categories as $category)
-                                                @if($category->childs()->count())
+                                                @if($category->childs->count())
                                                     <li class="sub-menu mobail-submenu">
                                                             <span class="mobail-submenu-btn">
                                                               <span class="submenu-btn">{{ $category->name }}</span>

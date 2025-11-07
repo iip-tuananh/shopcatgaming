@@ -88,7 +88,7 @@
             <div class="grid 3xl:grid-cols-4 xl:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-30p">
 
                 @foreach($blogs as $blog)
-                    <div class="bg-b-neutral-3 py-24p px-30p rounded-12 group" data-aos="zoom-in">
+                    <div class="bg-b-neutral-3 py-24p-x px-30p-x rounded-12 group" data-aos="zoom-in">
                         <div class="overflow-hidden rounded-12">
                             <img class="w-full h-[202px] object-cover group-hover:scale-110 transition-1"
                                  src="{{ $blog->image->path ?? '' }}" alt="{{ $blog->name }}" />

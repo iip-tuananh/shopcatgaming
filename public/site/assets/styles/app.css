@@ -32574,6 +32574,11 @@ code:not(.prose code) {
         padding-top: 1.5rem;
         padding-bottom: 1.5rem;
     }
+
+    .py-24p-x {
+        padding-top: 1.1rem;
+        padding-bottom: 1.1rem;
+    }
 }
 
 .pb-24p {
@@ -32693,6 +32698,7 @@ code:not(.prose code) {
     padding-right: 1rem;
 }
 
+
 @media (min-width: 576px) {
     .px-30p {
         padding-left: 1.25rem;
@@ -32711,6 +32717,11 @@ code:not(.prose code) {
     .px-30p {
         padding-left: 30px;
         padding-right: 30px;
+    }
+
+    .px-30p-x {
+        padding-left: 10px;
+        padding-right: 10px;
     }
 }
 
@@ -35629,6 +35640,18 @@ code:not(.prose code) {
 .btn-primary:hover::before,
 .outline-btn:hover::before {
     width: 150%;
+}
+
+.overlay-6x {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    /* trên tối -> dưới sáng (trong suốt) */
+    background: linear-gradient(
+        to bottom,
+        rgba(14,16,18,0.6) 0%,   /* đậm ở trên */
+        rgba(14,16,18,0.0) 100%  /* trong ở dưới */
+    );
 }
 
 .overlay-1 {

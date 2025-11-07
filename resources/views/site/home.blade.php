@@ -137,11 +137,7 @@
 
                                     </div>
                                 </div>
-
                             @endforeach
-
-
-
                         </div>
                     </div>
                     <div
@@ -307,7 +303,7 @@
                                         <div class="relative rounded-12 overflow-hidden w-full group">
                                             <img class="w-full h-[300px] group-hover:scale-110 object-cover transition-1"
                                                  src="{{ $blog->image->path ?? '' }}" alt="img"/>
-                                            <div class="overlay-6 p-20p flex flex-col items-start justify-between">
+                                            <div class="overlay-6x p-20p flex flex-col items-start justify-between">
                                                 <div class="w-full">
                                                     <a href="{{ route('front.blogDetail', $blog->slug) }}"
                                                        class="library-title heading-4 link-1 mb-2">
@@ -343,5 +339,84 @@
 @endsection
 
 @push('scripts')
+<script>
 
+    (function () {
+        var container = document.querySelector(".thumbs-carousel-container");
+        if (!container) return;
+
+        var thumbsGallery = container.querySelector(".thumbs-gallery");
+        var thumbsGalleryMain = container.querySelector(".thumbs-gallery-main");
+        if (!thumbsGallery || !thumbsGalleryMain) return;
+
+        var paginationEl = container.querySelector(".thumbs-gallery-pagination");
+
+        var spv = parseInt(container.getAttribute("data-slides-per-view"), 10);
+        if (isNaN(spv) || spv < 1) spv = 4;
+
+        var totalSlides = thumbsGalleryMain.querySelectorAll(".swiper-slide").length;
+
+        // THUMBS: không loop, không autoplay
+        var galleryThumbs = new Swiper(thumbsGallery, {
+            spaceBetween: 10,
+            slidesPerView: spv,
+            freeMode: true,
+            watchSlidesProgress: true,
+            watchSlidesVisibility: true,
+            loop: false,
+            watchOverflow: true,
+            breakpoints: { 768:{spaceBetween:20}, 992:{spaceBetween:24} }
+        });
+
+        // MAIN: không loop, dùng rewind
+        var galleryMain = new Swiper(thumbsGalleryMain, {
+            spaceBetween: 10,
+            slidesPerView: 1,
+            loop: false,
+            rewind: true,
+            speed: 800,
+            pagination: {
+                el: paginationEl,
+                clickable: true
+            },
+            thumbs: { swiper: galleryThumbs },
+            autoplay: totalSlides > 1 ? {
+                delay: 3500,
+                disableOnInteraction: false,
+                pauseOnMouseEnter: true
+            } : false,
+            watchOverflow: true,
+            observer: true,
+            observeParents: true,
+
+            // >>> ép cập nhật dot khi autoplay/slidechange <<<
+            on: {
+                init: function () {
+                    // đảm bảo render đúng ngay từ đầu
+                    this.pagination && this.pagination.update && this.pagination.update();
+                },
+                slideChange: function () {
+                    this.pagination && this.pagination.update && this.pagination.update();
+                },
+                autoplay: function () {
+                    this.pagination && this.pagination.update && this.pagination.update();
+                },
+                // đôi khi “rewind” làm activeIndex nhảy tức thời:
+                transitionEnd: function () {
+                    this.pagination && this.pagination.update && this.pagination.update();
+                }
+            }
+        });
+
+        // đề phòng: force update sau 1 tick
+        setTimeout(function(){
+            if (galleryMain && galleryMain.pagination && galleryMain.pagination.update) {
+                galleryMain.pagination.update();
+            }
+        }, 0);
+    })();
+
+
+
+</script>
 @endpush

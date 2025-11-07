@@ -69,7 +69,7 @@
                         </li>
 
                     @foreach($categories as $category)
-                            @if($category->childs()->count())
+                            @if($category->childs->count())
                                 <li class="sub-menu mobail-submenu border-none pb-0">
                                 <span class="mobail-submenu-btn flex-y hover:bg-primary hover:text-b-neutral-4 justify-between px-3 py-16p text-l-regular rounded-12 w-full transition-1">
                                     <span class="submenu-btn flex-y gap-3 ">
