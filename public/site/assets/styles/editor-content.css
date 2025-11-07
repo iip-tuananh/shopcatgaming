@@ -91,35 +91,11 @@
     text-decoration: underline;
 }
 
-
 /* Hình ảnh */
-.editor-content img{
-    display:block !important;
-    width:100% !important;
-    max-width:100% !important;
-    height:auto !important;        /* quan trọng: bỏ 100%, giữ tỉ lệ */
-    margin:8px 0;                  /* tuỳ chỉnh */
+.editor-content img {
+    max-width: 100%;
+    height: auto;
 }
-
-/* 2) Span bọc ảnh được chuyển thành block để có chiều cao bao ảnh */
-.editor-content span > img{
-    display:block !important;
-}
-.editor-content span:has(> img){   /* nếu trình duyệt hỗ trợ */
-    display:block !important;
-}
-
-/* 3) Nếu theme đang ép inline-block hoặc max-width:none, reset lại */
-.editor-content li img{
-    display:block !important;
-    max-width:100% !important;
-}
-
-/* 4) (tuỳ chọn) Nếu còn inline style height:100% lúc nhập bài → vô hiệu hoá */
-.editor-content img[style*="height"]{
-    height:auto !important;
-}
-
 
 /* Bảng biểu */
 .editor-content table {
