@@ -113,6 +113,8 @@
         @media (max-width: 991.98px){  /* mobile */
             .banners-swiper-thumb { display:none !important; }
         }
+
+
     </style>
 @endsection
 
@@ -339,80 +341,74 @@
 @endsection
 
 @push('scripts')
-<script>
+    <script>
+        (function () {
+            var container = document.querySelector(".thumbs-carousel-container");
+            if (!container) return;
 
-    (function () {
-        var container = document.querySelector(".thumbs-carousel-container");
-        if (!container) return;
+            var thumbsGallery = container.querySelector(".thumbs-gallery");
+            var thumbsGalleryMain = container.querySelector(".thumbs-gallery-main");
+            var paginationEl = container.querySelector(".thumbs-gallery-pagination");
+            if (!thumbsGallery || !thumbsGalleryMain || !paginationEl) return;
 
-        var thumbsGallery = container.querySelector(".thumbs-gallery");
-        var thumbsGalleryMain = container.querySelector(".thumbs-gallery-main");
+            var spv = parseInt(container.getAttribute("data-slides-per-view"), 10);
+            if (isNaN(spv) || spv < 1) spv = 4;
 
-        if (!thumbsGallery || !thumbsGalleryMain) return;
+            var totalSlides = thumbsGalleryMain.querySelectorAll(".swiper-slide").length;
+            var canAuto = totalSlides > 1;
 
-        // lấy options từ data-attributes nếu có
-        var direction = container.getAttribute("data-carousel-direction") || "horizontal";
-        var spv = parseInt(container.getAttribute("data-slides-per-view"), 10);
-        if (isNaN(spv) || spv < 1) spv = 4;
+            // THUMBS: KHÔNG autoplay/loop
+            var galleryThumbs = new Swiper(thumbsGallery, {
+                spaceBetween: 10,
+                slidesPerView: spv,
+                freeMode: true,
+                watchSlidesProgress: true,
+                watchSlidesVisibility: true,
+                loop: false,
+                watchOverflow: true,
+                breakpoints: { 768:{ spaceBetween:20 }, 992:{ spaceBetween:24 } }
+            });
 
-        // Đếm số slide để quyết định loop/autoplay
-        var totalSlides = thumbsGalleryMain.querySelectorAll(".swiper-slide").length;
-        var canLoop = totalSlides > 1; // loop/autoplay chỉ hợp lý khi có >1 slide
-        var loopedSlides = Math.min(totalSlides, 4); // tránh set lớn hơn tổng số slide
+            // MAIN: không loop, dùng rewind và ép update pagination khi autoplay
+            var galleryMain = new Swiper(thumbsGalleryMain, {
+                spaceBetween: 10,
+                slidesPerView: 1,
+                loop: false,
+                rewind: true,
+                speed: 800,
+                pagination: {
+                    el: paginationEl,
+                    clickable: true
+                },
+                thumbs: { swiper: galleryThumbs },
+                autoplay: canAuto ? {
+                    delay: 2500,
+                    disableOnInteraction: false,
+                    pauseOnMouseEnter: true
+                } : false,
+                watchOverflow: true,
+                observer: true,
+                observeParents: true,
+                on: {
+                    init: function () {
+                        this.pagination && this.pagination.update && this.pagination.update();
+                    },
+                    slideChange: function () {
+                        this.pagination && this.pagination.update && this.pagination.update();
+                    },
+                    transitionEnd: function () {
+                        this.pagination && this.pagination.update && this.pagination.update();
+                    }
+                }
+            });
 
-        // THUMBS
-        var galleryThumbs = new Swiper(thumbsGallery, {
-            spaceBetween: 10,
-            slidesPerView: spv,
-            loop: false,
-            speed: 500,
-            freeMode: true,
-            loopedSlides: loopedSlides,
-            watchSlidesVisibility: true,
-            watchSlidesProgress: true,
-            direction: direction,
-            breakpoints: {
-                768: { spaceBetween: 20 },
-                992: { spaceBetween: 24 }
-            },
-            // để khi click/drag vào thumbs, main không bị tắt autoplay vĩnh viễn
-            autoplay: canLoop ? {
-                delay: 2500,
-                disableOnInteraction: false,
-                pauseOnMouseEnter: true
-            } : false,
-        });
+            // force update 1 nhịp sau khi khởi tạo (phòng trường hợp DOM đang ẩn)
+            setTimeout(function(){
+                if (galleryMain.pagination && galleryMain.pagination.update) {
+                    galleryMain.pagination.update();
+                }
+            }, 0);
+        })();
+    </script>
 
-        // MAIN
-        var galleryMain = new Swiper(thumbsGalleryMain, {
-            spaceBetween: 10,
-            slidesPerView: 1,
-            loop: false,
-            speed: 800,
-            loopedSlides: loopedSlides,
-            navigation: {
-                nextEl: container.querySelector(".swiper-button-next"),
-                prevEl: container.querySelector(".swiper-button-prev")
-            },
-            pagination: {
-                el: container.querySelector(".thumbs-gallery-pagination"),
-                clickable: true
-            },
-            thumbs: { swiper: galleryThumbs },
-            // BẬT AUTOPLAY
-            autoplay: canLoop ? {
-                delay: 2500,
-                disableOnInteraction: false,
-                pauseOnMouseEnter: true
-            } : false,
-
-            // Các “cứu cánh” hay cần nếu swiper ở trong tab ẩn/DOM động
-            observer: true,
-            observeParents: true
-        });
-    })();
-
-
-
-</script>
 @endpush
