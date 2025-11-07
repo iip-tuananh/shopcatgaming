@@ -861,13 +861,16 @@
                     <div>
                         <div x-show="activeTab === 1" x-transition>
                             <div class="editor-content">
-                              {!! $product->body !!}
+                                {!! normalizeResponsiveImages($product->body) !!}
+
                             </div>
                         </div>
 
                         <div x-show="activeTab === 2" x-transition>
                             <div class="editor-content">
-                                {!! $product->hdcd !!}
+
+                                {!! normalizeResponsiveImages($product->hdcd) !!}
+
                             </div>
                         </div>
 

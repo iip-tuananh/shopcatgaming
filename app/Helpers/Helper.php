@@ -252,3 +252,17 @@ if (!function_exists('getBanner')) {
         return $category->banner ? url(str_replace("\\", "/", $category->banner->path)) : '';
     }
 }
+
+if (!function_exists('normalizeResponsiveImages')) {
+    function normalizeResponsiveImages($html)
+    {
+        // 1) Xoá "auto," ở đầu sizes (nếu có)
+        $html = preg_replace('/\s+sizes="\s*auto,\s*/i', ' sizes="', $html);
+
+        // 2) Chuẩn hoá chuỗi sizes sai định dạng (nếu có nhiều khoảng trắng lung tung)
+        $html = preg_replace('/\s+sizes="\s*,\s*/i', ' sizes="', $html);
+
+        return $html;
+    }
+}
+
