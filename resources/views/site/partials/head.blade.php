@@ -1,7 +1,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>@yield('title')</title>
-<link href="/site/assets/styles/app.css?v=2.0" rel="stylesheet">
+<link href="/site/assets/styles/app.css?v=3.0" rel="stylesheet">
 <script defer src="/site/assets/js/app.js"></script>
 <link rel='stylesheet' id='xts-google-fonts-css' href='https://fonts.googleapis.com/css?family=Montserrat%3A400%2C600%2C500%2C700&#038;ver=8.2.7' type='text/css' media='all' />
 
