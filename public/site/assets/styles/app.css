@@ -32455,6 +32455,11 @@ code:not(.prose code) {
         padding-top: 1.25rem;
         padding-bottom: 1.25rem;
     }
+
+    .py-20p-x {
+        padding-top: 1.05rem;
+        padding-bottom: 1.05rem;
+    }
 }
 
 .pb-20p {
@@ -43059,6 +43064,10 @@ button:not(:disabled) {
 
     .xl\:w-\[170px\] {
         width: 170px;
+    }
+
+    .xl\:w-\[200px\] {
+        width: 200px;
     }
 
     .xl\:w-\[400px\] {

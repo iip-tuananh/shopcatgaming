@@ -347,73 +347,69 @@
 
         var thumbsGallery = container.querySelector(".thumbs-gallery");
         var thumbsGalleryMain = container.querySelector(".thumbs-gallery-main");
+
         if (!thumbsGallery || !thumbsGalleryMain) return;
 
-        var paginationEl = container.querySelector(".thumbs-gallery-pagination");
-
+        // lấy options từ data-attributes nếu có
+        var direction = container.getAttribute("data-carousel-direction") || "horizontal";
         var spv = parseInt(container.getAttribute("data-slides-per-view"), 10);
         if (isNaN(spv) || spv < 1) spv = 4;
 
+        // Đếm số slide để quyết định loop/autoplay
         var totalSlides = thumbsGalleryMain.querySelectorAll(".swiper-slide").length;
+        var canLoop = totalSlides > 1; // loop/autoplay chỉ hợp lý khi có >1 slide
+        var loopedSlides = Math.min(totalSlides, 4); // tránh set lớn hơn tổng số slide
 
-        // THUMBS: không loop, không autoplay
+        // THUMBS
         var galleryThumbs = new Swiper(thumbsGallery, {
             spaceBetween: 10,
             slidesPerView: spv,
+            loop: canLoop,
+            speed: 500,
             freeMode: true,
-            watchSlidesProgress: true,
+            loopedSlides: loopedSlides,
             watchSlidesVisibility: true,
-            loop: false,
-            watchOverflow: true,
-            breakpoints: { 768:{spaceBetween:20}, 992:{spaceBetween:24} }
-        });
-
-        // MAIN: không loop, dùng rewind
-        var galleryMain = new Swiper(thumbsGalleryMain, {
-            spaceBetween: 10,
-            slidesPerView: 1,
-            loop: false,
-            rewind: true,
-            speed: 800,
-            pagination: {
-                el: paginationEl,
-                clickable: true
+            watchSlidesProgress: true,
+            direction: direction,
+            breakpoints: {
+                768: { spaceBetween: 20 },
+                992: { spaceBetween: 24 }
             },
-            thumbs: { swiper: galleryThumbs },
-            autoplay: totalSlides > 1 ? {
-                delay: 3500,
+            // để khi click/drag vào thumbs, main không bị tắt autoplay vĩnh viễn
+            autoplay: canLoop ? {
+                delay: 2500,
                 disableOnInteraction: false,
                 pauseOnMouseEnter: true
             } : false,
-            watchOverflow: true,
-            observer: true,
-            observeParents: true,
-
-            // >>> ép cập nhật dot khi autoplay/slidechange <<<
-            on: {
-                init: function () {
-                    // đảm bảo render đúng ngay từ đầu
-                    this.pagination && this.pagination.update && this.pagination.update();
-                },
-                slideChange: function () {
-                    this.pagination && this.pagination.update && this.pagination.update();
-                },
-                autoplay: function () {
-                    this.pagination && this.pagination.update && this.pagination.update();
-                },
-                // đôi khi “rewind” làm activeIndex nhảy tức thời:
-                transitionEnd: function () {
-                    this.pagination && this.pagination.update && this.pagination.update();
-                }
-            }
         });
 
-        // đề phòng: force update sau 1 tick
-        setTimeout(function(){
-            if (galleryMain && galleryMain.pagination && galleryMain.pagination.update) {
-                galleryMain.pagination.update();
-            }
-        }, 0);
+        // MAIN
+        var galleryMain = new Swiper(thumbsGalleryMain, {
+            spaceBetween: 10,
+            slidesPerView: 1,
+            loop: canLoop,
+            speed: 800,
+            loopedSlides: loopedSlides,
+            navigation: {
+                nextEl: container.querySelector(".swiper-button-next"),
+                prevEl: container.querySelector(".swiper-button-prev")
+            },
+            pagination: {
+                el: container.querySelector(".thumbs-gallery-pagination"),
+                clickable: true
+            },
+            thumbs: { swiper: galleryThumbs },
+            // BẬT AUTOPLAY
+            autoplay: canLoop ? {
+                delay: 2500,
+                disableOnInteraction: false,
+                pauseOnMouseEnter: true
+            } : false,
+
+            // Các “cứu cánh” hay cần nếu swiper ở trong tab ẩn/DOM động
+            observer: true,
+            observeParents: true
+        });
     })();
 
 
