@@ -92,9 +92,11 @@
 }
 
 /* Hình ảnh */
-.editor-content img {
+.editor-content img{
+    display: block;        /* thoát khỏi inline box */
+    width: 100%;
+    height: auto;          /* GIỮ TỈ LỆ ẢNH */
     max-width: 100%;
-    height: auto;
 }
 
 /* Bảng biểu */
