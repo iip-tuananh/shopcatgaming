@@ -4,7 +4,7 @@
 @section('image'){{@$config->image->path ?? ''}}@endsection
 
 @section('css')
-    <link type="text/css" rel="stylesheet" href="/site/assets/styles/editor-content.css?v=2.0">
+    <link type="text/css" rel="stylesheet" href="/site/assets/styles/editor-content.css?v=3.0">
 
 @endsection
 
