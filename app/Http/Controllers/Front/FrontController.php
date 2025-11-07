@@ -148,8 +148,9 @@ class FrontController extends Controller
                 ->where('slug', $slug)->first();
             $cateIds = [$category->id];
 
+            // nếu là danh mục cha và có con
             if($category->childs()->count()) {
-                $cateIds = $category->getChilds()->pluck('id')->toArray();
+                $cateIds = array_merge([$category->id], $category->getChilds()->pluck('id')->toArray());
             } else {
                 $parentCategory = Category::query()->find($category->parent_id);
             }
