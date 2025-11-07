@@ -167,7 +167,9 @@
                         </div>
 
                         <div class="editor-content" id="post-content">
-                            {!! $blog->body !!}
+
+                            {!! normalizeResponsiveImages($blog->body) !!}
+
                         </div>
 
 
