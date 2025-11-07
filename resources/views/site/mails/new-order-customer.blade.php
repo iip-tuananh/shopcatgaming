@@ -100,9 +100,13 @@
                                                 </div>
                                                 <div style="margin-bottom:6px;">
                                                     <span style="color:#6b7280;">Tạm tính:</span>
-                                                    {{ $fmt($data->total_after_discount) }}
+                                                    {{ $fmt($data->total_before_discount) }}
                                                 </div>
 
+                                                <div style="margin-bottom:6px;">
+                                                    <span style="color:#6b7280;">Phí ship:</span>
+                                                    {{ $fmt($data->ship_cost) }}
+                                                </div>
 
                                                 <div>
                                                     <span style="color:#6b7280;">Tổng thanh toán:</span>
@@ -189,7 +193,7 @@
                                     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:8px;">
                                         <tr>
                                             <td align="right" style="font:700 16px Arial,Helvetica,sans-serif;color:#111111;">
-                                                Tổng cộng: {{ $fmt($data->total_before_discount) }}
+                                                Tổng cộng: {{ $fmt($data->total_after_discount) }}
                                             </td>
                                         </tr>
                                     </table>

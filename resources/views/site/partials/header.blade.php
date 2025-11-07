@@ -64,7 +64,7 @@
                     <div class="3xl:col-span-6 xl:col-span-7 flex items-center justify-end w-full">
 
                         <div class="flex items-center lg:gap-x-32p gap-x-2">
-                            <div class="hidden lg:flex items-center gap-1 shrink-0">
+                            <div class=" lg:flex items-center gap-1 shrink-0">
                                 <a href="{{ route('cart.index') }}" class="cart-link btn-c btn-c-lg btn-c-dark-outline"
                                    aria-label="Giỏ hàng">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -159,30 +159,12 @@
 
 
 
-                                            <li class="sub-menu mobail-submenu">
-                                                <span class="mobail-submenu-btn">
-                                                  <span class="submenu-btn">Tin tức</span>
-                                                  <span class="collapse-icon mobail-submenu-icon">
-                                                    <i class="ti ti-chevron-down"></i>
-                                                  </span>
-                                                </span>
-                                                <ul class="grid gap-y-2 px-16p">
-                                                    @foreach($postsCategory as $postCategory)
-                                                        <li class="pt-2">
-                                                            <a aria-label="item"
-                                                               class="text-base hover:text-primary transition-1"
-                                                               href="{{ route('front.blogs', $postCategory->slug) }}">
-                                                                - {{ $postCategory->name }}
-                                                            </a>
-                                                        </li>
-                                                    @endforeach
+                                            @foreach($postsCategory as $postCategory)
+                                                <li class="mobail-menu">
+                                                    <a href="{{ route('front.blogs', $postCategory->slug) }}">{{ $postCategory->name }}</a>
+                                                </li>
+                                            @endforeach
 
-                                                </ul>
-                                            </li>
-
-                                            <li class="mobail-menu">
-                                                <a href="{{ route('cart.index') }}">Giỏ hàng</a>
-                                            </li>
 
                                             <li class="mobail-menu">
                                                 <a href="{{ route('front.contact') }}">Liên hệ</a>

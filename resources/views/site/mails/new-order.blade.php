@@ -223,6 +223,29 @@
                                                         </tr>
                                                         </tbody>
                                                     </table>
+
+                                                    <table
+                                                        style="width:100%;border-spacing:0;border-collapse:collapse;margin-top:20px">
+
+
+                                                        <tbody>
+                                                        <tr>
+                                                            <td style="font-family:-apple-system,BlinkMacSystemFont,&quot;Segoe UI&quot;,&quot;Roboto&quot;,&quot;Oxygen&quot;,&quot;Ubuntu&quot;,&quot;Cantarell&quot;,&quot;Fira Sans&quot;,&quot;Droid Sans&quot;,&quot;Helvetica Neue&quot;,sans-serif;padding:5px 0">
+                                                                <p style="color:#777;line-height:1.2em;font-size:16px;margin:0">
+                                                                    <span style="font-size:16px">Phí ship</span>
+                                                                </p>
+                                                            </td>
+                                                            <td style="font-family:-apple-system,BlinkMacSystemFont,&quot;Segoe UI&quot;,&quot;Roboto&quot;,&quot;Oxygen&quot;,&quot;Ubuntu&quot;,&quot;Cantarell&quot;,&quot;Fira Sans&quot;,&quot;Droid Sans&quot;,&quot;Helvetica Neue&quot;,sans-serif;padding:5px 0"
+                                                                align="right">
+                                                                <strong
+                                                                    style="font-size:16px;color:#555">{{number_format($data->ship_cost)}}
+                                                                    đ</strong>
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+
+
                                                     <table
                                                         style="width:100%;border-spacing:0;border-collapse:collapse;margin-top:20px;border-top-width:2px;border-top-color:#e5e5e5;border-top-style:solid">
 

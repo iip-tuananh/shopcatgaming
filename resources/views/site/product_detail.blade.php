@@ -345,6 +345,19 @@
         }
 
     </style>
+
+    <style>
+        /* thu hẹp khoảng cách giữa các thumbnail */
+        .thumbs-gallery .swiper-wrapper{ display:flex; gap:8px; }   /* mobile */
+        @media (min-width:640px){ .thumbs-gallery .swiper-wrapper{ gap:10px; } }
+        @media (min-width:992px){ .thumbs-gallery .swiper-wrapper{ gap:12px; } }
+
+        /* Swiper hay set margin-right inline → reset để dùng gap */
+        .thumbs-gallery .swiper-slide{ margin-right:0 !important; width:auto !important; }
+
+        /* tránh padding thừa của container (nếu có) */
+        .thumbs-gallery{ padding-left:0 !important; padding-right:0 !important; }
+    </style>
 @endsection
 
 
@@ -354,46 +367,86 @@
         <!-- breadcrumb start -->
         <section class="pt-60p">
             <div class="section-pt">
-                <div
-                    class="relative  bg-cover bg-no-repeat rounded-24 overflow-hidden category-hero" style="background-image: url({{ @$product->category->banner->path ?? '' }})">
-                    <div class="container">
-                        <div class="grid grid-cols-12 gap-30p relative  py-20 z-[2]">
-                            <div class="lg:col-start-2 lg:col-end-12 col-span-12">
-                                <h2 class="heading-2 text-w-neutral-1 mb-3">
+{{--                <div--}}
+{{--                    class="relative  bg-cover bg-no-repeat rounded-24 overflow-hidden category-hero" style="background-image: url({{ @$product->category->banner->path ?? '' }})">--}}
+{{--                    <div class="container">--}}
+{{--                        <div class="grid grid-cols-12 gap-30p relative  py-20 z-[2]">--}}
+{{--                            <div class="lg:col-start-2 lg:col-end-12 col-span-12">--}}
+{{--                                <h2 class="heading-2 text-w-neutral-1 mb-3">--}}
 
-                                </h2>
+{{--                                </h2>--}}
+{{--                                <ul class="breadcrumb">--}}
+{{--                                    <li class="breadcrumb-item">--}}
+{{--                                        <a href="{{ route('front.home-page') }}" class="breadcrumb-link">--}}
+{{--                                            Trang chủ--}}
+{{--                                        </a>--}}
+{{--                                    </li>--}}
+{{--                                    <li class="breadcrumb-item">--}}
+{{--                                            <span class="breadcrumb-icon">--}}
+{{--                                                <i class="ti ti-chevrons-right"></i>--}}
+{{--                                            </span>--}}
+{{--                                    </li>--}}
+{{--                                    @if($product->category)--}}
+{{--                                        <li class="breadcrumb-item">--}}
+{{--                                            <a href="{{ route('front.getProductList', $product->category->slug ?? '') }}" class="breadcrumb-link">--}}
+{{--                                                {{ $product->category->name ?? '' }}--}}
+{{--                                            </a>--}}
+{{--                                        </li>--}}
+{{--                                        <li class="breadcrumb-item">--}}
+{{--                                            <span class="breadcrumb-icon">--}}
+{{--                                                <i class="ti ti-chevrons-right"></i>--}}
+{{--                                            </span>--}}
+{{--                                        </li>--}}
+{{--                                    @endif--}}
+{{--                                    <li class="breadcrumb-item">--}}
+{{--                                        <span class="breadcrumb-current">{{ $product->name }}</span>--}}
+{{--                                    </li>--}}
+{{--                                </ul>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                    <div class="overlay-11"></div>--}}
+{{--                </div>--}}
+
+                <div class="category-hero relative rounded-24 overflow-hidden">
+                    <picture>
+                        <img
+                            src="{{ @$product->category->banner->path ?? '' }}"
+                            alt="{{ $product->category->name ?? '' }}"
+                            class="hero-img"
+                            loading="lazy"
+                        >
+                    </picture>
+
+                    <div class="container hero-content">
+                        <div class="grid grid-cols-12 gap-30p relative hero-content- z-[2]">
+                            <div class="lg:col-start-2 lg:col-end-12 col-span-12">
+                                <h2 class="heading-2 text-w-neutral-1 mb-3"></h2>
+
                                 <ul class="breadcrumb">
                                     <li class="breadcrumb-item">
-                                        <a href="{{ route('front.home-page') }}" class="breadcrumb-link">
-                                            Trang chủ
-                                        </a>
+                                        <a href="{{ route('front.home-page') }}" class="breadcrumb-link">Trang chủ</a>
                                     </li>
-                                    <li class="breadcrumb-item">
-                                            <span class="breadcrumb-icon">
-                                                <i class="ti ti-chevrons-right"></i>
-                                            </span>
-                                    </li>
+                                    <li class="breadcrumb-item"><span class="breadcrumb-icon"><i class="ti ti-chevrons-right"></i></span></li>
+
                                     @if($product->category)
                                         <li class="breadcrumb-item">
                                             <a href="{{ route('front.getProductList', $product->category->slug ?? '') }}" class="breadcrumb-link">
                                                 {{ $product->category->name ?? '' }}
                                             </a>
                                         </li>
-                                        <li class="breadcrumb-item">
-                                            <span class="breadcrumb-icon">
-                                                <i class="ti ti-chevrons-right"></i>
-                                            </span>
-                                        </li>
+                                        <li class="breadcrumb-item"><span class="breadcrumb-icon"><i class="ti ti-chevrons-right"></i></span></li>
                                     @endif
-                                    <li class="breadcrumb-item">
-                                        <span class="breadcrumb-current">{{ $product->name }}</span>
-                                    </li>
+
+                                    <li class="breadcrumb-item"><span class="breadcrumb-current">{{ $product->name }}</span></li>
                                 </ul>
                             </div>
                         </div>
                     </div>
-                    <div class="overlay-11"></div>
+
+                    <div class="overlay-11" aria-hidden="true"></div>
                 </div>
+
             </div>
         </section>
         <!-- breadcrumb end -->

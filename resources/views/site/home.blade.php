@@ -147,7 +147,7 @@
                     <div
                         class="md:absolute lg:right-15 md:right-12 lg:bottom-20 md:bottom-12 z-[2] overflow-hidden pt-5 flex justify-end">
                         <div
-                            class="thumbs-gallery xxl:w-[572px] lg:w-[400px] md:w-[380px] xsm:w-[300px] w-full h-fit overflow-hidden">
+                            class="thumbs-gallery xxl:w-[500px] lg:w-[400px] md:w-[380px] xsm:w-[300px] w-full h-fit overflow-hidden">
                             <div class="swiper-wrapper pb-10 ">
                                 @foreach($banners as $banner)
                                     <div class="swiper-slide banners-swiper-thumb">
@@ -242,7 +242,7 @@
                             @foreach($categoriesParent as $categoryParent)
                                 <div class="swiper-slide">
                                     <div
-                                        class="w-full h-full bg-b-neutral-3 grid 4xl:grid-cols-2 grid-cols-1 gap-y-30p items-center rounded-24 overflow-hidden group">
+                                        class="w-full h-full bg-b-neutral-3 grid 4xl:grid-cols-2 grid-cols-1  items-center rounded-24 overflow-hidden group">
                                         <div class="overflow-hidden h-full">
                                             <img
                                                 class="w-full xxl:h-full lg:h-[340px] sm:h-[320px] h-[300px] object-cover object-top group-hover:scale-110 transition-1"

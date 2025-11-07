@@ -43255,6 +43255,10 @@ button:not(:disabled) {
         width: 180px;
     }
 
+    .xxl\:w-\[100px\] {
+        width: 100px;
+    }
+
     .xxl\:w-\[500px\] {
         width: 500px;
     }

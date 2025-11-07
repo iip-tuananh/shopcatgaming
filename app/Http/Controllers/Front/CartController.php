@@ -220,9 +220,10 @@ class CartController extends Controller
                 'payment_method' => $request->payment_method,
                 'fulfillment_method' => $request->fulfillment_method,
                 'discount_code' => $request->discount_code,
+                'ship_cost' => $request->ship_cost,
                 'discount_value' => $request->discount_value ?? 0,
                 'total_before_discount' => $total_price,
-                'total_after_discount' => $total_price - ($request->discount_value ?? 0),
+                'total_after_discount' => ($total_price - ($request->discount_value ?? 0))  + $request->ship_cost,
                 'code' => 'ORDER' . date('Ymd') . '-' . $lastId
             ]);
 

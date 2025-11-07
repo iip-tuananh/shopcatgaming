@@ -146,41 +146,78 @@
 
 </style>
 
+
+
+
+
 <style>
-    /* Mobile-only */
-    @media (max-width: 992px) {
-        .category-hero{
-            /* Hiển thị toàn bộ ảnh banner, không crop */
-            background-size: contain !important;
-            background-position: center top !important;
-            background-repeat: no-repeat !important;
+    /* Desktop: banner full khối */
+    @media (min-width: 993px){
+        /* Khung hero dùng ảnh nền bằng <img> */
+        .category-hero{ position:relative; }
 
-            /*!* Chiều cao tối thiểu cho khối (tùy banner, có thể tăng/giảm) *!*/
-            /*min-height: 260px;*/
+        /* Ảnh nền */
+        .category-hero .hero-img{
+            position:absolute;
+            inset:0;
+            width:100%;
+            height:100%;
+            object-position:center top;
+            z-index:0;
         }
 
-        /* Đặt nội dung vào giữa khối */
-        .category-hero .grid{
-            display: flex;
-            align-items: center;
-            min-height: inherit;
-            padding-top: 6px;   /* mềm hơn trên mobile */
-            padding-bottom: 16px;
+        /* Lớp phủ (nếu bạn đang dùng để tạo gradient/mờ chữ) */
+        .category-hero .overlay-11{
+            position:absolute;
+            inset:0;
+            z-index:1;            /* nằm trên ảnh, dưới content */
+            pointer-events:none;
+            /* ví dụ: background: linear-gradient(to top, rgba(0,0,0,.35), rgba(0,0,0,0)); */
         }
 
-        /* Căn giữa text + breadcrumb */
-        .category-hero h2{ margin-left: auto; margin-right: auto; font-size: 17px }
-        .category-hero .breadcrumb{
-            display: flex;
-            align-items: center;
-            /*justify-content: center;*/
-            flex-wrap: wrap;
-            gap: 6px;
-            margin-top: 6px;
+        /* Nội dung luôn nằm phía trên ảnh */
+        .category-hero .hero-content{
+            position:relative;
+            z-index:2;
         }
 
-        .breadcrumb-item {
-            font-size: 13px;
+
+        .category-hero .hero-img{ object-fit:cover; }
+
+        .hero-content- {
+            padding-top: 5rem;
+            padding-bottom: 5rem
         }
+
     }
+
+
+</style>
+
+<style>
+    /* Desktop: overlay để đẹp như banner */
+    @media (max-width: 992px){
+        /* Mobile-first: content nằm DƯỚI ảnh */
+        .category-hero{ position: relative; border-radius: 24px; overflow: hidden; }
+        .category-hero picture,
+        .category-hero .hero-img{ display:block; width:100%; }
+        .category-hero .hero-img{
+            height:auto;                 /* để ảnh tự cao theo tỉ lệ */
+            object-fit: contain;         /* thấy đủ ảnh trên mobile */
+            object-position: center top;
+            background:#0a0a0a;          /* fill phần trống nếu có */
+        }
+
+        /* nội dung là khối bình thường, nằm dưới ảnh */
+        .category-hero .hero-content{
+            position: static;            /* quan trọng: không overlay trên mobile */
+            padding: 12px 16px;          /* tuỳ chỉnh */
+            z-index: auto;
+        }
+         .category-hero h2{ margin-left: auto; margin-right: auto; font-size: 17px }
+/* lớp phủ không cần trên mobile */
+        /*.category-hero .overlay-11{ display:none; }*/
+    }
+
+
 </style>

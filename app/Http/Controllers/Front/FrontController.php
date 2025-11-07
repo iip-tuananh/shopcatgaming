@@ -362,11 +362,11 @@ class FrontController extends Controller
             $category = PostCategory::query()->with('image')->where('slug', $slug)->first();
             $blogs = Post::query()->with(['image'])->where('status', 1)
                 ->where('type', 'post')
-                ->where('cate_id', $category->id)->latest()->paginate(8);
+                ->where('cate_id', $category->id)->latest()->paginate(16);
         } else {
             $blogs = Post::query()->with(['image', 'user_create'])->where('status', 1)
                 ->where('type', 'post')
-                ->latest()->paginate(8);
+                ->latest()->paginate(16);
         }
         $categories = PostCategory::query()->where('type', 1)
             ->orderBy('sort_order', 'asc')->get();

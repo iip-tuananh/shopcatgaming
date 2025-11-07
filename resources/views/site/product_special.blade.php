@@ -46,11 +46,45 @@
         <section class="pt-60p">
             <div class="section-pt">
 
-                <div class="relative bg-cover bg-no-repeat rounded-24 overflow-hidden category-hero"
-                     style="background-image: url({{ @$category->image->path ?? '' }})">
-                    <div class="container">
-                        <div class="grid grid-cols-12 gap-30p relative py-20 z-[2]">
-                            <div class="lg:col-start-2 lg:col-end-12 col-span-12 lg:text-left">
+{{--                <div class="relative bg-cover bg-no-repeat rounded-24 overflow-hidden category-hero"--}}
+{{--                     style="background-image: url({{ @$category->image->path ?? '' }})">--}}
+{{--                    <div class="container">--}}
+{{--                        <div class="grid grid-cols-12 gap-30p relative py-20 z-[2]">--}}
+{{--                            <div class="lg:col-start-2 lg:col-end-12 col-span-12 lg:text-left">--}}
+{{--                                <h2 class="heading-2 text-w-neutral-1 mb-3">--}}
+{{--                                    {{ @$category->name ?? 'Sản phẩm' }}--}}
+{{--                                </h2>--}}
+
+{{--                                <ul class="breadcrumb">--}}
+{{--                                    <li class="breadcrumb-item">--}}
+{{--                                        <a href="{{ route('front.home-page') }}" class="breadcrumb-link">Trang chủ</a>--}}
+{{--                                    </li>--}}
+{{--                                    <li class="breadcrumb-item">--}}
+{{--                                        <span class="breadcrumb-icon"><i class="ti ti-chevrons-right"></i></span>--}}
+{{--                                    </li>--}}
+{{--                                    <li class="breadcrumb-item">--}}
+{{--                                        <span class="breadcrumb-current">{{ @$category->name ?? 'Sản phẩm' }}</span>--}}
+{{--                                    </li>--}}
+{{--                                </ul>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                    <div class="overlay-11"></div>--}}
+{{--                </div>--}}
+
+
+                <div class="category-hero relative rounded-24 overflow-hidden">
+                    <picture>
+                        <img
+                            src="{{ @$category->image->path ?? '' }}"
+                            class="hero-img"
+                            loading="lazy"
+                        >
+                    </picture>
+
+                    <div class="container hero-content">
+                        <div class="grid grid-cols-12 gap-30p relative hero-content- z-[2]">
+                            <div class="lg:col-start-2 lg:col-end-12 col-span-12">
                                 <h2 class="heading-2 text-w-neutral-1 mb-3">
                                     {{ @$category->name ?? 'Sản phẩm' }}
                                 </h2>
@@ -69,7 +103,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="overlay-11"></div>
+
+                    <div class="overlay-11" aria-hidden="true"></div>
                 </div>
 
             </div>

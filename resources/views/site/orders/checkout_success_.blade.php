@@ -118,14 +118,52 @@
         <!-- breadcrumb start -->
         <section class="pt-60p">
             <div class="section-pt">
-                <div
-                    class="relative bg-cover bg-no-repeat rounded-24 overflow-hidden" style="background-image: url({{ $banner->image->path ?? '' }})">
-                    <div class="container">
-                        <div class="grid grid-cols-12 gap-30p relative  py-20 z-[2]">
+{{--                <div--}}
+{{--                    class="relative bg-cover bg-no-repeat rounded-24 overflow-hidden" style="background-image: url({{ $banner->image->path ?? '' }})">--}}
+{{--                    <div class="container">--}}
+{{--                        <div class="grid grid-cols-12 gap-30p relative  py-20 z-[2]">--}}
+{{--                            <div class="lg:col-start-2 lg:col-end-12 col-span-12">--}}
+{{--                                <h2 class="heading-2 text-w-neutral-1 mb-3">--}}
+{{--                                    Thanh toán thành công--}}
+{{--                                </h2>--}}
+{{--                                <ul class="breadcrumb">--}}
+{{--                                    <li class="breadcrumb-item">--}}
+{{--                                        <a href="{{ route('front.home-page') }}" class="breadcrumb-link">--}}
+{{--                                            Trang chủ--}}
+{{--                                        </a>--}}
+{{--                                    </li>--}}
+{{--                                    <li class="breadcrumb-item">--}}
+{{--                                            <span class="breadcrumb-icon">--}}
+{{--                                                <i class="ti ti-chevrons-right"></i>--}}
+{{--                                            </span>--}}
+{{--                                    </li>--}}
+{{--                                    <li class="breadcrumb-item">--}}
+{{--                                        <span class="breadcrumb-current">Thanh toán thành công</span>--}}
+{{--                                    </li>--}}
+{{--                                </ul>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                    <div class="overlay-11"></div>--}}
+{{--                </div>--}}
+
+
+                <div class="category-hero relative rounded-24 overflow-hidden">
+                    <picture>
+                        <img
+                            src="{{ $banner->image->path ?? '' }}"
+                            class="hero-img"
+                            loading="lazy"
+                        >
+                    </picture>
+
+                    <div class="container hero-content">
+                        <div class="grid grid-cols-12 gap-30p relative hero-content- z-[2]">
                             <div class="lg:col-start-2 lg:col-end-12 col-span-12">
                                 <h2 class="heading-2 text-w-neutral-1 mb-3">
                                     Thanh toán thành công
                                 </h2>
+
                                 <ul class="breadcrumb">
                                     <li class="breadcrumb-item">
                                         <a href="{{ route('front.home-page') }}" class="breadcrumb-link">
@@ -144,8 +182,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="overlay-11"></div>
+
+                    <div class="overlay-11" aria-hidden="true"></div>
                 </div>
+
             </div>
         </section>
         <!-- breadcrumb end -->
@@ -289,7 +329,7 @@
                 Tạm tính
             </span>
                                             <span class="text-l-medium text-w-neutral-1">
-                {{ formatCurrency($order->total_after_discount) }}₫
+                {{ formatCurrency($order->total_before_discount) }}₫
             </span>
                                         </div>
                                         <div class="flex-y justify-between gap-3 mb-20p">
@@ -300,6 +340,16 @@
               0
             </span>
                                         </div>
+
+                                        <div class="flex-y justify-between gap-3 mb-3">
+            <span class="text-l-medium text-w-neutral-1">
+                Phí ship
+            </span>
+                                            <span class="text-l-medium text-w-neutral-1">
+                {{ formatCurrency($order->ship_cost)  }}₫
+            </span>
+                                        </div>
+
                                         <div class="flex-y justify-between gap-3 pt-20p border-t border-shap">
             <span class="text-l-medium text-w-neutral-1">
                Tổng cộng
