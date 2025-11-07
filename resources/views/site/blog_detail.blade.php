@@ -103,7 +103,7 @@
                     <div class="grid grid-cols-12 gap-30p relative hero-content- z-[2]">
                         <div class="lg:col-start-2 lg:col-end-12 col-span-12">
                             <h2 class="heading-2 text-w-neutral-1 mb-3">
-                                {{ $blog->name }}
+{{--                                {{ $blog->name }}--}}
                             </h2>
 
                             <ul class="breadcrumb">
