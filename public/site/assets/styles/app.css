@@ -36598,7 +36598,9 @@ code:not(.prose code) {
 .w-30 {
     width: 120px;
 }
-
+.w-30-x {
+    width: 145px;
+}
 .w-6 {
     width: 1.5rem;
 }

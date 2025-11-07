@@ -364,7 +364,7 @@
         var galleryThumbs = new Swiper(thumbsGallery, {
             spaceBetween: 10,
             slidesPerView: spv,
-            loop: canLoop,
+            loop: false,
             speed: 500,
             freeMode: true,
             loopedSlides: loopedSlides,
@@ -387,7 +387,7 @@
         var galleryMain = new Swiper(thumbsGalleryMain, {
             spaceBetween: 10,
             slidesPerView: 1,
-            loop: canLoop,
+            loop: false,
             speed: 800,
             loopedSlides: loopedSlides,
             navigation: {
