@@ -737,6 +737,22 @@
             $scope.wards = @json($wards);
             $scope.loading = false;
 
+            $scope.setFulfillmentMethod = function (mode) {
+                if (mode !== 'delivery' && mode !== 'pickup') return;
+                $scope.form.fulfillment_method = mode;
+                if( $scope.form.fulfillment_method == 'delivery')  {
+                    $scope.ship_cost = 35000;
+                    $scope.form.ship_cost = 35000;
+                }
+
+                if( $scope.form.fulfillment_method == 'pickup')  {
+                    $scope.ship_cost = 0;
+                    $scope.form.ship_cost = 0;
+                }
+
+                $scope.$applyAsync();
+            };
+
             $scope.form = {
                 customer_province: '',
                 customer_district: '',
@@ -745,12 +761,6 @@
                 fulfillment_method: 'delivery'
             }
 
-
-
-            $scope.setFulfillmentMethod = function (mode) {
-                if (mode !== 'delivery' && mode !== 'pickup') return;
-                $scope.form.fulfillment_method = mode;
-            };
             $scope.isDelivery = function(){ return $scope.form.fulfillment_method === 'delivery'; };
             $scope.isPickup   = function(){ return $scope.form.fulfillment_method === 'pickup'; };
 

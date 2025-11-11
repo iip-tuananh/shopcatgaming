@@ -116,6 +116,67 @@
 
 
     </style>
+
+
+
+    <style>
+        /* ----- Pagination Dots Style (ảnh mẫu) ----- */
+        :root{
+            --dot-size: 10px;          /* đường kính dot thường */
+            --dot-gap: 12px;           /* khoảng cách giữa các dot */
+            --dot-color: #b9c3cf;      /* xám nhạt của dot thường */
+            --dot-active-bg: #ffa01a;  /* cam active */
+            --dot-active-w: 28px;      /* chiều rộng "viên nang" active */
+            --dot-active-h: 10px;      /* chiều cao "viên nang" active (bằng dot-size) */
+        }
+
+        .thumbs-carousel-container .js-hero-dots{
+            position: absolute; left:0; right:0; bottom:0;
+            display:flex; align-items:center; justify-content:center;
+            padding: 8px 0;
+            z-index: 20;
+        }
+
+        /* Dot mặc định */
+        .thumbs-carousel-container .js-hero-dots .swiper-pagination-bullet{
+            width: var(--dot-size);
+            height: var(--dot-size);
+            border-radius: 9999px;
+            background: var(--dot-color);
+            opacity: 1;
+            margin: 0 calc(var(--dot-gap) / 2);
+            /* bỏ mọi text/layout phụ từ browser */
+            border: 0; outline: none; line-height: 0; padding: 0;
+            /* transition mượt */
+            transition: width .25s ease, background-color .2s ease, border-radius .2s ease;
+        }
+
+        /* Dot active -> viên nang cam */
+        .thumbs-carousel-container .js-hero-dots .swiper-pagination-bullet-active,
+        .thumbs-carousel-container .js-hero-dots .is-active{
+            width: var(--dot-active-w);
+            height: var(--dot-active-h);
+            background: var(--dot-active-bg);
+            border-radius: 9999px;
+        }
+
+        /* Giảm chuyển động nếu người dùng chọn reduce motion */
+        @media (prefers-reduced-motion: reduce){
+            .thumbs-carousel-container .js-hero-dots .swiper-pagination-bullet{
+                transition: none;
+            }
+        }
+
+        /* Tinh chỉnh cỡ trên mobile nhỏ nếu muốn */
+        @media (max-width: 480px){
+            :root{
+                --dot-size: 8px;
+                --dot-active-h: 8px;
+                --dot-active-w: 24px;
+                --dot-gap: 10px;
+            }
+        }
+    </style>
 @endsection
 
 @section('content')
@@ -126,7 +187,7 @@
         <section class="section-pt banner-home">
             <div class="container relative pt-[60px] ">
                 <div class="thumbs-carousel-container" data-carousel-name="home-hero-slider" data-slides-per-view="4">
-                    <div class="swiper thumbs-gallery-main">
+                    <div class="swiper js-hero-main">
                         <div class="swiper-wrapper">
                             @foreach($banners as $banner)
                                 <div class="swiper-slide">
@@ -145,7 +206,7 @@
                     <div
                         class="md:absolute lg:right-15 md:right-12 lg:bottom-20 md:bottom-12 z-[2] overflow-hidden pt-5 flex justify-end">
                         <div
-                            class="thumbs-gallery xxl:w-[500px] lg:w-[400px] md:w-[380px] xsm:w-[300px] w-full h-fit overflow-hidden">
+                            class="js-hero-thumbs xxl:w-[500px] lg:w-[400px] md:w-[380px] xsm:w-[300px] w-full h-fit overflow-hidden">
                             <div class="swiper-wrapper pb-10 ">
                                 @foreach($banners as $banner)
                                     <div class="swiper-slide banners-swiper-thumb">
@@ -160,7 +221,7 @@
                                 @endforeach
 
                             </div>
-                            <div class="swiper-pagination pagination-three thumbs-gallery-pagination flex-c gap-2.5">
+                            <div class="js-hero-dots swiper-pagination pagination-three flex-c gap-2.5">
                             </div>
                         </div>
                     </div>
@@ -342,73 +403,123 @@
 
 @push('scripts')
     <script>
-        (function () {
+        (function(){
+            // tìm đúng container (nếu có nhiều, có thể lặp Array.from(...).forEach)
             var container = document.querySelector(".thumbs-carousel-container");
-            if (!container) return;
+            if (!container || container.dataset.heroInited) return;
+            container.dataset.heroInited = "1";
 
-            var thumbsGallery = container.querySelector(".thumbs-gallery");
-            var thumbsGalleryMain = container.querySelector(".thumbs-gallery-main");
-            var paginationEl = container.querySelector(".thumbs-gallery-pagination");
-            if (!thumbsGallery || !thumbsGalleryMain || !paginationEl) return;
+            var mainEl  = container.querySelector(".js-hero-main");
+            var thumbsEl= container.querySelector(".js-hero-thumbs");
+            var dotsEl  = container.querySelector(".js-hero-dots");
+            if (!mainEl || !thumbsEl || !dotsEl) return;
 
-            var spv = parseInt(container.getAttribute("data-slides-per-view"), 10);
-            if (isNaN(spv) || spv < 1) spv = 4;
+            // nếu bị init ở đâu đó trước đó, hủy sạch
+            function destroyIfAny(el){
+                if (el && el.swiper && typeof el.swiper.destroy === 'function'){
+                    try { el.swiper.destroy(true, true); } catch(e){}
+                }
+            }
+            destroyIfAny(mainEl);
+            destroyIfAny(thumbsEl);
 
-            var totalSlides = thumbsGalleryMain.querySelectorAll(".swiper-slide").length;
-            var canAuto = totalSlides > 1;
+            var total = mainEl.querySelectorAll(".swiper-wrapper .swiper-slide").length;
+            var canAuto = total > 1;
 
-            // THUMBS: KHÔNG autoplay/loop
-            var galleryThumbs = new Swiper(thumbsGallery, {
-                spaceBetween: 10,
+            // Render DOTS thủ công để né pagination mặc định
+            dotsEl.innerHTML = "";
+            var dots = [];
+            for (var i=0;i<total;i++){
+                var b = document.createElement("button");
+                b.type = "button";
+                b.className = "swiper-pagination-bullet";
+                b.dataset.index = String(i);
+                b.addEventListener("click", function(){
+                    var idx = parseInt(this.dataset.index,10) || 0;
+                    if (mainEl.swiper) mainEl.swiper.slideTo(idx);
+                }, true);
+                dots.push(b);
+                dotsEl.appendChild(b);
+            }
+            function setActiveDot(idx){
+                for (var i=0;i<dots.length;i++){
+                    if (i===idx) dots[i].classList.add("swiper-pagination-bullet-active","is-active");
+                    else dots[i].classList.remove("swiper-pagination-bullet-active","is-active");
+                }
+            }
+
+            // slidesPerView cho thumbs
+            var spv = parseInt(container.getAttribute("data-slides-per-view"),10);
+            if (isNaN(spv) || spv<1) spv = 4;
+
+            // THUMBS (class mới)
+            var thumbs = new Swiper(thumbsEl, {
+                spaceBetween: 12,
                 slidesPerView: spv,
                 freeMode: true,
                 watchSlidesProgress: true,
                 watchSlidesVisibility: true,
+                slideToClickedSlide: true,
                 loop: false,
                 watchOverflow: true,
-                breakpoints: { 768:{ spaceBetween:20 }, 992:{ spaceBetween:24 } }
+                breakpoints:{768:{spaceBetween:16}, 992:{spaceBetween:20}},
             });
 
-            // MAIN: không loop, dùng rewind và ép update pagination khi autoplay
-            var galleryMain = new Swiper(thumbsGalleryMain, {
+            // MAIN (class mới) — không dùng pagination module
+            var main = new Swiper(mainEl, {
                 spaceBetween: 10,
                 slidesPerView: 1,
                 loop: false,
                 rewind: true,
                 speed: 800,
-                pagination: {
-                    el: paginationEl,
-                    clickable: true
-                },
-                thumbs: { swiper: galleryThumbs },
                 autoplay: canAuto ? {
-                    delay: 2500,
+                    delay: 3000,
                     disableOnInteraction: false,
                     pauseOnMouseEnter: true
                 } : false,
                 watchOverflow: true,
                 observer: true,
                 observeParents: true,
+                thumbs: { swiper: thumbs },
                 on: {
-                    init: function () {
-                        this.pagination && this.pagination.update && this.pagination.update();
+                    init: function(){
+                        var i = typeof this.realIndex === "number" ? this.realIndex : (this.activeIndex||0);
+                        setActiveDot(i);
+                        scrollThumbIntoView(thumbs, i);
                     },
-                    slideChange: function () {
-                        this.pagination && this.pagination.update && this.pagination.update();
+                    slideChange: function(){
+                        var i = typeof this.realIndex === "number" ? this.realIndex : (this.activeIndex||0);
+                        setActiveDot(i);
+                        scrollThumbIntoView(thumbs, i);
                     },
-                    transitionEnd: function () {
-                        this.pagination && this.pagination.update && this.pagination.update();
+                    transitionEnd: function(){
+                        var i = typeof this.realIndex === "number" ? this.realIndex : (this.activeIndex||0);
+                        setActiveDot(i);
                     }
                 }
             });
 
-            // force update 1 nhịp sau khi khởi tạo (phòng trường hợp DOM đang ẩn)
+            // ép thumbnail “theo kịp” slide đang active
+            function scrollThumbIntoView(thumbSwiper, index){
+                if (!thumbSwiper || typeof thumbSwiper.slideTo !== 'function') return;
+                var perView = thumbSwiper.params.slidesPerView;
+                var per = (typeof perView === 'number' && perView>0) ? perView : 4;
+                var first = thumbSwiper.activeIndex;
+                var last  = first + (per - 1);
+                if (index < first) thumbSwiper.slideTo(index);
+                else if (index > last) thumbSwiper.slideTo(Math.max(0, index - (per - 1)));
+            }
+
+            // đặt active dot ban đầu
             setTimeout(function(){
-                if (galleryMain.pagination && galleryMain.pagination.update) {
-                    galleryMain.pagination.update();
-                }
-            }, 0);
+                var i = typeof main.realIndex === "number" ? main.realIndex : (main.activeIndex||0);
+                setActiveDot(i);
+            },0);
+
         })();
     </script>
+
+
+
 
 @endpush
