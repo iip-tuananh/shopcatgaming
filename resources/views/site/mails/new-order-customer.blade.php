@@ -20,25 +20,6 @@
         a{ color:#111111; }
     </style>
 
-    <style type="text/css">
-        @media only screen and (max-width: 600px) {
-            /* mỗi khối chiếm 100% chiều ngang, xếp dọc */
-            td.full {
-                display: block !important;
-                width: 100% !important;
-            }
-
-            /* Khối customer */
-            td.full:first-child {
-                padding: 0 0 12px 0 !important; /* dưới cách 12px */
-            }
-
-            /* Khối payment (cái thứ 2) */
-            td.full + td.full {
-                padding: 12px 0 0 0 !important; /* trên cách 12px, bỏ padding-left */
-            }
-        }
-    </style>
 </head>
 <body style="margin:0;padding:0;background:#fff7e0;">
 <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background:#fff7e0;">
@@ -78,7 +59,7 @@
                         <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:separate;border-spacing:0 12px;">
                             <tr>
                                 <!-- Customer -->
-                                <td class="full" valign="top" style="width:50%;padding:0;">
+                                <td class="full" valign="top" style="width:100%;padding:0;">
                                     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #eee7cc;border-radius:10px;">
                                         <tr>
                                             <td style="padding:12px 14px;background:#fffdf4;border-bottom:1px solid #eee7cc;font:700 14px Arial;color:#111111;border-radius:10px 10px 0 0;">
@@ -104,8 +85,16 @@
                                     </table>
                                 </td>
 
-                                <!-- Payment -->
-                                <td class="full" valign="top" style="width:50%;padding:0 0 0 12px;">
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="px" style="padding:6px 20px 6px;">
+                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:separate;border-spacing:0 12px;">
+                            <tr>
+                                <td class="full" valign="top" style="width:100%;padding:0;">
                                     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #eee7cc;border-radius:10px;">
                                         <tr>
                                             <td style="padding:12px 14px;background:#fffdf4;border-bottom:1px solid #eee7cc;font:700 14px Arial;color:#111111;border-radius:10px 10px 0 0;">
