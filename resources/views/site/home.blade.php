@@ -208,17 +208,17 @@
                         <div
                             class="js-hero-thumbs xxl:w-[500px] lg:w-[400px] md:w-[380px] xsm:w-[300px] w-full h-fit overflow-hidden">
                             <div class="swiper-wrapper pb-10 ">
-                                @foreach($banners as $banner)
-                                    <div class="swiper-slide banners-swiper-thumb">
-                                        <div class="overflow-hidden cursor-pointer rounded-20">
-                                            <img
-                                                class="xxl:w-[180px] xl:w-[140px] lg:w-[120px] md:w-25 w-20 xxl:h-[110px] xl:h-24 lg:h-20 md:h-18 h-16 hover:scale-110 hover:-rotate-6 object-cover transition-1"
-                                                src="{{ $banner->image->path ?? '' }}" alt="product">
+{{--                                @foreach($banners as $banner)--}}
+{{--                                    <div class="swiper-slide banners-swiper-thumb">--}}
+{{--                                        <div class="overflow-hidden cursor-pointer rounded-20">--}}
+{{--                                            <img--}}
+{{--                                                class="xxl:w-[180px] xl:w-[140px] lg:w-[120px] md:w-25 w-20 xxl:h-[110px] xl:h-24 lg:h-20 md:h-18 h-16 hover:scale-110 hover:-rotate-6 object-cover transition-1"--}}
+{{--                                                src="{{ $banner->image->path ?? '' }}" alt="product">--}}
 
-                                            <div class="overlay-1 rounded-20"></div>
-                                        </div>
-                                    </div>
-                                @endforeach
+{{--                                            <div class="overlay-1 rounded-20"></div>--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
+{{--                                @endforeach--}}
 
                             </div>
                             <div class="js-hero-dots swiper-pagination pagination-three flex-c gap-2.5">

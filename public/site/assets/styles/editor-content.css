@@ -87,7 +87,7 @@
 
 /* Liên kết */
 .editor-content a {
-    color: #007bff;
+    color: #f29620 !important;
     text-decoration: underline;
 }
 

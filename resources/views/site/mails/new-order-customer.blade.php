@@ -19,6 +19,26 @@
         }
         a{ color:#111111; }
     </style>
+
+    <style type="text/css">
+        @media only screen and (max-width: 600px) {
+            /* mỗi khối chiếm 100% chiều ngang, xếp dọc */
+            td.full {
+                display: block !important;
+                width: 100% !important;
+            }
+
+            /* Khối customer */
+            td.full:first-child {
+                padding: 0 0 12px 0 !important; /* dưới cách 12px */
+            }
+
+            /* Khối payment (cái thứ 2) */
+            td.full + td.full {
+                padding: 12px 0 0 0 !important; /* trên cách 12px, bỏ padding-left */
+            }
+        }
+    </style>
 </head>
 <body style="margin:0;padding:0;background:#fff7e0;">
 <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background:#fff7e0;">
